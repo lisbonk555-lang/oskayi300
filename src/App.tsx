@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Navbar } from './components/Navbar';
-import { PublicTickerBar } from './components/PublicTickerBar';
 import { Hero } from './components/Hero';
-import { CompanyOverview } from './components/CompanyOverview';
+import { ShowcaseCarousel } from './components/ShowcaseCarousel';
 import { ServicesPillars } from './components/ServicesPillars';
+import { CeoMessage } from './components/CeoMessage';
+import { CompanyOverview } from './components/CompanyOverview';
 import { FinancingCalculator } from './components/FinancingCalculator';
 import { Web3ArchitectureExplorer } from './components/Web3ArchitectureExplorer';
 import { NodeDiagnostics } from './components/NodeDiagnostics';
@@ -43,7 +44,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
+    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
       
       {/* Top Navbar */}
       <Navbar
@@ -51,9 +52,6 @@ export default function App() {
         onNavigateSection={handleNavigateSection}
         activeSection={activeSection}
       />
-
-      {/* Live Market & RPC Status Bar */}
-      <PublicTickerBar />
 
       {/* Main Content Sections */}
       <main>
@@ -63,14 +61,25 @@ export default function App() {
           onNavigateSection={handleNavigateSection}
         />
 
-        {/* Corporate Profile & Leadership (Listowel Sarsah Adentwi-Edzii, Founder & CEO) */}
-        <CompanyOverview
-          onOpenVerification={() => setIsVerificationModalOpen(true)}
+        {/* 20 Showcase Slides with Notes & Images */}
+        <ShowcaseCarousel
+          onSelectServiceForInquiry={handleSelectServiceForInquiry}
         />
 
-        {/* Core Practice Pillars & Partner Delivery */}
+        {/* Practice Pillars & Solutions */}
         <ServicesPillars
           onSelectServiceForInquiry={handleSelectServiceForInquiry}
+        />
+
+        {/* Inspired Message from Founder & CEO Listowel Sarsah Adentwi-Edzii */}
+        <CeoMessage
+          onOpenVerification={() => setIsVerificationModalOpen(true)}
+          onNavigateContact={() => handleNavigateSection('contact')}
+        />
+
+        {/* Statutory Profile & Mission */}
+        <CompanyOverview
+          onOpenVerification={() => setIsVerificationModalOpen(true)}
         />
 
         {/* Interactive Institutional Project Financing Feasibility Calculator */}

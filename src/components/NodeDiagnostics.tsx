@@ -82,40 +82,47 @@ export const NodeDiagnostics: React.FC = () => {
               <div>Querying {network.toUpperCase()} mainnet RPC node endpoint...</div>
             </div>
           ) : rpcResult ? (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-200">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200">
-                    <CheckCircle2 className="w-5 h-5" />
+            rpcResult.success && rpcResult.blockHeight != null ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2.5 rounded-lg bg-emerald-100 text-emerald-800 border border-emerald-200">
+                      <CheckCircle2 className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-emerald-950 font-mono uppercase">{rpcResult.network} Node Operational</div>
+                      <div className="text-xs text-emerald-700 font-mono">{rpcResult.rpcEndpoint}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-xs font-bold text-emerald-950 font-mono uppercase">{rpcResult.network} Node Operational</div>
-                    <div className="text-xs text-emerald-700 font-mono">{rpcResult.rpcEndpoint}</div>
+
+                  <div className="text-right font-mono">
+                    <div className="text-xs text-emerald-700">Response Latency</div>
+                    <div className="text-sm font-bold text-emerald-900">{rpcResult.latencyMs ?? 0} ms</div>
                   </div>
                 </div>
 
-                <div className="text-right font-mono">
-                  <div className="text-xs text-emerald-700">Response Latency</div>
-                  <div className="text-sm font-bold text-emerald-900">{rpcResult.latencyMs} ms</div>
+                <div className="grid grid-cols-2 gap-4 font-mono text-xs">
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <span className="text-slate-500 text-[10px] uppercase font-bold">Current Live Block Height</span>
+                    <div className="text-xl font-bold text-indigo-950">
+                      #{Number(rpcResult.blockHeight).toLocaleString()}
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+                    <span className="text-slate-500 text-[10px] uppercase font-bold">Raw Block Hex</span>
+                    <div className="text-xs font-bold text-indigo-600 truncate">
+                      {rpcResult.rawHex || '0x0'}
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div className="grid grid-cols-2 gap-4 font-mono text-xs">
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <span className="text-slate-500 text-[10px] uppercase font-bold">Current Live Block Height</span>
-                  <div className="text-xl font-bold text-indigo-950">
-                    #{rpcResult.blockHeight.toLocaleString()}
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
-                  <span className="text-slate-500 text-[10px] uppercase font-bold">Raw Block Hex</span>
-                  <div className="text-xs font-bold text-indigo-600 truncate">
-                    {rpcResult.rawHex}
-                  </div>
-                </div>
+            ) : (
+              <div className="p-4 rounded-xl bg-amber-50 border border-amber-200 text-xs font-mono text-amber-900 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>RPC Diagnostic Alert: {rpcResult.error || 'Endpoint temporary ping delay. Retrying...'}</span>
               </div>
-            </div>
+            )
           ) : (
             <div className="p-6 text-center text-xs text-slate-500 font-mono bg-slate-50 rounded-xl border border-slate-200">
               Click "Test Ping" above to query live mainnet RPC block height and latency.

@@ -110,14 +110,14 @@ export const PublicTickerBar: React.FC = () => {
 
           {loadingRpc ? (
             <span className="text-slate-400 animate-pulse text-[11px]">Testing RPC ping...</span>
-          ) : rpcStatus && rpcStatus.success ? (
+          ) : rpcStatus && rpcStatus.success && rpcStatus.blockHeight != null ? (
             <div className="flex items-center gap-2 text-[11px]">
               <span className="flex items-center gap-1 text-emerald-400 font-semibold bg-emerald-950/70 px-2 py-0.5 rounded border border-emerald-800/60">
                 <CheckCircle2 className="w-3 h-3" />
-                Block #{rpcStatus.blockHeight.toLocaleString()}
+                Block #{Number(rpcStatus.blockHeight).toLocaleString()}
               </span>
               <span className="text-slate-300">
-                Ping: <strong className="text-slate-100">{rpcStatus.latencyMs}ms</strong>
+                Ping: <strong className="text-slate-100">{rpcStatus.latencyMs ?? 0}ms</strong>
               </span>
             </div>
           ) : (

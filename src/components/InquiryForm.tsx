@@ -161,7 +161,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ initialServiceTitle = 
 
                 <div className="p-4 bg-slate-950 rounded-lg border border-slate-800 inline-block font-mono text-xs text-left space-y-1">
                   <div>Reference Number: <strong className="text-amber-400">{submissionResult.referenceId}</strong></div>
-                  <div>Timestamp: <span className="text-slate-400">{new Date(submissionResult.timestamp).toLocaleString()}</span></div>
+                  <div>Timestamp: <span className="text-slate-400">{submissionResult.timestamp ? new Date(submissionResult.timestamp).toLocaleString() : new Date().toLocaleString()}</span></div>
                   <div>Primary Channel: <span className="text-amber-300">{OFFICIAL_COMPANY_INFO.primaryEmail}</span></div>
                 </div>
 
