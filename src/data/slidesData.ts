@@ -13,10 +13,25 @@ export interface SlideItem {
 export const SHOWCASE_SLIDES: SlideItem[] = [
   {
     id: 1,
-    title: "Sovereign & Municipal Infrastructure Financing",
+    title: "Credit Facility Provision ($100 to Billions)",
+    category: "Fintech",
+    badge: "Instant to 3-Month Disbursal",
+    executiveNote: "Facilitating structured credit facilities ranging from $100 to Billions of Dollars with disbursement timelines tailored from instant approval, 24 hours, 7 days, 1 month, up to 3 months for individuals, groups, companies, municipalities, governments, and continental blocks.",
+    metric: "$100 to $Billion+",
+    metricLabel: "Flexible Funding Scale",
+    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80",
+    deliveryFramework: [
+      "Timelines: Instant, 24 Hours, 7 Days, 1 Month, 3 Months",
+      "Clients: Individuals, SMEs, Municipalities, Governments & Continental Blocks",
+      "Underwritten via Regulated International Partners"
+    ]
+  },
+  {
+    id: 2,
+    title: "Sovereign & Institutional Project Financing",
     category: "Project Financing",
-    badge: "Concessionary Debt",
-    executiveNote: "Structuring multi-decade concessionary loan facilities, municipal green bonds, and sovereign credit enhancements for critical national transport, bridge, and civil infrastructure projects.",
+    badge: "Concessionary Capital",
+    executiveNote: "Arranging long-term concessionary loan facilities, green bonds, and capital project debt for national energy, transportation, telecom, and healthcare infrastructure via our International Licensed Partners.",
     metric: "$250M+",
     metricLabel: "Capital Allocation Capacity",
     imageUrl: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&w=1200&q=80",
@@ -27,22 +42,37 @@ export const SHOWCASE_SLIDES: SlideItem[] = [
     ]
   },
   {
-    id: 2,
-    title: "Core Interbank Banking & Cross-Border Payment Rails",
-    category: "Fintech",
-    badge: "ISO 20022 Compliant",
-    executiveNote: "Orchestrating high-throughput interbank clearing engines, real-time gross settlement (RTGS) connectors, and automated SWIFT messaging bridges for commercial banks and central monetary hubs.",
-    metric: "10,000+ TPS",
-    metricLabel: "Transaction Throughput Capacity",
-    imageUrl: "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80",
+    id: 3,
+    title: "Exclusive Insurance Solutions for Individuals, Homes, Auto, Projects & Travel",
+    category: "Infrastructure & Trade",
+    badge: "Exclusive Underwriting",
+    executiveNote: "Comprehensive insurance coverage tailored for Individuals, Homes, Auto/Fleet, Commercial Projects, Loans, and International Travel underwritten through our International Licensed Insurance & Reinsurance Partners.",
+    metric: "100% Covered",
+    metricLabel: "Tailored Risk Underwriting",
+    imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
     deliveryFramework: [
-      "ISO 20022 Financial Data Standard Translation",
-      "Automated Interbank Liquidity Buffer Monitoring",
-      "Tier-1 Financial Gateway & API Bridge Security"
+      "Individual & Group Auto, Home & Travel Policies",
+      "Project & Construction All-Risk Coverage",
+      "Commercial Loan Protection & Reinsurance Syndication"
     ]
   },
   {
-    id: 3,
+    id: 4,
+    title: "Fleet of Fintech Applications for Telecom, Health, Education & Banking",
+    category: "Fintech",
+    badge: "Cross-Industry Apps",
+    executiveNote: "Engineering custom-built fintech applications and enterprise digital platforms that accelerate growth across Telecom, Healthcare, Education, Agriculture, and Banking sectors.",
+    metric: "Multi-Industry",
+    metricLabel: "Custom Digital Solutions Fleet",
+    imageUrl: "https://images.unsplash.com/photo-1556742049-0a670f4a4591?auto=format&fit=crop&w=1200&q=80",
+    deliveryFramework: [
+      "Telecom Mobile Money & Airtime Loan Engines",
+      "Health & Education Fee Collection Gateways",
+      "Core Banking & Merchant Payment Rails"
+    ]
+  },
+  {
+    id: 5,
     title: "Instant Lending & Automated Credit Scoring Engines",
     category: "Fintech",
     badge: "Instant Credit Pools",
@@ -57,7 +87,7 @@ export const SHOWCASE_SLIDES: SlideItem[] = [
     ]
   },
   {
-    id: 4,
+    id: 6,
     title: "Web3 Real-World Asset (RWA) & Supply Chain Tokenization",
     category: "Web3 & Digital Assets",
     badge: "RWA Smart Contracts",
@@ -72,22 +102,7 @@ export const SHOWCASE_SLIDES: SlideItem[] = [
     ]
   },
   {
-    id: 5,
-    title: "Institutional Reinsurance & Sovereign Risk Underwriting",
-    category: "Infrastructure & Trade",
-    badge: "Risk Syndication",
-    executiveNote: "Structuring multi-layered reinsurance syndication, political risk insurance (PRI), and sovereign default guarantees through tier-1 global insurance syndicates.",
-    metric: "$500M",
-    metricLabel: "Underwriting Risk Capacity",
-    imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
-    deliveryFramework: [
-      "Lloyd's & Zurich Reinsurance Syndicate Alignment",
-      "Political Risk & Non-Honoring Debt Protection",
-      "Automated Claims Verification & Escrow Triggers"
-    ]
-  },
-  {
-    id: 6,
+    id: 7,
     title: "Maritime Port & Deepwater Cargo Logistics Infrastructure",
     category: "Infrastructure & Trade",
     badge: "Trade Corridor",
@@ -99,21 +114,6 @@ export const SHOWCASE_SLIDES: SlideItem[] = [
       "Port Terminal Concession & Lease Structuring",
       "Digital Bill of Lading (e-BoL) Verification",
       "Customs Duty Automated Tariff Clearing"
-    ]
-  },
-  {
-    id: 7,
-    title: "Central Bank Digital Currency (CBDC) & Sovereign Ledgers",
-    category: "Fintech",
-    badge: "Sovereign Ledger",
-    executiveNote: "Consultancy and custom ledger architecture for central bank digital currency pilots, multi-currency offline payment wallets, and interbank settlement resilience.",
-    metric: "Sub-Second",
-    metricLabel: "Settlement Finality Speed",
-    imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&w=1200&q=80",
-    deliveryFramework: [
-      "Hierarchical Cryptographic Key Governance",
-      "Offline Mesh Transaction Security Rules",
-      "Central Monetary Authority Oversight Dashboard"
     ]
   },
   {

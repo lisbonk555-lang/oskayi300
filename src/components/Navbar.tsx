@@ -15,12 +15,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { id: 'ceo-message', label: 'President & CEO Vision' },
     { id: 'showcase-slides', label: '10 Showcase Slides' },
     { id: 'services', label: 'Solutions & Services' },
-    { id: 'ceo-message', label: 'CEO Message' },
-    { id: 'calculator', label: 'Project Finance' },
-    { id: 'web3', label: 'Web3 Architecture' },
-    { id: 'diagnostics', label: 'RPC Diagnostics' },
+    { id: 'overview', label: 'About Oskayi' },
     { id: 'contact', label: 'Contact Us' }
   ];
 

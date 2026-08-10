@@ -13,7 +13,7 @@ export const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClos
   if (!isOpen) return null;
 
   const handleCopyCredentials = () => {
-    const text = `OSKAYI CONSULT\nROC Ghana Registration No: ${OFFICIAL_COMPANY_INFO.registrationNumber}\nTIN: ${OFFICIAL_COMPANY_INFO.tin}\nFounder & CEO: ${OFFICIAL_COMPANY_INFO.founderAndCEO}\nDigital Address: ${OFFICIAL_COMPANY_INFO.digitalAddress}\nAccra, Ghana`;
+    const text = `OSKAYI CONSULT\nROC Ghana Registration No: ${OFFICIAL_COMPANY_INFO.registrationNumber}\nTIN: ${OFFICIAL_COMPANY_INFO.tin}\nPresident & CEO: ${OFFICIAL_COMPANY_INFO.founderAndCEO}\nDigital Address: ${OFFICIAL_COMPANY_INFO.digitalAddress}\nAccra, Ghana`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -121,7 +121,7 @@ export const ComplianceModal: React.FC<ComplianceModalProps> = ({ isOpen, onClos
                 <div className="p-3 bg-slate-900 rounded border border-slate-800 space-y-1">
                   <span className="text-slate-400 text-[10px]">Executive Leadership</span>
                   <div className="font-bold text-white">{OFFICIAL_COMPANY_INFO.founderAndCEO}</div>
-                  <div className="text-[10px] text-amber-400">Founder & CEO</div>
+                  <div className="text-[10px] text-amber-400">President & CEO</div>
                 </div>
 
                 <div className="p-3 bg-slate-900 rounded border border-slate-800 space-y-1">

@@ -25,28 +25,62 @@ export const OFFICIAL_COMPANY_INFO: CompanyVerificationInfo = {
 
 export const SERVICE_PILLARS: ServicePillar[] = [
   {
-    id: "fintech-banking",
-    title: "Fintech Solutions for Banks & Financial Institutions",
+    id: "credit-facility-provision",
+    title: "Credit Facility Provision & Capital Disbursement",
     category: "Fintech",
-    badge: "Core Rail Integration",
-    summary: "Architecting high-concurrency core banking modules, API gateway bridges, and bulk transfer protocols customized for regulated institutions.",
-    description: "In partnership with tier-1 international technology providers, Oskayi Consult delivers enterprise-grade fintech infrastructure. From core transaction routing to multi-layered security and automated compliance checks, our solutions empower commercial banks, microfinance institutions, and payment service providers across Africa.",
+    badge: "$100 to Billions • Flexible Terms",
+    summary: "Facilitating credit facilities from $100 to Billions of Dollars with disbursement timelines ranging from instant approval, 24 hours, 7 days, 1 month, to 3 months.",
+    description: "Through our network of regulated international partners, Oskayi Consult facilitates tailored credit facilities and financing solutions. Whether for micro-credit needs or multi-billion dollar capital pools, we support Individuals, Groups, Organizations, Municipalities, Governments, Corporations, and Continental Development Blocks with custom disbursement structures.",
     keyCapabilities: [
-      "Bulk Money Transfer Rails & ISO20022 Messaging",
-      "Core Banking System Connectors & Open API Gateways",
-      "Automated Anti-Money Laundering (AML) & KYC Verification",
-      "Instant Loan Decisioning Engines & Credit Scoring Models"
+      "Flexible Disbursal Timelines: Instant Approval, 24 Hours, 7 Days, 1 Month & 3 Months",
+      "Tiered Funding Scale: Amounts Ranging from $100 to Billions of Dollars",
+      "Broad Eligibility: Individuals, Groups, SMEs, Municipalities, Governments & Continental Blocks",
+      "Regulated International Partner Underwriting & Treasury Management"
     ],
-    targetAudience: "Commercial Banks, Microfinance Institutions, Credit Unions & Fintech Operators",
-    partnerDeliveryModel: "Delivered through certified international integrated technology partners",
+    targetAudience: "Individuals, Small Groups, Corporations, Municipalities, Governments & Continental Blocks",
+    partnerDeliveryModel: "Facilitated through Regulated International Partners & Capital Consortia",
+    status: "Active"
+  },
+  {
+    id: "exclusive-insurance",
+    title: "Exclusive Insurance for Individuals, Homes, Auto, Projects & Travel",
+    category: "Insurance",
+    badge: "Licensed Underwriting",
+    summary: "Tailored individual and corporate insurance solutions covering Individuals, Homes, Auto/Fleet, Infrastructure Projects, Commercial Loans, and International Travel.",
+    description: "Protecting assets, investments, and life across all spectrums. Delivered in partnership with top International Licensed Insurance and Reinsurance Partners, our policies provide comprehensive risk coverage, rapid automated claims processing, and multi-currency premium settlement.",
+    keyCapabilities: [
+      "Exclusive Auto, Fleet, Home & Individual Personal Policies",
+      "Project & Construction All-Risk Insurance Underwriting",
+      "Commercial Loan Guarantee & Non-Payment Protection",
+      "International Travel Medical & Emergency Escrow"
+    ],
+    targetAudience: "Individuals, Homeowners, Project Developers, Lenders & Global Travelers",
+    partnerDeliveryModel: "Underwritten by International Licensed Insurance & Reinsurance Partners",
+    status: "Active"
+  },
+  {
+    id: "fintech-fleet-development",
+    title: "Fleet of Fintech Applications & Multi-Sector Software Development",
+    category: "Fintech",
+    badge: "Custom Industry Solutions",
+    summary: "Custom software engineering solving critical needs across Telecom, Health, Education, Banking, Finance, and Public Sectors.",
+    description: "Accelerating digital growth with specialized software suites tailored specifically to your industry. Our engineering teams build high-performance mobile apps, web portals, payment gateways, and automated collection systems custom-tailored for telecom operators, health providers, educational institutions, and financial entities.",
+    keyCapabilities: [
+      "Custom Solutions Tailored to Suit Any Specific Industry Need",
+      "Telecom Mobile Money Integration & Airtime Credit Engines",
+      "Health & Education Fee Processing & Micro-Subscription Portals",
+      "Banking & Microfinance Custom Mobile/Web Applications"
+    ],
+    targetAudience: "Telecom Operators, Health Tech, Universities, Banks & Enterprises",
+    partnerDeliveryModel: "Engineered by Oskayi Consult & Certified International Tech Partners",
     status: "Active"
   },
   {
     id: "project-financing",
-    title: "Project Financing & Infrastructure Advisory",
+    title: "Sovereign & Corporate Project Financing",
     category: "Project Financing",
-    badge: "Capital Structuring",
-    summary: "Structuring multi-million dollar capital solutions, debt-equity frameworks, and project financing guarantees for large-scale developments.",
+    badge: "Concessionary Debt",
+    summary: "Structuring multi-million dollar concessionary loans, debt-equity frameworks, and project financing guarantees for national infrastructure.",
     description: "Oskayi Consult connects public and private sector projects with international funding consortia and institutional debt pools. We manage feasibility assessments, risk mitigate project insurance requirements, and coordinate cross-border financial engineering for energy, transport, healthcare, and real estate assets.",
     keyCapabilities: [
       "Structured Debt & Equity Capital Origination",
@@ -55,24 +89,7 @@ export const SERVICE_PILLARS: ServicePillar[] = [
       "Project Risk Mitigation & Escrow Architecture"
     ],
     targetAudience: "Government Ministries, Infrastructure Developers & Commercial Enterprise Projects",
-    partnerDeliveryModel: "Coordinated with global capital partners & development finance institutions",
-    status: "Active"
-  },
-  {
-    id: "insurance-payments",
-    title: "Insurance & Multi-Currency Payment Solutions",
-    category: "Insurance",
-    badge: "Underwriting & Escrow",
-    summary: "Customized individual, group, and project-specific insurance underwriting paired with high-volume international payment rails.",
-    description: "Protecting commercial assets and enabling frictionless cross-border commerce. Our integrated insurance frameworks offer tailored coverage for infrastructure projects, bulk cargo, healthcare groups, and financial assets, fully synchronized with automated multi-currency payment settlement gateways.",
-    keyCapabilities: [
-      "Project Insurance & Construction Risk Coverage",
-      "Individual & Group Corporate Health/Life Schemes",
-      "Multi-Currency Settlement Gateways (USD, EUR, GBP, GHS)",
-      "Automated Claims Escrow & Insurance Payment Rails"
-    ],
-    targetAudience: "Corporates, Institutional Developers, Employers & International Traders",
-    partnerDeliveryModel: "Underwritten by international reinsurance & licensed insurance partners",
+    partnerDeliveryModel: "Coordinated with International Licensed Partners & Capital Consortia",
     status: "Active"
   },
   {
@@ -90,23 +107,6 @@ export const SERVICE_PILLARS: ServicePillar[] = [
     ],
     targetAudience: "Financial Institutions, Trade Corporations, Agricultural Cooperatives & Web3 Ventures",
     partnerDeliveryModel: "Engineered via specialized international Web3 protocol partners",
-    status: "Active"
-  },
-  {
-    id: "instant-loans",
-    title: "Instant Loan & Credit Distribution Infrastructure",
-    category: "Fintech",
-    badge: "Automated Credit",
-    summary: "Turnkey digital lending platforms with real-time risk scoring, automated disbursement, and Mobile Money integration.",
-    description: "Enabling banks and authorized non-bank lenders to deploy instant micro and macro loan products. Built with robust algorithmic risk assessment, seamless API integration into telecom money channels, and flexible repayment schedules.",
-    keyCapabilities: [
-      "Real-Time Credit Decision Engine & Scoring Rules",
-      "Mobile Money & Direct Bank Account Disbursement",
-      "Automated Collateral Verification & Repayment Webhooks",
-      "Regulatory Compliance & Default Analytics Reporting"
-    ],
-    targetAudience: "Lending Institutions, Telecom Operators & FinTech Lenders",
-    partnerDeliveryModel: "Integrated SaaS & On-Premises Partner Deployments",
     status: "Active"
   },
   {

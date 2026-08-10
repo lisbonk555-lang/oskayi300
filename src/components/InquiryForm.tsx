@@ -137,7 +137,7 @@ export const InquiryForm: React.FC<InquiryFormProps> = ({ initialServiceTitle = 
             </div>
 
             <div className="pt-2 text-[11px] text-slate-400 font-mono">
-              Founder & CEO: <strong className="text-white">{OFFICIAL_COMPANY_INFO.founderAndCEO}</strong>
+              President & CEO: <strong className="text-white">{OFFICIAL_COMPANY_INFO.founderAndCEO}</strong>
             </div>
           </div>
 

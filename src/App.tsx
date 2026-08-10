@@ -5,9 +5,6 @@ import { ShowcaseCarousel } from './components/ShowcaseCarousel';
 import { ServicesPillars } from './components/ServicesPillars';
 import { CeoMessage } from './components/CeoMessage';
 import { CompanyOverview } from './components/CompanyOverview';
-import { FinancingCalculator } from './components/FinancingCalculator';
-import { Web3ArchitectureExplorer } from './components/Web3ArchitectureExplorer';
-import { NodeDiagnostics } from './components/NodeDiagnostics';
 import { ComplianceModal } from './components/ComplianceModal';
 import { InquiryForm } from './components/InquiryForm';
 import { ContactAndLocation } from './components/ContactAndLocation';
@@ -37,14 +34,8 @@ export default function App() {
     handleNavigateSection('contact');
   };
 
-  const handleApplyForFinancing = (principalUSD: number, summaryText: string) => {
-    setSelectedServiceForInquiry('Project Financing & Advisory');
-    setInquiryInitialMessage(summaryText);
-    handleNavigateSection('contact');
-  };
-
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-950 text-white font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
       
       {/* Top Navbar */}
       <Navbar
@@ -61,7 +52,13 @@ export default function App() {
           onNavigateSection={handleNavigateSection}
         />
 
-        {/* 20 Showcase Slides with Notes & Images */}
+        {/* Executive CEO Message Section (Placed High at Top) */}
+        <CeoMessage
+          onOpenVerification={() => setIsVerificationModalOpen(true)}
+          onNavigateContact={() => handleNavigateSection('contact')}
+        />
+
+        {/* 10 Strategic Showcase Slides */}
         <ShowcaseCarousel
           onSelectServiceForInquiry={handleSelectServiceForInquiry}
         />
@@ -71,27 +68,10 @@ export default function App() {
           onSelectServiceForInquiry={handleSelectServiceForInquiry}
         />
 
-        {/* Inspired Message from Founder & CEO Listowel Sarsah Adentwi-Edzii */}
-        <CeoMessage
-          onOpenVerification={() => setIsVerificationModalOpen(true)}
-          onNavigateContact={() => handleNavigateSection('contact')}
-        />
-
         {/* Statutory Profile & Mission */}
         <CompanyOverview
           onOpenVerification={() => setIsVerificationModalOpen(true)}
         />
-
-        {/* Interactive Institutional Project Financing Feasibility Calculator */}
-        <FinancingCalculator
-          onApplyForFinancing={handleApplyForFinancing}
-        />
-
-        {/* Custom Industry Web3 Architecture Explorer */}
-        <Web3ArchitectureExplorer />
-
-        {/* Direct Public Node Diagnostics Ping */}
-        <NodeDiagnostics />
 
         {/* Executive Consultation & Inquiry Form */}
         <InquiryForm

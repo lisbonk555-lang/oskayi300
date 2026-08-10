@@ -30,7 +30,7 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ onOpenVerifica
           </p>
         </div>
 
-        {/* Grid: Corporate Story & Founder & CEO Profile */}
+        {/* Grid: Corporate Story & President & CEO Profile */}
         <div className="grid lg:grid-cols-12 gap-8 items-stretch">
           
           {/* Executive Leadership Spotlight */}
@@ -44,37 +44,37 @@ export const CompanyOverview: React.FC<CompanyOverviewProps> = ({ onOpenVerifica
               </div>
 
               <div className="space-y-4">
-                <div className="relative group rounded-2xl overflow-hidden border border-amber-400/70 shadow-xl bg-slate-950 w-full h-52 sm:h-60">
+                <div className="relative group rounded-2xl overflow-hidden border-2 border-amber-400/80 shadow-2xl bg-slate-950 w-full h-64 sm:h-72">
                   <img
                     src="https://i.postimg.cc/sgnfk289/IMG-20260809-WA0040.jpg"
-                    alt="Listowel Sarsah Adentwi-Edzii - Founder & CEO"
+                    alt="Listowel Sarsah Adentwi-Edzii - President & CEO"
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
-                  <div className="absolute bottom-2 left-3 right-3 bg-slate-950/90 backdrop-blur-md px-2.5 py-1 rounded-lg border border-slate-800 text-[10px] font-mono font-bold text-amber-300">
+                  <div className="absolute bottom-2 left-3 right-3 bg-slate-950/90 backdrop-blur-md px-2.5 py-1.5 rounded-lg border border-indigo-700/60 text-xs font-mono font-bold text-amber-300">
                     Listowel Sarsah Adentwi-Edzii
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <h3 className="font-sans text-2xl font-bold text-white tracking-wide">
+                  <h3 className="font-sans text-2xl font-extrabold text-white tracking-wide">
                     Listowel Sarsah Adentwi-Edzii
                   </h3>
                   <p className="text-amber-300 font-semibold text-sm">
-                    Founder & Chief Executive Officer
+                    President & Chief Executive Officer
                   </p>
                 </div>
               </div>
 
               <p className="text-slate-300 text-sm leading-relaxed font-sans">
-                Under the strategic vision of Founder and CEO Listowel Sarsah Adentwi-Edzii, Oskayi Consult was established to bridge emerging market capital gaps by structuring institutional partnerships with global financial consortia, Web3 protocol architects, and reinsurance syndicates.
+                Under the strategic vision of President and CEO Listowel Sarsah Adentwi-Edzii, Oskayi Consult was established to bridge emerging market capital gaps by structuring institutional credit facilities, custom industry software, and infrastructure project financing.
               </p>
 
               <div className="p-4 rounded-2xl bg-slate-950/80 border border-slate-800 text-xs space-y-2">
                 <div className="flex items-center justify-between text-slate-300">
                   <span>Executive Designation:</span>
-                  <strong className="text-amber-300 font-semibold">Founder & CEO</strong>
+                  <strong className="text-amber-300 font-semibold">President & CEO</strong>
                 </div>
                 <div className="flex items-center justify-between text-slate-300">
                   <span>Citizenship / Nationality:</span>

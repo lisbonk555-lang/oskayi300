@@ -34,7 +34,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
 
             <div className="p-3 bg-slate-900 rounded-lg border border-slate-800 text-[11px] font-mono space-y-1 text-slate-300">
               <div className="text-amber-400 font-bold">Listowel Sarsah Adentwi-Edzii</div>
-              <div className="text-slate-400">Founder & CEO</div>
+              <div className="text-slate-400">President & CEO</div>
             </div>
           </div>
 
@@ -45,32 +45,32 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
             </h4>
             <ul className="space-y-2 text-xs font-sans">
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors">
-                  Fintech Solutions for Banks
+                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
+                  Liquidity & Loans for Banks & Financial Institutions
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('calculator')} className="hover:text-amber-300 transition-colors">
-                  Project Financing & Advisory
+                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
+                  Sovereign & Corporate Project Financing
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors">
-                  Insurance & Multi-currency Payments
+                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
+                  Exclusive Insurance (Individuals, Auto, Home, Travel)
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('web3')} className="hover:text-amber-300 transition-colors">
-                  Custom Web3 Applications
+                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
+                  Fleet of Fintech & Web3 App Development
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors">
-                  Instant Loan Infrastructure
+                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
+                  Cross-Industry Digital Growth Solutions
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors">
+                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
                   ICT Consultancy (ISIC 8299)
                 </button>
               </li>

@@ -10,36 +10,36 @@ interface HeroProps {
 export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSection }) => {
   const fleetSolutions = [
     {
-      title: "Project Financing",
-      badge: "Sovereign & Infrastructure",
+      title: "Credit Facility Provision ($100 to Billions)",
+      badge: "Instant to 3 Months",
       color: "from-amber-400/20 via-amber-500/10 to-transparent border-amber-500/30 text-amber-300",
       iconBg: "bg-amber-400 text-indigo-950",
-      description: "Concessionary capital, PPP models, municipal bonds, and multi-decade sovereign loan engineering for national projects.",
+      description: "Provision of credit facilities with disbursal timelines from instant approval, within 24 hours, 7 days, 1 month, to 3 months for individuals, groups, companies, municipalities, governments, and continental development blocks ($100 to $Billions).",
       icon: Globe
     },
     {
-      title: "Fintech Solutions & App Development",
-      badge: "Core Banking & Interbank",
+      title: "Exclusive Insurance for Individuals, Homes, Auto, Projects & Travel",
+      badge: "Comprehensive Coverage",
+      color: "from-emerald-500/20 via-teal-500/10 to-transparent border-emerald-500/30 text-emerald-300",
+      iconBg: "bg-emerald-400 text-indigo-950",
+      description: "Exclusive insurance policies for Individuals, Homes, Auto/Fleet, Infrastructure Projects, Commercial Loans, and International Travel underwritten by International Licensed Partners.",
+      icon: ShieldCheck
+    },
+    {
+      title: "Fleet of Fintech Applications & Custom Software Development",
+      badge: "Custom Industry Solutions",
       color: "from-sky-500/20 via-indigo-500/10 to-transparent border-sky-500/30 text-sky-300",
       iconBg: "bg-sky-400 text-indigo-950",
-      description: "ISO 20022 payment engines, high-throughput interbank clearing, automated SWIFT bridges, and enterprise financial portals.",
+      description: "Custom software solutions tailored to suit your specific industry across Telecom, Healthcare, Education, Banking & Finance, Agriculture, and Public Sectors.",
       icon: Layers
     },
     {
-      title: "Instant Lending & Insurance for Individuals, Companies & Organisations",
-      badge: "Credit Pools & Risk Escrow",
-      color: "from-emerald-500/20 via-teal-500/10 to-transparent border-emerald-500/30 text-emerald-300",
-      iconBg: "bg-emerald-400 text-indigo-950",
-      description: "Algorithmic automated micro & macro lending pools, credit scoring webhooks, and syndicate insurance underwriting.",
-      icon: Building2
-    },
-    {
-      title: "Web 3 Applications & Fintech App Development",
-      badge: "RWA & Smart Contracts",
+      title: "Sovereign & Corporate Project Financing",
+      badge: "Concessionary Debt",
       color: "from-purple-500/20 via-indigo-500/10 to-transparent border-purple-500/30 text-purple-300",
       iconBg: "bg-purple-400 text-indigo-950",
-      description: "Real-world asset (RWA) commodity tokenization, multi-sig cold storage vaults, and decentralized escrow protocols.",
-      icon: ShieldCheck
+      description: "Structuring multi-million dollar concessionary loan facilities, PPP concessions, and green bonds through our network of International Licensed Integrated Partners.",
+      icon: Building2
     }
   ];
 
@@ -66,17 +66,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
             </div>
 
-            {/* Requested Hero Headline */}
+            {/* Reframed Hero Headline */}
             <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
-              Empowering Global Institutional Growth, <br />
+              Empowering African & Global Growth Through <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500">
-                Infrastructure Financing & Frontier Technology
+                Infrastructure Financing, Modern Fintech & Technology
               </span>
             </h1>
 
-            {/* Sub-sentence under name */}
+            {/* Sub-sentence under headline */}
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-sans max-w-2xl">
-              Oskayi Consult is a premier Ghanaian advisory and technology engineering firm specializing in capital syndication, core interbank fintech rails, automated credit platforms, and enterprise Web3 solutions.
+              Oskayi Consult is a Ghanaian advisory and financial technology firm. Through our network of licensed international partners, we provide loan liquidity, project financing, custom fintech software, exclusive insurance, and Web3 solutions for governments, banks, businesses, and individuals.
             </p>
 
             {/* Quick CTAs */}
@@ -121,43 +121,62 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
 
           </div>
 
-          {/* Right Hero Image Card */}
+          {/* Right Hero Image Card featuring President & CEO */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-3xl overflow-hidden border border-indigo-700/60 shadow-2xl bg-indigo-950 group">
+            <div className="relative rounded-3xl overflow-hidden border border-indigo-700/60 shadow-2xl bg-slate-950 group">
               <img
-                src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80"
-                alt="Oskayi Consult Infrastructure & Fintech"
-                className="w-full h-[480px] object-cover object-center group-hover:scale-105 transition-transform duration-700 opacity-90"
+                src="https://i.postimg.cc/sgnfk289/IMG-20260809-WA0040.jpg"
+                alt="Listowel Sarsah Adentwi-Edzii - President & CEO of Oskayi Consult"
+                className="w-full h-[500px] sm:h-[520px] object-cover object-top group-hover:scale-105 transition-transform duration-700 opacity-95"
                 referrerPolicy="no-referrer"
               />
               
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent" />
 
               {/* Status Ribbon */}
               <div className="absolute top-4 left-4 right-4 bg-slate-950/90 backdrop-blur-md p-3 rounded-2xl border border-indigo-700/60 text-xs flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
-                  <span className="font-bold text-slate-100">Global Integrated Advisory Network</span>
+                  <span className="font-bold text-slate-100">President & CEO - Oskayi Consult</span>
                 </div>
                 <span className="text-amber-300 font-mono text-[10px] uppercase bg-amber-400/20 px-2.5 py-0.5 rounded-full font-bold border border-amber-400/40">
-                  Act 151
+                  Global Leadership
                 </span>
               </div>
 
-              {/* Overlay Stat Card */}
-              <div className="absolute bottom-4 left-4 right-4 bg-slate-950/95 backdrop-blur-md p-4 rounded-2xl border border-indigo-800 text-xs space-y-2 shadow-xl">
-                <div className="flex items-center justify-between text-white font-bold border-b border-indigo-800/80 pb-2">
-                  <span className="flex items-center gap-1.5">
-                    <Building2 className="w-4 h-4 text-amber-300" />
-                    Official ISIC Classification
+              {/* President & CEO Opening Message Overlay Box */}
+              <div className="absolute bottom-4 left-4 right-4 bg-slate-950/95 backdrop-blur-md p-4 rounded-2xl border border-amber-400/50 text-xs space-y-2.5 shadow-2xl">
+                <div className="flex items-center justify-between text-white font-bold border-b border-slate-800 pb-2">
+                  <span className="flex items-center gap-1.5 text-amber-300 font-sans text-xs">
+                    <Award className="w-4 h-4 text-amber-400" />
+                    Message from the President & CEO
                   </span>
-                  <span className="text-[10px] bg-amber-400 text-indigo-950 font-bold px-2 py-0.5 rounded font-mono">
-                    8299
+                  <span className="text-[10px] bg-amber-400 text-indigo-950 font-extrabold px-2 py-0.5 rounded font-mono uppercase">
+                    Executive Statement
                   </span>
                 </div>
-                <p className="text-[11px] text-slate-300 leading-relaxed font-sans">
-                  Specialized Information & Communication Technology, Project Development & Financial Consultancy Services.
+
+                <p className="text-[11px] text-slate-200 leading-relaxed font-sans italic">
+                  "At Oskayi Consult, we empower African and global clients with credit facilities from $100 to Billions, custom industry software, and project financing tailored to your exact industry."
                 </p>
+
+                <div className="pt-1 flex items-center justify-between">
+                  <span className="text-[10px] text-slate-400 font-semibold">Listowel Sarsah Adentwi-Edzii</span>
+                  <button
+                    onClick={() => {
+                      const element = document.getElementById('ceo-message');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                      } else {
+                        onNavigateSection('ceo-message');
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-indigo-950 font-extrabold text-[11px] uppercase tracking-wider transition-all shadow-md group/btn"
+                  >
+                    <span>Read Full Message</span>
+                    <ChevronRight className="w-3.5 h-3.5 group-hover/btn:translate-x-0.5 transition-transform" />
+                  </button>
+                </div>
               </div>
 
             </div>
