@@ -125,6 +125,40 @@ export const SERVICE_PILLARS: ServicePillar[] = [
     targetAudience: "Government Agencies, Enterprises & Medium-to-Large Corporations",
     partnerDeliveryModel: "Delivered directly by Oskayi Consult senior consultants & tech partners",
     status: "Active"
+  },
+  {
+    id: "cross-border-payment-orchestration",
+    title: "Cross-Border Payment & Mobile Money Orchestration",
+    category: "Fintech",
+    badge: "Unified African & Global Rails",
+    summary: "Unified disbursement and collection across all major African mobile networks, banking rails, and instant cross-border corridors.",
+    description: "Direct-to-wallet and direct-to-bank settlement rails across 35+ African markets and global liquidity hubs. Oskayi Consult orchestrates instant collections, automated payroll, supplier payouts, and multi-currency treasury aggregation without vendor fragmentation.",
+    keyCapabilities: [
+      "Coverage Across 35+ African Markets & Global Financial Centers",
+      "Mobile Money Aggregation (MTN, Telecel, M-Pesa, AirtelTigo, Orange Money)",
+      "Automated Payroll, Supplier Payouts & Bulk Merchant Disbursals",
+      "Multi-Currency Settlement (GHS, NGN, KES, ZAR, USD, EUR, GBP)"
+    ],
+    targetAudience: "Commercial Banks, Telcos, E-Commerce, Corporations & DFIs",
+    partnerDeliveryModel: "Delivered via Integrated Regulated Financial & Telco Partners",
+    status: "Active"
+  },
+  {
+    id: "institutional-due-diligence",
+    title: "Institutional Due Diligence, Compliance & RegTech",
+    category: "ICT & Advisory",
+    badge: "RegTech & Risk Auditing",
+    summary: "End-to-end KYC, AML, audit, and regulatory reporting frameworks for financial institutions, corporations, and public bodies.",
+    description: "Providing robust regulatory compliance ledgers, automated identity verification, transaction monitoring, and risk management architecture aligned with Bank of Ghana, Act 151, FATF, and international standards.",
+    keyCapabilities: [
+      "Automated KYC / AML Onboarding & Real-time Sanction Screening",
+      "Regulatory Compliance Audit Trails & Instant Reporting Engines",
+      "ISO 27001 & Cybersecurity Risk Resilience Assessments",
+      "Institutional Due Diligence for Cross-Border Capital Flows"
+    ],
+    targetAudience: "Financial Institutions, Regulators, Fintechs & Sovereign Entities",
+    partnerDeliveryModel: "Delivered directly by Oskayi Consult Senior Advisory Team & Tech Partners",
+    status: "Active"
   }
 ];
 

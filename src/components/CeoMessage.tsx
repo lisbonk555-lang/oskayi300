@@ -198,8 +198,8 @@ export const CeoMessage: React.FC<CeoMessageProps> = ({
                   </div>
                 </div>
 
-                <p className="pt-2 text-slate-300 text-xs sm:text-sm">
-                  "Whether you require a $100 instant micro-loan, an exclusive home or auto insurance policy, custom fintech software, or a multi-billion dollar project loan, Oskayi Consult is built to deliver with speed, trust, and excellence."
+                <p className="pt-2 text-slate-300 text-xs sm:text-sm font-sans leading-relaxed">
+                  "Whether you require a $100 instant micro-loan, an exclusive home or auto insurance policy, custom fintech software, or a multi-billion dollar project loan, Oskayi Consult is built to deliver with speed, trust, and excellence. <strong className="text-amber-300 font-semibold">Our role is to de-risk and accelerate. We bring the capital, the coverage, and the technology. You bring the mandate.</strong>"
                 </p>
               </div>
             </div>

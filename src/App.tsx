@@ -5,6 +5,8 @@ import { ShowcaseCarousel } from './components/ShowcaseCarousel';
 import { ServicesPillars } from './components/ServicesPillars';
 import { CeoMessage } from './components/CeoMessage';
 import { CompanyOverview } from './components/CompanyOverview';
+import { IntegratedGlobalCapabilities } from './components/IntegratedGlobalCapabilities';
+import { WhyInstitutionsChoose } from './components/WhyInstitutionsChoose';
 import { ComplianceModal } from './components/ComplianceModal';
 import { InquiryForm } from './components/InquiryForm';
 import { ContactAndLocation } from './components/ContactAndLocation';
@@ -71,6 +73,16 @@ export default function App() {
         {/* Statutory Profile & Mission */}
         <CompanyOverview
           onOpenVerification={() => setIsVerificationModalOpen(true)}
+        />
+
+        {/* Our Integrated Global Capabilities */}
+        <IntegratedGlobalCapabilities
+          onSelectServiceForInquiry={handleSelectServiceForInquiry}
+        />
+
+        {/* Why Institutions Choose Oskayi Consult */}
+        <WhyInstitutionsChoose
+          onNavigateContact={() => handleNavigateSection('contact')}
         />
 
         {/* Executive Consultation & Inquiry Form */}

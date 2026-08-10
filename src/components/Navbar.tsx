@@ -18,6 +18,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'ceo-message', label: 'President & CEO Vision' },
     { id: 'showcase-slides', label: '10 Showcase Slides' },
     { id: 'services', label: 'Solutions & Services' },
+    { id: 'capabilities', label: 'Global Capabilities' },
+    { id: 'why-oskayi', label: 'Why Oskayi' },
     { id: 'overview', label: 'About Oskayi' },
     { id: 'contact', label: 'Contact Us' }
   ];

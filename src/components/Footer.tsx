@@ -140,19 +140,34 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
         </div>
 
         {/* Bottom Statutory Line */}
-        <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-300">
-          <div>
-            © {new Date().getFullYear()} OSKAYI CONSULT. All Rights Reserved. Republic of Ghana Act 151.
+        <div className="pt-8 border-t border-slate-900 space-y-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-300">
+            <div>
+              © {new Date().getFullYear()} OSKAYI CONSULT. All Rights Reserved. Republic of Ghana Act 151.
+            </div>
+
+            <div className="flex items-center gap-4 text-slate-300">
+              <span>Reg No: {OFFICIAL_COMPANY_INFO.registrationNumber}</span>
+              <span>•</span>
+              <span>TIN: {OFFICIAL_COMPANY_INFO.tin}</span>
+              <span>•</span>
+              <button onClick={onOpenVerification} className="text-amber-400 hover:underline">
+                Official Registry Verification
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 text-slate-300">
-            <span>Reg No: {OFFICIAL_COMPANY_INFO.registrationNumber}</span>
-            <span>•</span>
-            <span>TIN: {OFFICIAL_COMPANY_INFO.tin}</span>
-            <span>•</span>
-            <button onClick={onOpenVerification} className="text-amber-400 hover:underline">
-              Official Registry Verification
-            </button>
+          {/* Institutional Serving & Coverage Trust Badges */}
+          <div className="pt-4 border-t border-slate-900/80 grid sm:grid-cols-2 gap-3 text-[11px] font-mono text-slate-400">
+            <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-2">
+              <span className="text-amber-400 font-bold shrink-0">Serving:</span>
+              <span className="text-slate-300 truncate">Governments • Central Banks • Commercial Banks • Telcos • DFIs • Enterprises • Individuals</span>
+            </div>
+
+            <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-2">
+              <span className="text-sky-400 font-bold shrink-0">Coverage:</span>
+              <span className="text-slate-300 truncate">West Africa • East Africa • Southern Africa • Global Partner Network</span>
+            </div>
           </div>
         </div>
 
