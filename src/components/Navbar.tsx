@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
-    { id: 'showcase-slides', label: '20 Showcase Slides' },
+    { id: 'showcase-slides', label: '10 Showcase Slides' },
     { id: 'services', label: 'Solutions & Services' },
     { id: 'ceo-message', label: 'CEO Message' },
     { id: 'calculator', label: 'Project Finance' },

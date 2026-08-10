@@ -86,7 +86,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
                 className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-indigo-950 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-xl shadow-amber-400/20 transition-all flex items-center justify-center gap-2 group"
               >
                 <Sparkles className="w-4 h-4 text-indigo-950" />
-                <span>Explore 20 Interactive Showcase Slides</span>
+                <span>Explore 10 Interactive Showcase Slides</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
