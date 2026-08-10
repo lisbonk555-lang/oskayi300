@@ -52,11 +52,19 @@ export const CeoMessage: React.FC<CeoMessageProps> = ({
                 </span>
               </div>
 
-              {/* Founder Details */}
-              <div className="space-y-3">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-300 via-amber-400 to-indigo-600 p-0.5 shadow-lg">
-                  <div className="w-full h-full bg-indigo-950 rounded-[14px] flex items-center justify-center font-serif font-extrabold text-amber-300 text-3xl border border-indigo-500/30">
-                    LA
+              {/* Founder Details & Portrait */}
+              <div className="space-y-4">
+                <div className="relative group rounded-2xl overflow-hidden border-2 border-amber-400/80 shadow-2xl bg-indigo-900 w-full sm:w-72 h-64 sm:h-72">
+                  <img
+                    src="https://i.postimg.cc/sgnfk289/IMG-20260809-WA0040.jpg"
+                    alt="Listowel Sarsah Adentwi-Edzii - Founder & CEO of Oskayi Consult"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-indigo-950 via-indigo-950/20 to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 bg-indigo-950/90 backdrop-blur-md px-3 py-1.5 rounded-xl border border-indigo-700/60 text-[11px] font-mono font-bold text-amber-300 flex items-center justify-between">
+                    <span>Founder & CEO</span>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   </div>
                 </div>
 
