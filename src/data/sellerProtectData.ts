@@ -1,7 +1,7 @@
 import { Merchant, Product, MarketplaceConfig } from '../types/sellerProtect';
 
 export const MARKETPLACE_CONFIG: MarketplaceConfig = {
-  minimumListingPriceGHS: 60,
+  minimumListingPriceGHS: 20,
   defaultPlatformFeePct: 2.5,
   defaultProtectionRatePct: 3.5,
   supportedCurrencies: ['GHS', 'USD', 'NGN', 'KES'],
@@ -20,6 +20,21 @@ export const MARKETPLACE_CONFIG: MarketplaceConfig = {
     'Industrial & Agro Equipment',
     'Other'
   ]
+};
+
+export const PRESET_CATEGORY_IMAGES: Record<string, string> = {
+  'Electronics': 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80',
+  'Fashion': 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=800&auto=format&fit=crop&q=80',
+  'Beauty': 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
+  'Food': 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop&q=80',
+  'Home': 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=800&auto=format&fit=crop&q=80',
+  'Automotive': 'https://images.unsplash.com/photo-1486006920555-c77dce18193b?w=800&auto=format&fit=crop&q=80',
+  'Health & Wellness': 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&auto=format&fit=crop&q=80',
+  'Digital Products': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80',
+  'Professional Services': 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=80',
+  'Solar & Clean Energy Systems': 'https://images.unsplash.com/photo-1509391365360-2e959784a276?w=800&auto=format&fit=crop&q=80',
+  'Industrial & Agro Equipment': 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=800&auto=format&fit=crop&q=80',
+  'Other': 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80'
 };
 
 export const INITIAL_MERCHANTS: Merchant[] = [

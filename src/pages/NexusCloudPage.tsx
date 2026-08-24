@@ -23,7 +23,8 @@ import {
   Award,
   ChevronRight,
   RefreshCw,
-  Home
+  Home,
+  Code2
 } from 'lucide-react';
 import { 
   NEXUS_CORE_METRICS, 
@@ -33,6 +34,7 @@ import {
   NEXUS_ROADMAP 
 } from '../data/nexusData';
 import { GTBankLogo, StandardCharteredLogo, InstitutionalBankersCard } from '../components/BankerLogos';
+import { FinastraLogo } from '../components/FinastraLogo';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
 
 interface NexusCloudPageProps {
@@ -72,36 +74,39 @@ export const NexusCloudPage: React.FC<NexusCloudPageProps> = ({
   const calculatedAvgDailyMovement = (calculatedPortfolioBillions / (2 * 365)).toFixed(2);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-amber-400 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-purple-500 selection:text-white">
       
       {/* Top Breadcrumb & Executive Identity Bar */}
-      <div className="bg-indigo-950/90 border-b border-indigo-800/60 sticky top-0 z-30 backdrop-blur-md px-4 sm:px-8 py-3">
+      <div className="bg-purple-950/90 border-b border-purple-800/60 sticky top-0 z-30 backdrop-blur-md px-4 sm:px-8 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <button
               onClick={onNavigateHome}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-indigo-700/60 text-xs font-bold text-slate-200 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-purple-700/60 text-xs font-bold text-slate-200 transition-colors"
             >
-              <Home className="w-3.5 h-3.5 text-amber-400" />
+              <Home className="w-3.5 h-3.5 text-purple-400" />
               <span>Back to Home</span>
             </button>
 
             <span className="text-slate-500 text-xs hidden sm:inline">/</span>
             
-            <span className="text-amber-300 text-xs font-mono font-bold uppercase tracking-wider hidden sm:inline">
-              NEXUS CLOUD MASTER BASE
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-purple-300 text-xs font-mono font-bold uppercase tracking-wider hidden sm:inline">
+                NEXUS CLOUD — The OS of Global Finance
+              </span>
+              <FinastraLogo variant="badge" className="hidden md:inline-flex scale-90" />
+            </div>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2 text-xs font-mono text-slate-300">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>Core Rails: Online</span>
+              <span>Finastra Core: 200+ APIs Active</span>
             </div>
 
             <button
               onClick={() => onInitiateInquiry('NEXUS CLOUD Platform Integration')}
-              className="px-4 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-indigo-950 text-xs font-extrabold uppercase tracking-wider transition-all shadow-md shadow-amber-400/20"
+              className="px-4 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-extrabold uppercase tracking-wider transition-all shadow-md shadow-purple-900/40"
             >
               Schedule Institutional Integration
             </button>
@@ -110,19 +115,20 @@ export const NexusCloudPage: React.FC<NexusCloudPageProps> = ({
       </div>
 
       {/* HERO SECTION */}
-      <section className="relative pt-16 pb-20 px-4 sm:px-8 border-b border-indigo-900/60 overflow-hidden bg-gradient-to-b from-slate-950 via-indigo-950/40 to-slate-950">
+      <section className="relative pt-16 pb-20 px-4 sm:px-8 border-b border-purple-900/60 overflow-hidden bg-gradient-to-b from-slate-950 via-purple-950/40 to-slate-950">
         
         {/* Glow Spheres */}
-        <div className="absolute top-10 right-1/4 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-10 right-1/4 w-[500px] h-[500px] bg-purple-500/15 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute top-1/2 left-10 w-[500px] h-[500px] bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto space-y-10 relative z-10">
           
           {/* Top Capacity Badge */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-400/15 text-amber-300 text-xs font-bold uppercase tracking-widest border border-amber-400/30 shadow-xl">
-              <Cpu className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '8s' }} />
-              <span>Capacity: $1T+/day movement | $1.93T under management</span>
+            <FinastraLogo variant="badge" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-400/15 text-purple-300 text-xs font-bold uppercase tracking-widest border border-purple-400/30 shadow-xl">
+              <Cpu className="w-4 h-4 text-purple-400 animate-spin" style={{ animationDuration: '8s' }} />
+              <span>70% World Syndicated Loans Powered | 200+ Finastra APIs</span>
             </div>
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-mono font-bold border border-emerald-500/30">
@@ -132,64 +138,87 @@ export const NexusCloudPage: React.FC<NexusCloudPageProps> = ({
 
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-500/15 text-sky-300 text-xs font-mono font-bold border border-sky-500/30">
               <Globe className="w-3.5 h-3.5 text-sky-400" />
-              <span>5,000+ Global Banks</span>
+              <span>Ghana → Africa → Global</span>
             </div>
           </div>
 
           {/* Hero Headlines */}
           <div className="space-y-6 max-w-4xl">
-            <h1 className="font-sans text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
-              NEXUS CLOUD <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500">
-                Master Base for All Future Finance
-              </span>
-            </h1>
+            <div className="space-y-2">
+              <h1 className="font-sans text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+                NEXUS CLOUD
+              </h1>
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-purple-400 to-amber-300">
+                The OS of Global Finance
+              </div>
+            </div>
+
+            <p className="text-amber-300 font-mono text-base sm:text-lg font-bold">
+              The Operating System Powering Syndicated Lending Across Ghana, Africa & The World
+            </p>
 
             <p className="text-slate-200 text-lg sm:text-xl leading-relaxed font-sans font-medium">
-              Not a project. The platform that builds projects. Built on 15+ global banking rails with 100% insured settlement.
+              NEXUS CLOUD is not a lending platform. It is the Operating System for global syndicated finance. Built on Finastra's world-leading infrastructure that powers 70% of the world's syndicated loans, NEXUS unifies origination, syndication, payments, and compliance into one end-to-end API.
             </p>
 
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-              Oskayi Consult's proprietary master base provides the intelligence layer that syndicates multi-billion dollar municipal and sovereign facilities, wraps them in zero-risk institutional reinsurance, and releases tranches via cryptographic milestone verification.
-            </p>
+            {/* Built For Box */}
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-500/30 space-y-2">
+              <span className="text-xs font-mono uppercase tracking-widest text-purple-300 font-bold block">
+                Architected & Built For:
+              </span>
+              <div className="grid sm:grid-cols-3 gap-3 text-xs">
+                <div className="flex items-center gap-2 text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0" />
+                  <span>Ghana's Housing Finance Revolution</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0" />
+                  <span>Africa's Commercial Lending Gap</span>
+                </div>
+                <div className="flex items-center gap-2 text-slate-200">
+                  <CheckCircle2 className="w-4 h-4 text-purple-400 shrink-0" />
+                  <span>Global Syndicated Loan Market ($5.4T)</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Quick Stats Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-4">
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-indigo-900/80 space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Capacity</span>
-              <div className="font-sans font-extrabold text-lg text-amber-300">{NEXUS_CORE_METRICS.capacity}</div>
-              <span className="text-[10px] text-slate-500 block">Movement Engine</span>
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-900/80 space-y-1">
+              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Syndicated Power</span>
+              <div className="font-sans font-extrabold text-lg text-purple-300">70%</div>
+              <span className="text-[10px] text-slate-500 block">World Syndicated Loans</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-indigo-900/80 space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Pipeline</span>
-              <div className="font-sans font-extrabold text-lg text-white">{NEXUS_CORE_METRICS.underManagement}</div>
-              <span className="text-[10px] text-slate-500 block">193 Smart Cities</span>
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-900/80 space-y-1">
+              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Global Market</span>
+              <div className="font-sans font-extrabold text-lg text-white">$5.4T</div>
+              <span className="text-[10px] text-slate-500 block">Market Capacity</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-indigo-900/80 space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Interconnected</span>
-              <div className="font-sans font-extrabold text-lg text-sky-300">{NEXUS_CORE_METRICS.connectedBanks}</div>
-              <span className="text-[10px] text-slate-500 block">Global Banks</span>
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-900/80 space-y-1">
+              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Finastra APIs</span>
+              <div className="font-sans font-extrabold text-lg text-sky-300">200+</div>
+              <span className="text-[10px] text-slate-500 block">Active Endpoints</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-indigo-900/80 space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Risk Wrap</span>
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-900/80 space-y-1">
+              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Risk Shield</span>
               <div className="font-sans font-extrabold text-lg text-emerald-400">0% Bank Risk</div>
               <span className="text-[10px] text-slate-500 block">100% Reinsured</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-indigo-900/80 space-y-1">
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-900/80 space-y-1">
               <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Coverage</span>
-              <div className="font-sans font-extrabold text-lg text-purple-300">{NEXUS_CORE_METRICS.countriesServed}</div>
-              <span className="text-[10px] text-slate-500 block">35+ African Mkts</span>
+              <div className="font-sans font-extrabold text-lg text-amber-300">180+</div>
+              <span className="text-[10px] text-slate-500 block">Countries Active</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-900/90 border border-indigo-900/80 space-y-1">
-              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Redundancy</span>
-              <div className="font-sans font-extrabold text-lg text-amber-400">15 Rails</div>
-              <span className="text-[10px] text-slate-500 block">Auto Failover</span>
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-purple-900/80 space-y-1">
+              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">Finastra Fusion</span>
+              <div className="font-sans font-extrabold text-lg text-purple-400">Loan IQ</div>
+              <span className="text-[10px] text-slate-500 block">& LenderComm</span>
             </div>
           </div>
 
@@ -197,7 +226,7 @@ export const NexusCloudPage: React.FC<NexusCloudPageProps> = ({
           <div className="flex flex-wrap items-center gap-4 pt-2">
             <a
               href="#architecture-stack"
-              className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-indigo-950 font-extrabold text-xs uppercase tracking-wider transition-all shadow-xl shadow-amber-400/20 flex items-center gap-2"
+              className="px-6 py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-xl shadow-purple-900/30 flex items-center gap-2"
             >
               <span>Explore 3-Layer Architecture</span>
               <ArrowRight className="w-4 h-4" />
@@ -205,17 +234,17 @@ export const NexusCloudPage: React.FC<NexusCloudPageProps> = ({
 
             <a
               href="#api-flow"
-              className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-indigo-700 text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2"
+              className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-purple-500/40 text-purple-200 font-bold text-xs uppercase tracking-wider transition-all flex items-center gap-2"
             >
-              <Terminal className="w-4 h-4 text-amber-400" />
-              <span>Inspect 4 API Flow</span>
+              <Terminal className="w-4 h-4 text-purple-400" />
+              <span>Inspect Finastra APIs (200+)</span>
             </a>
 
             <button
-              onClick={() => onInitiateInquiry('NEXUS CLOUD Master Base')}
-              className="px-6 py-3.5 rounded-xl bg-indigo-900/80 hover:bg-indigo-800 border border-indigo-600 text-amber-300 font-bold text-xs uppercase tracking-wider transition-all"
+              onClick={() => onInitiateInquiry('NEXUS CLOUD - The OS of Global Finance Mandate')}
+              className="px-6 py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-indigo-950 font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-amber-400/20"
             >
-              Request Institutional Onboarding
+              Request Global Access
             </button>
           </div>
 
@@ -390,17 +419,17 @@ export const NexusCloudPage: React.FC<NexusCloudPageProps> = ({
               </div>
             </div>
 
-            {/* Right: NEXUS CLOUD Master Base (Originator + Insurer + Manager) */}
-            <div className="lg:col-span-7 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-indigo-950 via-slate-950 to-indigo-950 border-2 border-amber-400/80 shadow-2xl shadow-amber-400/10 space-y-6 flex flex-col justify-between relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-96 h-96 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
+            {/* Right: NEXUS CLOUD The OS of Global Finance (Originator + Insurer + Manager) */}
+            <div className="lg:col-span-7 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-purple-950 via-slate-950 to-indigo-950 border-2 border-purple-400/80 shadow-2xl shadow-purple-950/40 space-y-6 flex flex-col justify-between relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-96 h-96 bg-purple-400/10 rounded-full blur-3xl pointer-events-none" />
 
               <div className="space-y-4 relative z-10">
-                <div className="flex items-center justify-between border-b border-indigo-800/80 pb-3">
-                  <span className="text-xs font-mono font-bold text-amber-300 uppercase">
-                    Oskayi Consult Master Architecture
+                <div className="flex items-center justify-between border-b border-purple-800/80 pb-3">
+                  <span className="text-xs font-mono font-bold text-purple-300 uppercase">
+                    Oskayi Consult & Finastra Fusion Architecture
                   </span>
-                  <span className="px-3 py-0.5 rounded-full bg-amber-400 text-indigo-950 text-xs font-mono font-extrabold">
-                    NEXUS CLOUD MASTER BASE
+                  <span className="px-3 py-0.5 rounded-full bg-purple-600 text-white text-xs font-mono font-extrabold shadow">
+                    NEXUS CLOUD — THE OS OF GLOBAL FINANCE
                   </span>
                 </div>
 

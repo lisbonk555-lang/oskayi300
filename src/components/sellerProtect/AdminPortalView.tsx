@@ -30,20 +30,56 @@ export const AdminPortalView: React.FC<AdminPortalViewProps> = ({
   const [resolutionNote, setResolutionNote] = useState<string>('Claim verified by underwriter. Full cargo replacement authorized.');
   const [isResolving, setIsResolving] = useState<boolean>(false);
 
-  // Fetch admin metrics and logs
+  // Ping Test States
+  const [pingingPaystack, setPingingPaystack] = useState<boolean>(false);
+  const [paystackPingResult, setPaystackPingResult] = useState<any>(null);
+  const [pingingCuracel, setPingingCuracel] = useState<boolean>(false);
+  const [curacelPingResult, setCuracelPingResult] = useState<any>(null);
+
+  // Webhook Events
+  const [webhookEvents, setWebhookEvents] = useState<any[]>([]);
+  const [loadingWebhooks, setLoadingWebhooks] = useState<boolean>(false);
+
+  // Fetch admin metrics, logs, and webhook events
   const loadAdminData = async () => {
     setLoadingMetrics(true);
     try {
-      const [mRes, logsRes] = await Promise.all([
+      const [mRes, logsRes, whRes] = await Promise.all([
         sellerProtectApi.getAdminMetrics(),
-        sellerProtectApi.getAuditLogs()
+        sellerProtectApi.getAuditLogs(),
+        sellerProtectApi.getWebhookEvents()
       ]);
       setMetrics(mRes);
       setAuditLogs(logsRes.logs || []);
+      setWebhookEvents(whRes.events || []);
     } catch (err) {
       console.error("Failed to load admin data", err);
     } finally {
       setLoadingMetrics(false);
+    }
+  };
+
+  const handlePingPayment = async () => {
+    setPingingPaystack(true);
+    try {
+      const res = await sellerProtectApi.pingPaymentGateway();
+      setPaystackPingResult(res);
+    } catch (err: any) {
+      setPaystackPingResult({ success: false, message: err.message, latencyMs: 0 });
+    } finally {
+      setPingingPaystack(false);
+    }
+  };
+
+  const handlePingInsurance = async () => {
+    setPingingCuracel(true);
+    try {
+      const res = await sellerProtectApi.pingInsuranceGateway();
+      setCuracelPingResult(res);
+    } catch (err: any) {
+      setCuracelPingResult({ success: false, message: err.message, latencyMs: 0 });
+    } finally {
+      setPingingCuracel(false);
     }
   };
 
@@ -361,40 +397,133 @@ export const AdminPortalView: React.FC<AdminPortalViewProps> = ({
         </div>
       )}
 
-      {/* SUBTAB 5: INTEGRATION DIAGNOSTICS */}
+      {/* SUBTAB 5: INTEGRATION DIAGNOSTICS & WEBHOOK MONITOR */}
       {adminSubTab === 'integrations' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
-          
-          {/* Paystack Card */}
-          <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <span className="font-bold text-white text-sm">Paystack Gateway</span>
-              <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold">
-                {health?.paystack?.mode || 'DEVELOPMENT_SANDBOX'}
-              </span>
+        <div className="space-y-6 font-mono text-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Paystack Card */}
+            <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="font-bold text-white text-sm">Paystack Gateway (GHS)</span>
+                <span className="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/30 text-emerald-300 font-bold">
+                  {health?.payment?.mode || health?.paystack?.mode || 'DEVELOPMENT_SANDBOX'}
+                </span>
+              </div>
+              <div className="space-y-1.5 text-slate-300">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Live Status:</span>
+                  <span className="text-white font-bold">{health?.payment?.status === 'CONFIGURED' ? 'Production Live' : 'Sandbox Active'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Public Key:</span>
+                  <span className="text-slate-200">{health?.payment?.publicKeyConfigured ? 'pk_live_*** (Injected)' : 'pk_test (Injected)'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Secret Key:</span>
+                  <span className="text-slate-200">{health?.payment?.secretKeyConfigured ? 'sk_live_*** (Protected)' : 'Not set in .env'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Webhook Handler:</span>
+                  <span className="text-amber-400">/api/webhooks/payment</span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+                <button
+                  onClick={handlePingPayment}
+                  disabled={pingingPaystack}
+                  className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold disabled:opacity-50"
+                >
+                  {pingingPaystack ? 'Pinging Gateway...' : 'Ping Gateway API'}
+                </button>
+                {paystackPingResult && (
+                  <span className="text-[11px] text-emerald-400">
+                    {paystackPingResult.status} ({paystackPingResult.latencyMs}ms)
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="space-y-1 text-slate-300">
-              <div>Configured: {health?.paystack?.configured ? 'YES (Live Production)' : 'NO (Sandbox Fallback)'}</div>
-              <div>Public Key: {health?.paystack?.publicKeyConfigured ? 'Injected' : 'Default pk_test'}</div>
-              <div>Secret Key: {health?.paystack?.secretKeyConfigured ? 'Injected (sk_***)' : 'Not set in environment'}</div>
+
+            {/* Curacel Grow Card */}
+            <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <span className="font-bold text-white text-sm">Curacel Grow Underwriting</span>
+                <span className="px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/30 text-emerald-300 font-bold">
+                  {health?.insurance?.mode || health?.curacel?.mode || 'DEVELOPMENT_SANDBOX'}
+                </span>
+              </div>
+              <div className="space-y-1.5 text-slate-300">
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Underwriting Desk:</span>
+                  <span className="text-white font-bold">{health?.insurance?.status === 'CONFIGURED' ? 'Production Live' : 'Embedded Sandbox'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Client ID:</span>
+                  <span className="text-slate-200">{health?.insurance?.clientIdConfigured ? 'Injected' : 'Not set in .env'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Client Secret:</span>
+                  <span className="text-slate-200">{health?.insurance?.clientSecretConfigured ? 'Injected (Protected)' : 'Not set in .env'}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-slate-400">Webhook Handler:</span>
+                  <span className="text-amber-400">/api/webhooks/insurance</span>
+                </div>
+              </div>
+
+              <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
+                <button
+                  onClick={handlePingInsurance}
+                  disabled={pingingCuracel}
+                  className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold disabled:opacity-50"
+                >
+                  {pingingCuracel ? 'Pinging Provider...' : 'Ping Insurance API'}
+                </button>
+                {curacelPingResult && (
+                  <span className="text-[11px] text-emerald-400">
+                    {curacelPingResult.status} ({curacelPingResult.latencyMs}ms)
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Curacel Grow Card */}
+          {/* Webhook Events Monitor */}
           <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
             <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-              <span className="font-bold text-white text-sm">Curacel Grow Insurance</span>
-              <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 font-bold">
-                {health?.curacel?.mode || 'DEVELOPMENT_SANDBOX'}
+              <span className="font-bold text-white text-sm">Idempotent Webhook Ingestion Log</span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300">
+                {webhookEvents.length} events received
               </span>
             </div>
-            <div className="space-y-1 text-slate-300">
-              <div>Configured: {health?.curacel?.configured ? 'YES (Live Underwriter)' : 'NO (Embedded Sandbox)'}</div>
-              <div>Client ID: {health?.curacel?.clientIdConfigured ? 'Injected' : 'Not set in environment'}</div>
-              <div>Client Secret: {health?.curacel?.clientSecretConfigured ? 'Injected' : 'Not set in environment'}</div>
-            </div>
-          </div>
 
+            {webhookEvents.length === 0 ? (
+              <div className="text-center py-6 text-slate-500">
+                No external webhook callbacks received yet. Webhooks are ingested idempotently with SHA-512 signature validation.
+              </div>
+            ) : (
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {webhookEvents.map((evt) => (
+                  <div
+                    key={evt.id}
+                    className="p-2.5 rounded-xl bg-slate-950 border border-slate-800/80 flex items-center justify-between"
+                  >
+                    <div>
+                      <div className="font-bold text-white">
+                        <span className="text-amber-400">[{evt.provider}]</span> {evt.eventType}
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-mono">
+                        Ref: {evt.eventReference} • Hash: {evt.payloadHash?.slice(0, 12)}...
+                      </div>
+                    </div>
+                    <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 font-bold">
+                      {evt.processingStatus}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

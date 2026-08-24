@@ -7,14 +7,15 @@ export type ProtectionEligibility = 'ELIGIBLE' | 'INELIGIBLE' | 'REQUIRES_INSPEC
 export type MerchantStatus = 'PENDING_REVIEW' | 'PENDING' | 'UNDER_REVIEW' | 'APPROVED' | 'SUSPENDED' | 'REJECTED';
 
 export type OrderStatus = 
-  | 'PENDING_PAYMENT' 
+  | 'CREATED'
+  | 'PAYMENT_PENDING' 
   | 'PAID' 
   | 'PROCESSING' 
   | 'SHIPPED' 
   | 'DELIVERED' 
   | 'COMPLETED' 
   | 'CANCELLED' 
-  | 'REFUND_REQUESTED' 
+  | 'REFUND_PENDING'
   | 'REFUNDED' 
   | 'DISPUTED' 
   | 'CLAIM_OPEN' 
@@ -31,6 +32,13 @@ export type PaymentStatus =
   | 'PARTIALLY_REFUNDED';
 
 export type ProtectionStatus = 
+  | 'PROTECTION_REQUESTED'
+  | 'POLICY_PENDING'
+  | 'ACTIVE'
+  | 'EXPIRED'
+  | 'CANCELLED'
+  | 'CLAIM_IN_PROGRESS'
+  | 'CLAIM_RESOLVED'
   | 'ELIGIBILITY_CHECK' 
   | 'QUOTE_REQUESTED' 
   | 'QUOTE_RECEIVED' 
@@ -41,8 +49,7 @@ export type ProtectionStatus =
   | 'POLICY_FAILED' 
   | 'POLICY_CANCELLED' 
   | 'CLAIM_OPEN' 
-  | 'CLAIM_PROCESSING' 
-  | 'CLAIM_RESOLVED';
+  | 'CLAIM_PROCESSING';
 
 export type ClaimType = 
   | 'ITEM_NOT_RECEIVED' 
@@ -55,18 +62,88 @@ export type ClaimType =
 export type ClaimStatus = 
   | 'DRAFT' 
   | 'SUBMITTED' 
-  | 'ELIGIBILITY_CHECK' 
+  | 'PROCESSING'
   | 'EVIDENCE_REQUIRED' 
+  | 'OFFERED'
+  | 'APPROVED' 
+  | 'REJECTED' 
+  | 'SETTLED' 
+  | 'CLOSED'
+  | 'ELIGIBILITY_CHECK' 
   | 'SENT_TO_PROVIDER' 
   | 'UNDER_REVIEW' 
-  | 'APPROVED' 
   | 'PARTIALLY_APPROVED' 
-  | 'REJECTED' 
-  | 'SETTLEMENT_PENDING' 
-  | 'SETTLED' 
-  | 'CLOSED';
+  | 'SETTLEMENT_PENDING';
 
 export type RiskLevel = 'LOW_RISK' | 'MEDIUM_RISK' | 'HIGH_RISK';
+
+export interface SettlementAccount {
+  type: 'MOBILE_MONEY' | 'BANK_ACCOUNT';
+  networkOrBank: string; // e.g. MTN MoMo, Telecel Cash, AT Money, GCB, Ecobank
+  accountNumber: string;
+  accountName: string;
+}
+
+export interface DischargeVoucher {
+  id: string;
+  claimId: string;
+  voucherNumber: string;
+  amountRequested: number;
+  amountOffered: number;
+  currency: string;
+  status: 'PENDING_BUYER_ACCEPTANCE' | 'ACCEPTED' | 'REJECTED' | 'DISBURSED';
+  issuedAt: string;
+  underwriterTerms: string;
+  responseNote?: string;
+}
+
+export interface WebhookEventRecord {
+  id: string;
+  provider: 'PAYSTACK' | 'CURACEL' | 'DELIVERY';
+  eventType: string;
+  eventReference: string;
+  payloadHash: string;
+  receivedAt: string;
+  processedAt?: string;
+  processingStatus: 'RECEIVED' | 'PROCESSED' | 'FAILED' | 'DUPLICATE_IGNORED';
+  errorMessage?: string;
+  rawSummary?: string;
+}
+
+export interface InsuranceProduct {
+  providerProductCode: string;
+  productName: string;
+  productType: string;
+  coverageDescription: string;
+  premiumRatePct: number;
+  currency: string;
+  minimumAssetValueGHS: number;
+  maximumAssetValueGHS: number;
+  terms: string;
+  exclusions: string[];
+  eligibility: string;
+  insurer: string;
+  status: 'ACTIVE' | 'INACTIVE';
+  lastSyncedAt: string;
+}
+
+export interface MerchantLedger {
+  merchantId: string;
+  currency: string;
+  grossSalesPesewas: number;
+  grossSalesGHS: number;
+  refundsPesewas: number;
+  refundsGHS: number;
+  marketplaceFeesPesewas: number;
+  marketplaceFeesGHS: number;
+  netMerchantPesewas: number;
+  netMerchantGHS: number;
+  pendingPayoutPesewas: number;
+  pendingPayoutGHS: number;
+  paidPayoutPesewas: number;
+  paidPayoutGHS: number;
+  verifiedOrdersCount: number;
+}
 
 export interface Merchant {
   id: string;
@@ -88,6 +165,7 @@ export interface Merchant {
   createdAt: string;
   rating?: number;
   totalSalesCount?: number;
+  ledger?: MerchantLedger;
 }
 
 export interface Product {
@@ -101,6 +179,7 @@ export interface Product {
   category: string;
   productType: ProductType;
   price: number; // in GHS
+  pricePesewas?: number; // stored in smallest unit: 1 GHS = 100 pesewas
   priceUsd?: number;
   currency: 'GHS' | 'USD' | 'NGN' | 'KES' | string;
   stock: number;
@@ -112,6 +191,8 @@ export interface Product {
   protectionEligibility: ProtectionEligibility;
   protectionRatePct: number; // e.g. 3.5% of product price
   protectionTermsSummary?: string;
+  providerProductCode?: string;
+  canMakeClaimExplainer?: string;
   createdAt: string;
 }
 
@@ -125,25 +206,34 @@ export interface CartItem {
 export interface ProtectionRecord {
   id: string;
   orderId: string;
+  orderNumber: string;
   buyerEmail: string;
   buyerName: string;
   merchantId: string;
   productId: string;
   productTitle: string;
-  provider: 'Curacel Grow' | 'Integrated Underwriter';
+  provider: 'Curacel Grow' | 'Integrated Underwriter' | string;
+  insurerName: string;
   providerPolicyRef?: string;
+  providerProductCode?: string;
   premiumAmount: number;
+  premiumPesewas?: number;
+  insuredValue: number;
+  insuredValuePesewas?: number;
   currency: string;
   coverageDetails: {
     maxCoverage: number;
     terms: string;
     durationDays: number;
     exclusions: string[];
+    insurerIdentity: string;
+    regulatoryNotice: string;
   };
   policyStatus: ProtectionStatus;
   startDate?: string;
   endDate?: string;
   claimId?: string;
+  createdAt: string;
 }
 
 export interface OrderItem {
@@ -174,13 +264,18 @@ export interface Order {
   merchantName: string;
   items: OrderItem[];
   subtotal: number;
+  subtotalPesewas?: number;
   deliveryFee: number;
+  deliveryFeePesewas?: number;
   protectionTotal: number;
+  protectionTotalPesewas?: number;
   totalAmount: number;
+  totalAmountPesewas?: number;
   currency: string;
   orderStatus: OrderStatus;
   paymentStatus: PaymentStatus;
   paymentReference?: string;
+  paymentChannel?: string;
   protectionRecordId?: string;
   hasProtection: boolean;
   createdAt: string;
@@ -199,8 +294,10 @@ export interface Claim {
   orderId: string;
   orderNumber: string;
   protectionId: string;
+  policyNumber?: string;
   buyerName: string;
   buyerEmail: string;
+  buyerPhone?: string;
   merchantId: string;
   productTitle: string;
   claimType: ClaimType;
@@ -208,6 +305,8 @@ export interface Claim {
   incidentDate: string;
   evidenceNotes: string;
   evidenceAttachments: string[];
+  settlementAccount?: SettlementAccount;
+  dischargeVoucher?: DischargeVoucher;
   status: ClaimStatus;
   providerClaimRef?: string;
   requestedAmount: number;
@@ -234,25 +333,53 @@ export interface AuditLog {
 }
 
 export interface IntegrationHealthStatus {
-  paystack: {
-    configured: boolean;
+  payment: {
+    provider: string;
+    status: 'CONFIGURED' | 'NOT_CONFIGURED' | 'ERROR';
     mode: 'PRODUCTION' | 'DEVELOPMENT_SANDBOX';
     publicKeyConfigured: boolean;
     secretKeyConfigured: boolean;
-    lastPing?: string;
+    webhookSecretConfigured: boolean;
+    lastPingStatus?: 'SUCCESS' | 'FAILED' | 'PENDING';
+    lastPingLatencyMs?: number;
+    lastPingTime?: string;
   };
-  curacel: {
-    configured: boolean;
+  insurance: {
+    provider: string;
+    status: 'CONFIGURED' | 'NOT_CONFIGURED' | 'ERROR';
     mode: 'PRODUCTION' | 'DEVELOPMENT_SANDBOX';
     clientIdConfigured: boolean;
     clientSecretConfigured: boolean;
-    lastPing?: string;
+    webhookSecretConfigured: boolean;
+    lastPingStatus?: 'SUCCESS' | 'FAILED' | 'PENDING';
+    lastPingLatencyMs?: number;
+    lastPingTime?: string;
   };
   database: {
     status: 'CONNECTED' | 'ERROR';
-    activeEntities: number;
+    activeEntities: {
+      merchants: number;
+      products: number;
+      orders: number;
+      claims: number;
+      protectionPolicies: number;
+      webhookEvents: number;
+    };
   };
-  storage: {
+  webhooks: {
+    paymentUrl: string;
+    insuranceUrl: string;
+    claimsUrl: string;
+    deliveryUrl: string;
+    totalReceived: number;
+    successful: number;
+    failed: number;
+    duplicatesIgnored: number;
+    lastReceivedAt?: string;
+  };
+  paystack?: any;
+  curacel?: any;
+  storage?: {
     status: 'CONFIGURED' | 'LOCAL_OBJECT_ADAPTER';
   };
 }
@@ -265,3 +392,4 @@ export interface MarketplaceConfig {
   supportedCountries: string[];
   enabledCategories: string[];
 }
+

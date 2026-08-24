@@ -47,11 +47,11 @@ export const SellerProtectHeader: React.FC<SellerProtectHeaderProps> = ({
                     OSKAYI <span className="text-amber-400">SELLER PROTECT</span>
                   </span>
                   <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-amber-400/10 border border-amber-400/30 text-amber-300 font-bold hidden md:inline-block">
-                    V1 Production Engine
+                    V1 Marketplace
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 font-mono hidden sm:block">
-                  Buy. Pay. Protect. — Powered by Oskayi Consult & Curacel Grow
+                  Buy. Pay. Protect. — Oskayi Seller Protect
                 </p>
               </div>
             </div>

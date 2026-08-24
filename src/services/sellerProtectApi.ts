@@ -29,6 +29,30 @@ export const sellerProtectApi = {
     return res.json();
   },
 
+  async updateProduct(productId: string, updates: Partial<Product>) {
+    const res = await fetch(`/api/seller-protect/products/${productId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updates)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to update product');
+    }
+    return res.json();
+  },
+
+  async deleteProduct(productId: string) {
+    const res = await fetch(`/api/seller-protect/products/${productId}`, {
+      method: 'DELETE'
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Failed to delete product');
+    }
+    return res.json();
+  },
+
   // Merchants
   async getMerchants() {
     const res = await fetch('/api/seller-protect/merchants');
@@ -59,7 +83,13 @@ export const sellerProtectApi = {
     return res.json();
   },
 
-  // Protection Quote (Curacel)
+  // Protection & Insurance Products (Curacel Grow)
+  async getInsuranceProducts(): Promise<{ success: boolean; products: any[]; provider: string; status: string }> {
+    const res = await fetch('/api/seller-protect/insurance/products');
+    if (!res.ok) throw new Error('Failed to fetch insurance products');
+    return res.json();
+  },
+
   async getProtectionQuote(items: { productId: string; price: number; quantity: number }[], currency = 'GHS') {
     const res = await fetch('/api/seller-protect/protection/quote', {
       method: 'POST',
@@ -67,6 +97,13 @@ export const sellerProtectApi = {
       body: JSON.stringify({ items, currency })
     });
     if (!res.ok) throw new Error('Failed to get protection quotation');
+    return res.json();
+  },
+
+  async getBuyerProtectionPolicies(buyerEmail?: string) {
+    const query = buyerEmail ? `?buyerEmail=${encodeURIComponent(buyerEmail)}` : '';
+    const res = await fetch(`/api/seller-protect/protection/policies${query}`);
+    if (!res.ok) throw new Error('Failed to fetch protection policies');
     return res.json();
   },
 
@@ -154,7 +191,7 @@ export const sellerProtectApi = {
     return res.json();
   },
 
-  async updateClaimStatus(claimId: string, statusPayload: { status: string; approvedAmount?: number; note?: string; rejectionReason?: string }) {
+  async updateClaimStatus(claimId: string, statusPayload: { status: string; approvedAmount?: number; note?: string; rejectionReason?: string; voucherOffer?: number }) {
     const res = await fetch(`/api/seller-protect/claims/${claimId}/status`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -164,10 +201,43 @@ export const sellerProtectApi = {
     return res.json();
   },
 
-  // Health & Admin
+  async respondToDischargeVoucher(claimId: string, voucherId: string, response: 'ACCEPT' | 'REJECT', note?: string) {
+    const res = await fetch(`/api/seller-protect/claims/${claimId}/voucher-response`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ voucherId, response, note })
+    });
+    if (!res.ok) throw new Error('Failed to respond to discharge voucher');
+    return res.json();
+  },
+
+  // Merchant Ledger
+  async getMerchantLedger(merchantId: string) {
+    const res = await fetch(`/api/seller-protect/merchants/${merchantId}/ledger`);
+    if (!res.ok) throw new Error('Failed to fetch merchant ledger');
+    return res.json();
+  },
+
+  // Health, Pings & Admin
   async getIntegrationHealth(): Promise<IntegrationHealthStatus> {
     const res = await fetch('/api/seller-protect/health/integrations');
     if (!res.ok) throw new Error('Failed to fetch integration health');
+    return res.json();
+  },
+
+  async pingPaymentGateway(): Promise<{ success: boolean; latencyMs: number; status: string; message: string; timestamp: string }> {
+    const res = await fetch('/api/seller-protect/health/ping-payment', { method: 'POST' });
+    return res.json();
+  },
+
+  async pingInsuranceGateway(): Promise<{ success: boolean; latencyMs: number; status: string; message: string; timestamp: string }> {
+    const res = await fetch('/api/seller-protect/health/ping-insurance', { method: 'POST' });
+    return res.json();
+  },
+
+  async getWebhookEvents() {
+    const res = await fetch('/api/seller-protect/admin/webhook-events');
+    if (!res.ok) throw new Error('Failed to fetch webhook events');
     return res.json();
   },
 

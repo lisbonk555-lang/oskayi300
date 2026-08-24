@@ -211,8 +211,8 @@ export const MerchantOnboardingModal: React.FC<MerchantOnboardingModalProps> = (
       // 2. Optionally Create First Listing
       if (includeProduct && productTitle.trim()) {
         const numPrice = Number(productPrice);
-        if (numPrice < 60) {
-          throw new Error('Minimum listing price is GH₵60 as per marketplace rules.');
+        if (numPrice < 20) {
+          throw new Error('Minimum listing price is GH₵20 as per marketplace rules.');
         }
 
         const chosenImage = productImage.trim() || PRESET_IMAGES[productCategory] || PRESET_IMAGES['Electronics'];
@@ -621,7 +621,7 @@ export const MerchantOnboardingModal: React.FC<MerchantOnboardingModalProps> = (
                   <span>Step 3 — Add Your First Product</span>
                 </h3>
                 <p className="text-[11px] text-slate-400 font-sans">
-                  Publish your initial product or service. Default minimum marketplace listing price is GH₵60.
+                  Publish your initial product or service. Default minimum marketplace listing price is GH₵20.
                 </p>
               </div>
 
@@ -660,16 +660,16 @@ export const MerchantOnboardingModal: React.FC<MerchantOnboardingModalProps> = (
                   
                   <div>
                     <label className="text-slate-300 block mb-1 text-[11px] font-bold">
-                      Price (Min GH₵60) <span className="text-amber-400">*</span>
+                      Price (Min GH₵20) <span className="text-amber-400">*</span>
                     </label>
                     <div className="relative">
                       <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold">GH₵</span>
                       <input
                         type="number"
-                        min="60"
+                        min="20"
                         value={productPrice}
                         onChange={(e) => setProductPrice(e.target.value)}
-                        placeholder="60"
+                        placeholder="20"
                         className="w-full pl-12 pr-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-white text-xs font-bold text-amber-400 focus:outline-none focus:border-amber-400"
                       />
                     </div>
@@ -809,10 +809,10 @@ export const MerchantOnboardingModal: React.FC<MerchantOnboardingModalProps> = (
                   Welcome, {createdMerchant?.storeName}!
                 </h3>
                 <p className="text-xs text-slate-300 font-sans max-w-md mx-auto">
-                  Your seller account has been registered with status <span className="text-amber-400 font-bold">PENDING REVIEW</span>.
+                  Your seller account is registered and <span className="text-emerald-400 font-bold">APPROVED & LIVE</span> on Oskayi Seller Protect.
                 </p>
                 <p className="text-[11px] text-slate-400 font-mono">
-                  You can now manage your store, inventory, and orders in your Merchant Dashboard.
+                  Your store and products are now available for purchase across Ghana and West Africa.
                 </p>
               </div>
             </div>

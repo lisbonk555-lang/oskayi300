@@ -46,13 +46,13 @@ export interface NexusRoadmapMilestone {
 }
 
 export const NEXUS_CORE_METRICS = {
-  capacity: "$1T+/day Movement",
-  underManagement: "$1.93T Pipeline",
-  connectedBanks: "5,000+ Global Banks",
+  capacity: "70% World Syndicated Loans Powered",
+  underManagement: "$5.4T Global Syndication Market",
+  connectedBanks: "200+ Finastra Fusion APIs Active",
   reinsuranceCoverage: "100% Insured Settlement",
   countriesServed: "180+ Countries",
-  africanMarkets: "35+ African Settlement Corridors",
-  aggregationPools: "15 Global Aggregation Rails Pooled"
+  africanMarkets: "Ghana → Africa → Global",
+  aggregationPools: "Loan IQ • LenderComm • CreditQuest • Payments To Go"
 };
 
 export const NEXUS_3_LAYER_STACK: NexusStackLayer[] = [
@@ -77,33 +77,33 @@ export const NEXUS_3_LAYER_STACK: NexusStackLayer[] = [
   {
     id: "layer-2-nexus-brain",
     layerNumber: "LAYER 2 - MIDDLE (CORE IP)",
-    name: "NEXUS CLOUD - The Brain",
-    tagline: "Proprietary Orchestration Engine Owned & Controlled by Oskayi Consult",
-    role: "Proprietary Core IP",
+    name: "NEXUS CLOUD - The OS of Global Finance",
+    tagline: "The Operating System Powering Syndicated Lending Across Ghana, Africa & The World",
+    role: "Proprietary Core IP (Finastra Powered)",
     accentColor: "text-amber-400",
     borderColor: "border-amber-400/80 shadow-amber-400/10",
-    bgGradient: "from-amber-950/70 via-slate-900 to-indigo-950/90",
+    bgGradient: "from-purple-950/80 via-slate-900 to-indigo-950/90",
     features: [
-      "AI-Powered Liquidity Routing: Dynamically evaluates 5,000+ banks to fund projects at the lowest cost of capital in real time",
-      "Syndicated Escrow & Settlement: Holds $10B, releasing tranches (e.g. $1B) only upon verified cryptographic & satellite milestone audit",
-      "Glass-Box Compliance Engine: Real-time dashboard for governments: 'Your $10B: $2B disbursed, 15,000 homes built, 0% leakage'",
-      "Automated Fee Engine: Splits origination, platform, and syndication fees instantly at the settlement layer",
-      "Universal Gateway Adapter: Translates any project mandate into standardized banking syndicate calls"
+      "Built on Finastra's world-leading infrastructure powering 70% of world's syndicated loans",
+      "End-to-End 200+ Finastra Fusion APIs unifying Loan IQ, LenderComm, CreditQuest & Payments To Go",
+      "Syndication OS: Multi-bank book-building, lender position management & real-time data sharing",
+      "Ghana Housing Finance Revolution & African Commercial Lending Gap acceleration",
+      "Glass-Box Compliance Engine: Real-time dashboard for governments: 'Your $10B: $2B disbursed, 15,000 homes built, 0% leakage'"
     ],
-    summaryNote: "This brain is what traditional banks cannot build. Banks have fragmented balance sheet rails; NEXUS CLOUD provides the sovereign intelligence that orchestrates them."
+    summaryNote: "This OS unifies origination, multi-bank syndication, cross-border payments, and regulatory compliance into one end-to-end API."
   },
   {
     id: "layer-1-foundation-rails",
     layerNumber: "LAYER 1 - BOTTOM",
-    name: "FOUNDATION RAILS - The Global Infrastructure",
+    name: "FOUNDATION RAILS - Finastra Fusion Infrastructure",
     tagline: "Invisible, Deeply Integrated Liquidity Rails Across 180+ Jurisdictions",
     role: "Global Banking Backbone",
     accentColor: "text-sky-400",
     borderColor: "border-sky-500/50",
     bgGradient: "from-sky-950/80 via-slate-900 to-indigo-950/50",
     features: [
-      "5,000+ Global Commercial & Central Banking Rails Interconnected",
-      "Automated Commercial Lending Origination & Syndication Engine",
+      "5,000+ Global Commercial & Central Banking Rails Interconnected via Finastra",
+      "Automated Commercial Lending Origination & Syndication Engine (Loan IQ & LenderComm)",
       "Real-time Settlement Rails across 180+ countries and 35+ African currencies (GHS, NGN, KES, USD, EUR, GBP)",
       "BaaS Compliance Proofs, ISO 20022 messaging, automated KYC/AML and sanction screening",
       "15 International Aggregation Platforms Pooled: If one rail experiences downtime, 14 other rails auto-route instantly"
@@ -233,10 +233,10 @@ export const NEXUS_8_APPS: NexusApp[] = [
     category: "Modular Extensibility",
     badge: "1-Call Integration",
     description: "Universal plug-and-play architecture where any new sovereign finance idea, green energy bond, or digital asset protocol connects in a single API call.",
-    integrationCall: "POST /v1/master-base/register-module -> { module_type: 'Carbon_Credit_Token' }",
+    integrationCall: "POST /v2/finastra/nexus-os/register-module -> { module_type: 'Carbon_Credit_Token' }",
     capabilities: [
       "Inherits all 5,000+ bank connections, compliance proofs, and insurance wraps instantly",
-      "Zero redevelopment of underlying rails — builds instantly on the master base",
+      "Zero redevelopment of underlying rails — builds instantly on the NEXUS Finastra OS",
       "Standardized security envelope with SOC2 and ISO compliance inheritance",
       "Rapid prototyping from conceptual mandate to live capital deployment in weeks"
     ]
@@ -381,7 +381,7 @@ export const NEXUS_ROADMAP: NexusRoadmapMilestone[] = [
   {
     phase: "Phase 3: Global Scale",
     period: "Years 2 - 5",
-    title: "NEXUS v3 (Global Master Base)",
+    title: "NEXUS v3 (The OS of Global Finance)",
     targetScale: "50 Smart Cities • $500B Under Management",
     revenueOrFee: "Institutional Market Benchmark",
     milestones: [

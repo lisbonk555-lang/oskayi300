@@ -106,8 +106,11 @@ export const SellerProtectPage: React.FC<SellerProtectPageProps> = ({
     fetchData();
   };
 
+  const [activeMerchantId, setActiveMerchantId] = useState<string>('');
+
   const handleMerchantOnboarded = (newMerchant: Merchant, newProduct?: Product) => {
     setIsOnboardingOpen(false);
+    setActiveMerchantId(newMerchant.id);
     fetchData();
     setActiveTab('merchant');
   };
@@ -165,6 +168,8 @@ export const SellerProtectPage: React.FC<SellerProtectPageProps> = ({
             loading={loading}
             onRefresh={fetchData}
             onOpenOnboarding={() => setIsOnboardingOpen(true)}
+            currentMerchantId={activeMerchantId}
+            onSelectMerchant={setActiveMerchantId}
           />
         )}
 

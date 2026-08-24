@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Store, 
   PlusCircle, 
@@ -21,10 +21,12 @@ import {
   Phone,
   Mail,
   User,
-  Sparkles
+  Sparkles,
+  Trash2,
+  Edit2
 } from 'lucide-react';
 import { Merchant, Product, Order, Claim } from '../../types/sellerProtect';
-import { MARKETPLACE_CONFIG } from '../../data/sellerProtectData';
+import { MARKETPLACE_CONFIG, PRESET_CATEGORY_IMAGES } from '../../data/sellerProtectData';
 import { sellerProtectApi } from '../../services/sellerProtectApi';
 
 interface MerchantPortalViewProps {
@@ -35,6 +37,8 @@ interface MerchantPortalViewProps {
   loading: boolean;
   onRefresh: () => void;
   onOpenOnboarding: () => void;
+  currentMerchantId?: string;
+  onSelectMerchant?: (id: string) => void;
 }
 
 export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
@@ -44,9 +48,26 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
   claims,
   loading,
   onRefresh,
-  onOpenOnboarding
+  onOpenOnboarding,
+  currentMerchantId,
+  onSelectMerchant
 }) => {
-  const [selectedMerchantId, setSelectedMerchantId] = useState<string>(merchants[0]?.id || '');
+  const [selectedMerchantId, setSelectedMerchantId] = useState<string>(
+    currentMerchantId || merchants[0]?.id || ''
+  );
+
+  useEffect(() => {
+    if (currentMerchantId && currentMerchantId !== selectedMerchantId) {
+      setSelectedMerchantId(currentMerchantId);
+    } else if (!selectedMerchantId && merchants.length > 0) {
+      setSelectedMerchantId(merchants[0].id);
+    }
+  }, [currentMerchantId, merchants]);
+
+  const handleMerchantChange = (id: string) => {
+    setSelectedMerchantId(id);
+    if (onSelectMerchant) onSelectMerchant(id);
+  };
   
   // 7 simple tabs: Store, Products, Orders, Payments, Protection, Claims, Settings
   const [activeTab, setActiveTab] = useState<'store' | 'products' | 'orders' | 'payments' | 'protection' | 'claims' | 'settings'>('store');
@@ -62,8 +83,9 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
   const [productDesc, setProductDesc] = useState<string>('');
   const [productShipping, setProductShipping] = useState<string>('Standard dispatch within 1-2 business days.');
   const [productType, setProductType] = useState<'PHYSICAL' | 'SERVICE' | 'DIGITAL'>('PHYSICAL');
-  const [productImage, setProductImage] = useState<string>('');
+  const [productImage, setProductImage] = useState<string>(PRESET_CATEGORY_IMAGES[MARKETPLACE_CONFIG.enabledCategories[0]] || '');
   const [isAddingProduct, setIsAddingProduct] = useState<boolean>(false);
+  const [deletingProductId, setDeletingProductId] = useState<string | null>(null);
 
   // Store Settings Edit State
   const [editPayout, setEditPayout] = useState<string>('');
@@ -87,39 +109,55 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
     if (!currentMerchant) return;
 
     const numPrice = Number(productPrice);
-    if (isNaN(numPrice) || numPrice < 60) {
-      alert("Minimum listing price is GH₵60 as per marketplace rules.");
+    if (isNaN(numPrice) || numPrice < 20) {
+      alert("Minimum listing price is GH₵20 as per marketplace rules.");
       return;
     }
 
     setIsAddingProduct(true);
     try {
+      const chosenImage = productImage.trim() || PRESET_CATEGORY_IMAGES[productCategory] || PRESET_CATEGORY_IMAGES['Electronics'];
+
       await sellerProtectApi.createProduct({
         merchantId: currentMerchant.id,
-        title: productTitle,
-        description: productDesc,
+        title: productTitle.trim(),
+        description: productDesc.trim() || `Authentic ${productTitle.trim()} from ${currentMerchant.storeName}.`,
         category: productCategory,
         productType,
         price: numPrice,
         currency: productCurrency || 'GHS',
         stock: Number(productStock) > 0 ? Number(productStock) : 1,
-        sku: productSku || `SKU-${Date.now().toString().slice(-6)}`,
-        shippingInfo: productShipping,
+        sku: productSku.trim() || `SKU-${Date.now().toString().slice(-6)}`,
+        shippingInfo: productShipping.trim() || `${currentMerchant.city || 'Accra'}, Ghana delivery`,
         country: currentMerchant.country,
         protectionEligibility: productType === 'PHYSICAL' ? 'ELIGIBLE' : 'INELIGIBLE',
         protectionRatePct: productType === 'PHYSICAL' ? 3.5 : 0,
-        images: [productImage.trim() || "https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80"]
+        images: [chosenImage]
       });
 
       setShowAddProductModal(false);
       setProductTitle('');
       setProductDesc('');
-      setProductImage('');
+      setProductImage(PRESET_CATEGORY_IMAGES[productCategory] || '');
       onRefresh();
     } catch (err: any) {
       alert(err.message || 'Failed to create product listing');
     } finally {
       setIsAddingProduct(false);
+    }
+  };
+
+  // Handle Delete Product
+  const handleDeleteProduct = async (productId: string) => {
+    if (!confirm('Are you sure you want to remove this product listing from the marketplace?')) return;
+    setDeletingProductId(productId);
+    try {
+      await sellerProtectApi.deleteProduct(productId);
+      onRefresh();
+    } catch (err: any) {
+      alert(err.message || 'Failed to delete product');
+    } finally {
+      setDeletingProductId(null);
     }
   };
 
@@ -462,16 +500,20 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
                 Store Inventory ({merchantProducts.length} items)
               </h3>
               <p className="text-slate-400 text-[11px]">
-                Default minimum marketplace listing price is GH₵60.
+                Default minimum marketplace listing price is GH₵20.
               </p>
             </div>
 
             <button
-              onClick={() => setShowAddProductModal(true)}
-              className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold flex items-center gap-1.5 shadow"
+              onClick={() => {
+                setProductCategory(MARKETPLACE_CONFIG.enabledCategories[0]);
+                setProductImage(PRESET_CATEGORY_IMAGES[MARKETPLACE_CONFIG.enabledCategories[0]] || '');
+                setShowAddProductModal(true);
+              }}
+              className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold flex items-center gap-1.5 shadow active:scale-95 transition-all"
             >
               <PlusCircle className="w-4 h-4" />
-              <span>Add Your First / Next Product</span>
+              <span>+ Add New Product</span>
             </button>
           </div>
 
@@ -483,8 +525,12 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
                 Add your products or services to start receiving orders through Oskayi.
               </p>
               <button
-                onClick={() => setShowAddProductModal(true)}
-                className="px-5 py-2.5 bg-amber-400 text-slate-950 font-bold rounded-xl text-xs"
+                onClick={() => {
+                  setProductCategory(MARKETPLACE_CONFIG.enabledCategories[0]);
+                  setProductImage(PRESET_CATEGORY_IMAGES[MARKETPLACE_CONFIG.enabledCategories[0]] || '');
+                  setShowAddProductModal(true);
+                }}
+                className="px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-xl text-xs transition-all active:scale-95"
               >
                 + Create First Product
               </button>
@@ -494,7 +540,7 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
               {merchantProducts.map((prod) => (
                 <div
                   key={prod.id}
-                  className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 flex flex-col justify-between"
+                  className="p-4 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 flex flex-col justify-between hover:border-slate-700 transition-colors"
                 >
                   <div className="space-y-2.5">
                     <div className="aspect-video rounded-xl bg-slate-950 relative overflow-hidden">
@@ -505,6 +551,9 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
                       />
                       <span className="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-slate-950/80 border border-slate-700 text-slate-300">
                         {prod.category}
+                      </span>
+                      <span className="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-950/90 border border-emerald-500/60 text-emerald-300">
+                        Live
                       </span>
                     </div>
 
@@ -525,6 +574,19 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
                       <span className={prod.protectionEligibility === 'ELIGIBLE' ? 'text-amber-300 font-bold' : 'text-slate-500'}>
                         {prod.protectionEligibility === 'ELIGIBLE' ? 'Eligible (3.5%)' : 'Ineligible'}
                       </span>
+                    </div>
+
+                    <div className="pt-2 flex items-center justify-between border-t border-slate-800/80 text-[11px]">
+                      <span className="text-slate-500 text-[10px]">SKU: {prod.sku}</span>
+                      <button
+                        onClick={() => handleDeleteProduct(prod.id)}
+                        disabled={deletingProductId === prod.id}
+                        className="text-rose-400 hover:text-rose-300 flex items-center gap-1 text-[10px] p-1 rounded hover:bg-rose-950/40 transition-colors disabled:opacity-50"
+                        title="Remove product"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>{deletingProductId === prod.id ? 'Removing...' : 'Delete'}</span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -751,13 +813,18 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
           <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg p-5 sm:p-6 space-y-4 shadow-2xl text-white font-mono text-xs my-auto max-h-[90vh] overflow-y-auto">
             
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-sm font-bold flex items-center gap-2">
-                <PlusCircle className="w-4 h-4 text-amber-400" />
-                <span>Add Product to {currentMerchant?.storeName}</span>
-              </h3>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
+                  <PlusCircle className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white">Add Product to Store</h3>
+                  <p className="text-[11px] text-slate-400">{currentMerchant?.storeName}</p>
+                </div>
+              </div>
               <button
                 onClick={() => setShowAddProductModal(false)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-white p-1"
               >
                 ✕
               </button>
@@ -776,12 +843,41 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
                 />
               </div>
 
+              {/* Listing Type Selection */}
+              <div>
+                <label className="text-slate-300 block mb-1 font-bold">Listing Type</label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setProductType('PHYSICAL')}
+                    className={`p-2 rounded-xl border text-center transition-all ${
+                      productType === 'PHYSICAL'
+                        ? 'bg-amber-400/15 border-amber-400 text-amber-300 font-bold'
+                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                    }`}
+                  >
+                    📦 Physical Goods (Cargo Protected)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setProductType('SERVICE')}
+                    className={`p-2 rounded-xl border text-center transition-all ${
+                      productType === 'SERVICE'
+                        ? 'bg-amber-400/15 border-amber-400 text-amber-300 font-bold'
+                        : 'bg-slate-950 border-slate-800 text-slate-400'
+                    }`}
+                  >
+                    💼 Services (SLA Terms)
+                  </button>
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-slate-300 block mb-1 font-bold">Price (Min GH₵60) *</label>
+                  <label className="text-slate-300 block mb-1 font-bold">Price (Min GH₵20) *</label>
                   <input
                     type="number"
-                    min="60"
+                    min="20"
                     required
                     value={productPrice}
                     onChange={(e) => setProductPrice(e.target.value)}
@@ -805,7 +901,10 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
                 <label className="text-slate-300 block mb-1 font-bold">Category</label>
                 <select
                   value={productCategory}
-                  onChange={(e) => setProductCategory(e.target.value)}
+                  onChange={(e) => {
+                    setProductCategory(e.target.value);
+                    setProductImage(PRESET_CATEGORY_IMAGES[e.target.value] || PRESET_CATEGORY_IMAGES['Electronics']);
+                  }}
                   className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:border-amber-400 focus:outline-none"
                 >
                   {MARKETPLACE_CONFIG.enabledCategories.map((c) => (
@@ -826,28 +925,35 @@ export const MerchantPortalView: React.FC<MerchantPortalViewProps> = ({
               </div>
 
               <div>
-                <label className="text-slate-300 block mb-1 font-bold">Image URL (Optional)</label>
-                <input
-                  type="url"
-                  value={productImage}
-                  onChange={(e) => setProductImage(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:border-amber-400 focus:outline-none"
-                />
+                <label className="text-slate-300 block mb-1 font-bold">Product Image (Category Photo or Custom URL)</label>
+                <div className="flex items-center gap-2.5">
+                  <img
+                    src={productImage || PRESET_CATEGORY_IMAGES[productCategory] || PRESET_CATEGORY_IMAGES['Electronics']}
+                    alt="Preview"
+                    className="w-12 h-12 rounded-xl object-cover bg-slate-950 border border-slate-800 shrink-0"
+                  />
+                  <input
+                    type="url"
+                    value={productImage}
+                    onChange={(e) => setProductImage(e.target.value)}
+                    placeholder="https://images.unsplash.com/..."
+                    className="flex-1 p-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white focus:border-amber-400 focus:outline-none"
+                  />
+                </div>
               </div>
 
               <div className="flex justify-end gap-2.5 pt-3 border-t border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowAddProductModal(false)}
-                  className="px-4 py-2 bg-slate-800 rounded-xl text-slate-300"
+                  className="px-4 py-2 bg-slate-800 rounded-xl text-slate-300 hover:bg-slate-700"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isAddingProduct || !productTitle}
-                  className="px-5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-xl disabled:opacity-50"
+                  className="px-5 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-xl disabled:opacity-50 transition-all active:scale-95 shadow"
                 >
                   {isAddingProduct ? 'Adding...' : 'Publish Listing'}
                 </button>

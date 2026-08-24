@@ -76,17 +76,20 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
               </span>
             </h1>
 
-            {/* NEXUS CLOUD Master Base Sub-Badge */}
-            <div className="p-3 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 border border-amber-400/50 shadow-xl flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0">
-                <Cpu className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '10s' }} />
+            {/* NEXUS CLOUD OS of Global Finance Sub-Badge */}
+            <div className="p-3 rounded-2xl bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 border border-purple-500/50 shadow-xl flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center shrink-0">
+                <Cpu className="w-4 h-4 text-purple-400 animate-spin" style={{ animationDuration: '10s' }} />
               </div>
               <div className="space-y-0.5">
-                <span className="text-[10px] font-mono uppercase font-bold text-amber-400 tracking-wider block">
-                  Core Enterprise Platform
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono uppercase font-bold text-purple-300 tracking-wider block">
+                    Core Operating System • Finastra Powered
+                  </span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                </div>
                 <p className="text-xs font-mono font-bold text-white tracking-tight">
-                  Powered by NEXUS CLOUD - Master Base | $1T+ Capacity | 100% Insured | 5,000+ Banks
+                  NEXUS CLOUD — The OS of Global Finance | 70% World Syndicated Loans Powered | 200+ APIs
                 </p>
               </div>
             </div>

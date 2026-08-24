@@ -1,7 +1,8 @@
 import React from 'react';
-import { ShieldCheck, Phone, Mail, MapPin, Award, Globe, Cpu } from 'lucide-react';
+import { ShieldCheck, Phone, Mail, MapPin, Award, Globe, Cpu, Sparkles, ArrowRight } from 'lucide-react';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
 import { GTBankLogo, StandardCharteredLogo } from './BankerLogos';
+import { FinastraLogo } from './FinastraLogo';
 
 interface FooterProps {
   onOpenVerification: () => void;
@@ -11,9 +12,48 @@ interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSection, onNavigateNexusCloud }) => {
   return (
-    <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 pt-16 pb-12 px-4 sm:px-8">
+    <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 pt-16 pb-12 px-4 sm:px-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-12">
         
+        {/* Enterprise Partner Spotlight: Powered by Finastra Fusion */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-purple-950/70 via-slate-900 to-indigo-950/70 border border-purple-500/40 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <FinastraLogo variant="icon" className="w-10 h-10" />
+            <div className="space-y-0.5 text-left">
+              <div className="flex items-center gap-2">
+                <span className="font-sans font-black text-sm text-white tracking-wider">
+                  FINASTRA FUSION
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-purple-500/20 text-purple-300 border border-purple-500/40 font-bold">
+                  CORE INFRASTRUCTURE
+                </span>
+              </div>
+              <p className="text-xs text-purple-200/90 font-mono">
+                Powered by Finastra Fusion - The OS of Global Finance
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] font-mono text-slate-400 hidden md:inline">
+              Powering 70% of World's Syndicated Loans
+            </span>
+            <button
+              onClick={() => {
+                if (onNavigateNexusCloud) {
+                  onNavigateNexusCloud();
+                } else {
+                  onNavigateSection('nexus-cloud');
+                }
+              }}
+              className="px-4 py-2 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-400/40 text-purple-200 hover:text-white text-xs font-mono font-bold flex items-center gap-1.5 transition-all"
+            >
+              <span>Explore Nexus OS</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
         {/* Main Footer Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
@@ -48,14 +88,14 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
                   onNavigateSection('nexus-cloud');
                 }
               }}
-              className="w-full p-2.5 rounded-xl bg-indigo-950/80 hover:bg-indigo-900 border border-amber-400/40 text-amber-300 text-xs font-mono font-bold flex items-center justify-between transition-all"
+              className="w-full p-2.5 rounded-xl bg-purple-950/70 hover:bg-purple-900/80 border border-purple-500/40 text-purple-200 text-xs font-mono font-bold flex items-center justify-between transition-all group"
             >
               <span className="flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5 text-amber-400" />
-                <span>NEXUS CLOUD Platform</span>
+                <Cpu className="w-3.5 h-3.5 text-purple-400 group-hover:rotate-45 transition-transform" />
+                <span className="text-white">NEXUS CLOUD — The OS of Global Finance</span>
               </span>
-              <span className="text-[10px] bg-amber-400 text-indigo-950 px-1.5 py-0.5 rounded font-extrabold">
-                $1.93T
+              <span className="text-[10px] bg-purple-500/30 text-purple-200 px-1.5 py-0.5 rounded font-extrabold border border-purple-400/30">
+                LIVE
               </span>
             </button>
 
