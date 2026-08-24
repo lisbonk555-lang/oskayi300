@@ -1,20 +1,22 @@
 import React from 'react';
-import { ShieldCheck, ChevronRight, Calculator, Globe, Building2, Layers, Award, Sparkles } from 'lucide-react';
+import { ShieldCheck, ChevronRight, Calculator, Globe, Building2, Layers, Award, Sparkles, Cpu, ArrowRight } from 'lucide-react';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
+import { GTBankLogo, StandardCharteredLogo } from './BankerLogos';
 
 interface HeroProps {
   onOpenVerification?: () => void;
   onNavigateSection: (sectionId: string) => void;
+  onNavigateNexusCloud?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSection }) => {
+export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSection, onNavigateNexusCloud }) => {
   const fleetSolutions = [
     {
       title: "Credit Facility Provision ($100 to Billions)",
       badge: "Instant to 3 Months",
       color: "from-amber-400/20 via-amber-500/10 to-transparent border-amber-500/30 text-amber-300",
       iconBg: "bg-amber-400 text-indigo-950",
-      description: "Provision of credit facilities with disbursal timelines from instant approval, within 24 hours, 7 days, 1 month, to 3 months for individuals, groups, companies, municipalities, governments, and continental development blocks ($100 to $Billions).",
+      description: "Provision of credit facilities ($100 to $Billions). Syndicated across global banks in 1 call, 0% bank risk via insurance wrap, milestone-based release with disbursal timelines from instant approval, 24 hours, 7 days, 1 month, to 3 months for individuals, groups, companies, municipalities, and sovereign blocks.",
       icon: Globe
     },
     {
@@ -74,25 +76,55 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
               </span>
             </h1>
 
+            {/* NEXUS CLOUD Master Base Sub-Badge */}
+            <div className="p-3 rounded-2xl bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 border border-amber-400/50 shadow-xl flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center shrink-0">
+                <Cpu className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: '10s' }} />
+              </div>
+              <div className="space-y-0.5">
+                <span className="text-[10px] font-mono uppercase font-bold text-amber-400 tracking-wider block">
+                  Core Enterprise Platform
+                </span>
+                <p className="text-xs font-mono font-bold text-white tracking-tight">
+                  Powered by NEXUS CLOUD - Master Base | $1T+ Capacity | 100% Insured | 5,000+ Banks
+                </p>
+              </div>
+            </div>
+
             {/* Sub-sentence under headline */}
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-sans max-w-2xl">
               Oskayi Consult is a Ghanaian advisory and financial technology firm. Through our network of licensed international partners, we provide loan liquidity, project financing, custom fintech software, exclusive insurance, and Web3 solutions for governments, banks, businesses, and individuals.
             </p>
 
             {/* Quick CTAs */}
-            <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 flex-wrap">
+              {/* Primary NEXUS CLOUD Explore CTA */}
               <button
-                onClick={() => onNavigateSection('showcase-slides')}
-                className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-indigo-950 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-xl shadow-amber-400/20 transition-all flex items-center justify-center gap-2 group"
+                onClick={() => {
+                  if (onNavigateNexusCloud) {
+                    onNavigateNexusCloud();
+                  } else {
+                    onNavigateSection('nexus-cloud');
+                  }
+                }}
+                className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-indigo-950 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-xl shadow-amber-400/25 transition-all flex items-center justify-center gap-2 group"
               >
-                <Sparkles className="w-4 h-4 text-indigo-950" />
-                <span>Explore 10 Interactive Showcase Slides</span>
+                <Cpu className="w-4 h-4 text-indigo-950" />
+                <span>Explore NEXUS CLOUD → /nexus-cloud</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
+                onClick={() => onNavigateSection('showcase-slides')}
+                className="w-full sm:w-auto px-5 py-4 bg-slate-900 hover:bg-slate-800 text-white border border-indigo-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
+              >
+                <Sparkles className="w-4 h-4 text-amber-400" />
+                <span>10 Showcase Slides</span>
+              </button>
+
+              <button
                 onClick={() => onNavigateSection('services')}
-                className="w-full sm:w-auto px-6 py-4 bg-indigo-900/80 hover:bg-indigo-800 text-white border border-indigo-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-5 py-4 bg-indigo-900/70 hover:bg-indigo-800 text-white border border-indigo-700/80 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <span>Solutions & Services</span>
               </button>
@@ -116,6 +148,20 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
                 <span className="text-[10px] text-slate-400 uppercase font-bold">Ghana Post GPS</span>
                 <div className="font-bold text-sky-300">{OFFICIAL_COMPANY_INFO.digitalAddress}</div>
                 <div className="text-[10px] text-slate-400 truncate">McCarthy Hill, Accra</div>
+              </div>
+            </div>
+
+            {/* Institutional Bankers Bar */}
+            <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div className="flex items-center gap-2">
+                <span className="text-[10px] font-mono uppercase font-bold text-slate-400 tracking-wider">
+                  Our Bankers:
+                </span>
+              </div>
+              <div className="flex items-center gap-4 flex-wrap">
+                <GTBankLogo className="scale-90 origin-left" />
+                <span className="text-slate-700 hidden sm:inline">|</span>
+                <StandardCharteredLogo className="scale-90 origin-left" />
               </div>
             </div>
 

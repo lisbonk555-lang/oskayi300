@@ -1,13 +1,15 @@
 import React from 'react';
-import { ShieldCheck, Phone, Mail, MapPin, Award, Globe } from 'lucide-react';
+import { ShieldCheck, Phone, Mail, MapPin, Award, Globe, Cpu } from 'lucide-react';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
+import { GTBankLogo, StandardCharteredLogo } from './BankerLogos';
 
 interface FooterProps {
   onOpenVerification: () => void;
   onNavigateSection: (sectionId: string) => void;
+  onNavigateNexusCloud?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSection }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSection, onNavigateNexusCloud }) => {
   return (
     <footer className="bg-slate-950 text-slate-400 border-t border-slate-800 pt-16 pb-12 px-4 sm:px-8">
       <div className="max-w-7xl mx-auto space-y-12">
@@ -36,6 +38,26 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
               <div className="text-amber-400 font-bold">Listowel Sarsah Adentwi-Edzii</div>
               <div className="text-slate-400">President & CEO</div>
             </div>
+
+            {/* NEXUS CLOUD Fast Access Badge */}
+            <button
+              onClick={() => {
+                if (onNavigateNexusCloud) {
+                  onNavigateNexusCloud();
+                } else {
+                  onNavigateSection('nexus-cloud');
+                }
+              }}
+              className="w-full p-2.5 rounded-xl bg-indigo-950/80 hover:bg-indigo-900 border border-amber-400/40 text-amber-300 text-xs font-mono font-bold flex items-center justify-between transition-all"
+            >
+              <span className="flex items-center gap-1.5">
+                <Cpu className="w-3.5 h-3.5 text-amber-400" />
+                <span>NEXUS CLOUD Platform</span>
+              </span>
+              <span className="text-[10px] bg-amber-400 text-indigo-950 px-1.5 py-0.5 rounded font-extrabold">
+                $1.93T
+              </span>
+            </button>
           </div>
 
           {/* Col 2: Practice Areas */}
@@ -137,6 +159,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
             </div>
           </div>
 
+        </div>
+
+        {/* Bankers Highlights Bar */}
+        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">
+              Official Corporate Bankers:
+            </span>
+          </div>
+          <div className="flex items-center gap-6 flex-wrap justify-center">
+            <GTBankLogo className="scale-95" />
+            <span className="text-slate-700 hidden md:inline">|</span>
+            <StandardCharteredLogo className="scale-95" />
+          </div>
         </div>
 
         {/* Bottom Statutory Line */}

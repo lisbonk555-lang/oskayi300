@@ -15,6 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
+    { id: 'nexus-cloud', label: 'NEXUS CLOUD', isSpecial: true },
     { id: 'ceo-message', label: 'President & CEO Vision' },
     { id: 'showcase-slides', label: '10 Showcase Slides' },
     { id: 'services', label: 'Solutions & Services' },
@@ -109,9 +110,26 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-5 text-[11px] font-bold uppercase tracking-wider">
+        <nav className="hidden lg:flex items-center gap-4 text-[11px] font-bold uppercase tracking-wider">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
+            if (item.id === 'nexus-cloud') {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-amber-400 text-indigo-950 shadow-md shadow-amber-400/20'
+                      : 'bg-amber-400/15 text-amber-300 border border-amber-400/40 hover:bg-amber-400/25'
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  <span>{item.label}</span>
+                </button>
+              );
+            }
+
             return (
               <button
                 key={item.id}

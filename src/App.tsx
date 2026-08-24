@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ShowcaseCarousel } from './components/ShowcaseCarousel';
@@ -11,14 +11,65 @@ import { ComplianceModal } from './components/ComplianceModal';
 import { InquiryForm } from './components/InquiryForm';
 import { ContactAndLocation } from './components/ContactAndLocation';
 import { Footer } from './components/Footer';
+import { NexusCloudPage } from './pages/NexusCloudPage';
 
 export default function App() {
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud'>('main');
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
   const [selectedServiceForInquiry, setSelectedServiceForInquiry] = useState<string>('Fintech Solutions for Banks');
   const [inquiryInitialMessage, setInquiryInitialMessage] = useState<string>('');
 
+  // Handle URL navigation on mount and history changes
+  useEffect(() => {
+    const handleUrlChange = () => {
+      const path = window.location.pathname;
+      const hash = window.location.hash;
+      if (path === '/nexus-cloud' || hash === '#nexus-cloud') {
+        setCurrentView('nexus-cloud');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        setCurrentView('main');
+      }
+    };
+
+    handleUrlChange();
+    window.addEventListener('popstate', handleUrlChange);
+    return () => window.removeEventListener('popstate', handleUrlChange);
+  }, []);
+
+  const handleNavigateNexusCloud = () => {
+    setCurrentView('nexus-cloud');
+    setActiveSection('nexus-cloud');
+    window.history.pushState({}, '', '/nexus-cloud');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateHome = () => {
+    setCurrentView('main');
+    setActiveSection('hero');
+    window.history.pushState({}, '', '/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavigateSection = (sectionId: string) => {
+    if (sectionId === 'nexus-cloud') {
+      handleNavigateNexusCloud();
+      return;
+    }
+
+    if (currentView !== 'main') {
+      setCurrentView('main');
+      window.history.pushState({}, '', '/');
+      setTimeout(() => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+      return;
+    }
+
     setActiveSection(sectionId);
     if (sectionId === 'hero') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -33,78 +84,102 @@ export default function App() {
   const handleSelectServiceForInquiry = (serviceTitle: string) => {
     setSelectedServiceForInquiry(serviceTitle);
     setInquiryInitialMessage(`Inquiry regarding ${serviceTitle} implementation for our organization.`);
-    handleNavigateSection('contact');
+    if (currentView !== 'main') {
+      setCurrentView('main');
+      window.history.pushState({}, '', '/');
+      setTimeout(() => {
+        const element = document.getElementById('contact');
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      handleNavigateSection('contact');
+    }
   };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
       
-      {/* Top Navbar */}
-      <Navbar
-        onOpenVerification={() => setIsVerificationModalOpen(true)}
-        onNavigateSection={handleNavigateSection}
-        activeSection={activeSection}
-      />
-
-      {/* Main Content Sections */}
-      <main>
-        {/* Executive Hero */}
-        <Hero
+      {/* If viewing NEXUS CLOUD dedicated page */}
+      {currentView === 'nexus-cloud' ? (
+        <NexusCloudPage
+          onNavigateHome={handleNavigateHome}
           onOpenVerification={() => setIsVerificationModalOpen(true)}
-          onNavigateSection={handleNavigateSection}
+          onInitiateInquiry={handleSelectServiceForInquiry}
         />
+      ) : (
+        <>
+          {/* Top Navbar */}
+          <Navbar
+            onOpenVerification={() => setIsVerificationModalOpen(true)}
+            onNavigateSection={handleNavigateSection}
+            activeSection={activeSection}
+          />
 
-        {/* Executive CEO Message Section (Placed High at Top) */}
-        <CeoMessage
-          onOpenVerification={() => setIsVerificationModalOpen(true)}
-          onNavigateContact={() => handleNavigateSection('contact')}
-        />
+          {/* Main Content Sections */}
+          <main>
+            {/* Executive Hero */}
+            <Hero
+              onOpenVerification={() => setIsVerificationModalOpen(true)}
+              onNavigateSection={handleNavigateSection}
+              onNavigateNexusCloud={handleNavigateNexusCloud}
+            />
 
-        {/* 10 Strategic Showcase Slides */}
-        <ShowcaseCarousel
-          onSelectServiceForInquiry={handleSelectServiceForInquiry}
-        />
+            {/* Executive CEO Message Section (Placed High at Top) */}
+            <CeoMessage
+              onOpenVerification={() => setIsVerificationModalOpen(true)}
+              onNavigateContact={() => handleNavigateSection('contact')}
+            />
 
-        {/* Practice Pillars & Solutions */}
-        <ServicesPillars
-          onSelectServiceForInquiry={handleSelectServiceForInquiry}
-        />
+            {/* 10 Strategic Showcase Slides */}
+            <ShowcaseCarousel
+              onSelectServiceForInquiry={handleSelectServiceForInquiry}
+            />
 
-        {/* Statutory Profile & Mission */}
-        <CompanyOverview
-          onOpenVerification={() => setIsVerificationModalOpen(true)}
-        />
+            {/* Practice Pillars & Solutions */}
+            <ServicesPillars
+              onSelectServiceForInquiry={handleSelectServiceForInquiry}
+            />
 
-        {/* Our Integrated Global Capabilities */}
-        <IntegratedGlobalCapabilities
-          onSelectServiceForInquiry={handleSelectServiceForInquiry}
-        />
+            {/* Statutory Profile & Mission */}
+            <CompanyOverview
+              onOpenVerification={() => setIsVerificationModalOpen(true)}
+            />
 
-        {/* Why Institutions Choose Oskayi Consult */}
-        <WhyInstitutionsChoose
-          onNavigateContact={() => handleNavigateSection('contact')}
-        />
+            {/* Our Integrated Global Capabilities */}
+            <IntegratedGlobalCapabilities
+              onSelectServiceForInquiry={handleSelectServiceForInquiry}
+            />
 
-        {/* Executive Consultation & Inquiry Form */}
-        <InquiryForm
-          initialServiceTitle={selectedServiceForInquiry}
-          initialMessage={inquiryInitialMessage}
-        />
+            {/* Why Institutions Choose Oskayi Consult */}
+            <WhyInstitutionsChoose
+              onNavigateContact={() => handleNavigateSection('contact')}
+            />
 
-        {/* Location & GPS Map Hub */}
-        <ContactAndLocation />
-      </main>
+            {/* Executive Consultation & Inquiry Form */}
+            <InquiryForm
+              initialServiceTitle={selectedServiceForInquiry}
+              initialMessage={inquiryInitialMessage}
+            />
+
+            {/* Location & GPS Map Hub */}
+            <ContactAndLocation />
+          </main>
+
+          {/* Footer */}
+          <Footer
+            onOpenVerification={() => setIsVerificationModalOpen(true)}
+            onNavigateSection={handleNavigateSection}
+            onNavigateNexusCloud={handleNavigateNexusCloud}
+          />
+        </>
+      )}
 
       {/* Official Certificate Verification Modal */}
       <ComplianceModal
         isOpen={isVerificationModalOpen}
         onClose={() => setIsVerificationModalOpen(false)}
-      />
-
-      {/* Footer */}
-      <Footer
-        onOpenVerification={() => setIsVerificationModalOpen(true)}
-        onNavigateSection={handleNavigateSection}
       />
 
     </div>
