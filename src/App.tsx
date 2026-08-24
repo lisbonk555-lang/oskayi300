@@ -12,9 +12,10 @@ import { InquiryForm } from './components/InquiryForm';
 import { ContactAndLocation } from './components/ContactAndLocation';
 import { Footer } from './components/Footer';
 import { NexusCloudPage } from './pages/NexusCloudPage';
+import { SellerProtectPage } from './pages/SellerProtectPage';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'seller-protect'>('main');
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
   const [selectedServiceForInquiry, setSelectedServiceForInquiry] = useState<string>('Fintech Solutions for Banks');
@@ -27,6 +28,11 @@ export default function App() {
       const hash = window.location.hash;
       if (path === '/nexus-cloud' || hash === '#nexus-cloud') {
         setCurrentView('nexus-cloud');
+        setActiveSection('nexus-cloud');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (path === '/seller-protect' || hash === '#seller-protect') {
+        setCurrentView('seller-protect');
+        setActiveSection('seller-protect');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         setCurrentView('main');
@@ -45,6 +51,13 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateSellerProtect = () => {
+    setCurrentView('seller-protect');
+    setActiveSection('seller-protect');
+    window.history.pushState({}, '', '/seller-protect');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavigateHome = () => {
     setCurrentView('main');
     setActiveSection('hero');
@@ -55,6 +68,11 @@ export default function App() {
   const handleNavigateSection = (sectionId: string) => {
     if (sectionId === 'nexus-cloud') {
       handleNavigateNexusCloud();
+      return;
+    }
+
+    if (sectionId === 'seller-protect') {
+      handleNavigateSellerProtect();
       return;
     }
 
@@ -107,6 +125,11 @@ export default function App() {
           onNavigateHome={handleNavigateHome}
           onOpenVerification={() => setIsVerificationModalOpen(true)}
           onInitiateInquiry={handleSelectServiceForInquiry}
+        />
+      ) : currentView === 'seller-protect' ? (
+        <SellerProtectPage
+          onNavigateHome={handleNavigateHome}
+          onOpenVerification={() => setIsVerificationModalOpen(true)}
         />
       ) : (
         <>

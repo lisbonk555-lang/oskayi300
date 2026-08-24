@@ -110,23 +110,25 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
                 className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-indigo-950 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-xl shadow-amber-400/25 transition-all flex items-center justify-center gap-2 group"
               >
                 <Cpu className="w-4 h-4 text-indigo-950" />
-                <span>Explore NEXUS CLOUD → /nexus-cloud</span>
+                <span>NEXUS CLOUD → /nexus-cloud</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              {/* SELLER PROTECT Product CTA */}
+              <button
+                onClick={() => onNavigateSection('seller-protect')}
+                className="w-full sm:w-auto px-5 py-4 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-400/40 hover:border-amber-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
+              >
+                <ShieldCheck className="w-4 h-4 text-amber-400" />
+                <span>SELLER PROTECT (Buy • Pay • Protect)</span>
               </button>
 
               <button
                 onClick={() => onNavigateSection('showcase-slides')}
-                className="w-full sm:w-auto px-5 py-4 bg-slate-900 hover:bg-slate-800 text-white border border-indigo-700 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-5 py-4 bg-indigo-900/70 hover:bg-indigo-800 text-white border border-indigo-700/80 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-4 h-4 text-amber-400" />
                 <span>10 Showcase Slides</span>
-              </button>
-
-              <button
-                onClick={() => onNavigateSection('services')}
-                className="w-full sm:w-auto px-5 py-4 bg-indigo-900/70 hover:bg-indigo-800 text-white border border-indigo-700/80 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
-              >
-                <span>Solutions & Services</span>
               </button>
             </div>
 
