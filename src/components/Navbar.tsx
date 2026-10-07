@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Phone, Mail, Menu, X, ChevronRight, Award } from 'lucide-react';
+import { ShieldCheck, Phone, Mail, Menu, X, ChevronRight, Award, Zap, Globe, FileCode, ChevronDown } from 'lucide-react';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
 
 interface NavbarProps {
@@ -13,10 +13,24 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeSection
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [globalDropdownOpen, setGlobalDropdownOpen] = useState(false);
+
+  const globalDevSubItems = [
+    { id: 'overview-section', label: 'Overview', desc: 'We develop your $1.5B+ project free globally' },
+    { id: 'how-it-works-section', label: 'How It Works', desc: '4-step bankable structuring & syndication' },
+    { id: 'value-stack-section', label: "What's Included Free", desc: '$1B+ advisory, legal SPV, and $1.155B wrap' },
+    { id: 'sectors-section', label: 'Sectors', desc: 'Ports, rail, power transition, and AI fabs' },
+    { id: 'coverage-section', label: 'Global Coverage', desc: 'Interactive map across 6 sovereign regions' },
+    { id: 'why-free-section', label: 'Why Free?', desc: 'Aligned 20% success fee: No close, no fee' },
+    { id: 'case-studies-section', label: 'Case Studies', desc: 'Demonstrated bankability & pipeline proof' },
+    { id: 'apply-section', label: 'Apply Free', desc: 'Submit project brief for 48h qualification' }
+  ];
 
   const navItems = [
+    { id: 'credit-checkout', label: 'CREDIT CHECKOUT', isSpecial: true, isNew: true },
     { id: 'nexus-cloud', label: 'NEXUS CLOUD', isSpecial: true },
     { id: 'seller-protect', label: 'SELLER PROTECT', isSpecial: true, isNew: true },
+    { id: 'free-global-development', label: 'Free Global Development', isGlobalDev: true },
     { id: 'ceo-message', label: 'President & CEO Vision' },
     { id: 'showcase-slides', label: '10 Showcase Slides' },
     { id: 'services', label: 'Solutions & Services' },
@@ -26,9 +40,18 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'contact', label: 'Contact Us' }
   ];
 
-  const handleNavClick = (id: string) => {
-    onNavigateSection(id);
+  const handleNavClick = (id: string, subSectionId?: string) => {
+    if (id === 'free-global-development' && subSectionId) {
+      onNavigateSection('free-global-development');
+      setTimeout(() => {
+        const el = document.getElementById(subSectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    } else {
+      onNavigateSection(id);
+    }
     setMobileMenuOpen(false);
+    setGlobalDropdownOpen(false);
   };
 
   return (
@@ -114,6 +137,24 @@ export const Navbar: React.FC<NavbarProps> = ({
         <nav className="hidden lg:flex items-center gap-3.5 text-[11px] font-bold uppercase tracking-wider">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
+            if (item.id === 'credit-checkout') {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3.5 py-1 rounded-full text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-amber-400 text-indigo-950 shadow-md shadow-amber-400/30 ring-2 ring-amber-300'
+                      : 'bg-amber-400/20 text-amber-300 border border-amber-400/50 hover:bg-amber-400/30'
+                  }`}
+                >
+                  <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                  <span>{item.label}</span>
+                  <span className="px-1.5 py-0.2 text-[9px] bg-amber-400 text-indigo-950 rounded font-black">ZERO GAS</span>
+                </button>
+              );
+            }
+
             if (item.id === 'nexus-cloud') {
               return (
                 <button
@@ -146,6 +187,57 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span>{item.label}</span>
                   <span className="px-1.5 py-0.2 text-[9px] bg-amber-400 text-slate-950 rounded font-black">NEW</span>
                 </button>
+              );
+            }
+
+            if (item.id === 'free-global-development') {
+              return (
+                <div 
+                  key={item.id} 
+                  className="relative group"
+                  onMouseEnter={() => setGlobalDropdownOpen(true)}
+                  onMouseLeave={() => setGlobalDropdownOpen(false)}
+                >
+                  <button
+                    onClick={() => handleNavClick(item.id)}
+                    className={`transition-all py-1.5 px-2.5 rounded-lg flex items-center gap-1.5 relative ${
+                      isActive
+                        ? 'text-amber-300 font-extrabold bg-[#0A1931] border border-[#D4AF37]/50 shadow-md shadow-[#D4AF37]/10'
+                        : 'text-slate-100 hover:text-amber-300 hover:bg-[#0A1931]/60'
+                    }`}
+                  >
+                    {/* Gold Highlight Dot */}
+                    <span className="w-2 h-2 rounded-full bg-[#D4AF37] shadow-sm shadow-[#D4AF37] animate-pulse" />
+                    <span className="tracking-wide">{item.label}</span>
+                    <ChevronDown className={`w-3 h-3 text-[#D4AF37] transition-transform duration-200 ${globalDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+
+                  {/* On hover dropdown: Overview | How It Works | Sectors | Global Coverage | Case Studies | Apply */}
+                  {globalDropdownOpen && (
+                    <div className="absolute top-full left-0 w-72 mt-1 bg-[#0A1931] border border-[#D4AF37]/40 rounded-xl shadow-2xl p-2 z-50 backdrop-blur-xl animate-in fade-in slide-in-from-top-1 duration-150">
+                      <div className="px-3 py-1.5 border-b border-slate-800 text-[10px] uppercase font-bold text-[#D4AF37] flex items-center justify-between">
+                        <span>Free $1.5B+ Development</span>
+                        <span className="text-white">$0 Upfront</span>
+                      </div>
+                      <div className="py-1 space-y-0.5">
+                        {globalDevSubItems.map((sub) => (
+                          <button
+                            key={sub.id}
+                            onClick={() => handleNavClick('free-global-development', sub.id)}
+                            className="w-full text-left px-3 py-2 rounded-lg hover:bg-[#132746] hover:text-[#D4AF37] transition-colors flex flex-col group/sub"
+                          >
+                            <span className="text-xs font-bold text-white group-hover/sub:text-[#D4AF37]">
+                              {sub.label}
+                            </span>
+                            <span className="text-[10px] text-slate-400 truncate">
+                              {sub.desc}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               );
             }
 
@@ -191,19 +283,47 @@ export const Navbar: React.FC<NavbarProps> = ({
       {mobileMenuOpen && (
         <div className="lg:hidden bg-indigo-950 border-b border-indigo-800 px-4 pt-3 pb-6 space-y-3">
           <div className="space-y-1">
-            {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`block w-full text-left px-3 py-2 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors ${
-                  activeSection === item.id 
-                    ? 'bg-indigo-800 text-amber-300' 
-                    : 'text-slate-200 hover:bg-indigo-900 hover:text-white'
-                }`}
-              >
-                {item.label}
-              </button>
-            ))}
+            {navItems.map((item) => {
+              if (item.id === 'free-global-development') {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`block w-full text-left px-3 py-2.5 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors flex items-center justify-between ${
+                      activeSection === item.id 
+                        ? 'bg-[#0A1931] text-[#D4AF37] border border-[#D4AF37]/50' 
+                        : 'text-[#D4AF37] bg-[#0A1931]/40 hover:bg-[#132746]'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {/* Globe + Blueprint Icon */}
+                      <span className="flex items-center text-[#D4AF37]">
+                        <Globe className="w-3.5 h-3.5 mr-0.5" />
+                        <FileCode className="w-3.5 h-3.5 text-amber-300" />
+                      </span>
+                      <span>{item.label}</span>
+                    </span>
+                    <span className="px-1.5 py-0.2 text-[9px] bg-[#D4AF37] text-[#0A1931] font-black rounded">
+                      FREE $1.5B+
+                    </span>
+                  </button>
+                );
+              }
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`block w-full text-left px-3 py-2 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors ${
+                    activeSection === item.id 
+                      ? 'bg-indigo-800 text-amber-300' 
+                      : 'text-slate-200 hover:bg-indigo-900 hover:text-white'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </div>
 
           <div className="pt-3 border-t border-indigo-900">

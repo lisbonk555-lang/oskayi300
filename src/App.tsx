@@ -13,9 +13,11 @@ import { ContactAndLocation } from './components/ContactAndLocation';
 import { Footer } from './components/Footer';
 import { NexusCloudPage } from './pages/NexusCloudPage';
 import { SellerProtectPage } from './pages/SellerProtectPage';
+import { CreditCheckoutPage } from './pages/CreditCheckoutPage';
+import { FreeGlobalDevelopmentPage } from './pages/FreeGlobalDevelopmentPage';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'seller-protect'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'seller-protect' | 'credit-checkout' | 'free-global-development'>('main');
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
   const [selectedServiceForInquiry, setSelectedServiceForInquiry] = useState<string>('Fintech Solutions for Banks');
@@ -26,7 +28,15 @@ export default function App() {
     const handleUrlChange = () => {
       const path = window.location.pathname;
       const hash = window.location.hash;
-      if (path === '/nexus-cloud' || hash === '#nexus-cloud') {
+      if (path === '/free-global-development' || hash === '#free-global-development') {
+        setCurrentView('free-global-development');
+        setActiveSection('free-global-development');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (path === '/credit-checkout' || hash === '#credit-checkout') {
+        setCurrentView('credit-checkout');
+        setActiveSection('credit-checkout');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (path === '/nexus-cloud' || hash === '#nexus-cloud') {
         setCurrentView('nexus-cloud');
         setActiveSection('nexus-cloud');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -43,6 +53,20 @@ export default function App() {
     window.addEventListener('popstate', handleUrlChange);
     return () => window.removeEventListener('popstate', handleUrlChange);
   }, []);
+
+  const handleNavigateFreeGlobalDev = () => {
+    setCurrentView('free-global-development');
+    setActiveSection('free-global-development');
+    window.history.pushState({}, '', '/free-global-development');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateCreditCheckout = () => {
+    setCurrentView('credit-checkout');
+    setActiveSection('credit-checkout');
+    window.history.pushState({}, '', '/credit-checkout');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleNavigateNexusCloud = () => {
     setCurrentView('nexus-cloud');
@@ -66,6 +90,16 @@ export default function App() {
   };
 
   const handleNavigateSection = (sectionId: string) => {
+    if (sectionId === 'free-global-development') {
+      handleNavigateFreeGlobalDev();
+      return;
+    }
+
+    if (sectionId === 'credit-checkout') {
+      handleNavigateCreditCheckout();
+      return;
+    }
+
     if (sectionId === 'nexus-cloud') {
       handleNavigateNexusCloud();
       return;
@@ -119,8 +153,22 @@ export default function App() {
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans antialiased selection:bg-amber-400 selection:text-slate-950">
       
-      {/* If viewing NEXUS CLOUD dedicated page */}
-      {currentView === 'nexus-cloud' ? (
+      {/* Top Navbar */}
+      <Navbar
+        onOpenVerification={() => setIsVerificationModalOpen(true)}
+        onNavigateSection={handleNavigateSection}
+        activeSection={activeSection}
+      />
+
+      {/* View routing */}
+      {currentView === 'free-global-development' ? (
+        <FreeGlobalDevelopmentPage
+          onNavigateHome={handleNavigateHome}
+          onOpenVerification={() => setIsVerificationModalOpen(true)}
+        />
+      ) : currentView === 'credit-checkout' ? (
+        <CreditCheckoutPage />
+      ) : currentView === 'nexus-cloud' ? (
         <NexusCloudPage
           onNavigateHome={handleNavigateHome}
           onOpenVerification={() => setIsVerificationModalOpen(true)}
@@ -133,13 +181,6 @@ export default function App() {
         />
       ) : (
         <>
-          {/* Top Navbar */}
-          <Navbar
-            onOpenVerification={() => setIsVerificationModalOpen(true)}
-            onNavigateSection={handleNavigateSection}
-            activeSection={activeSection}
-          />
-
           {/* Main Content Sections */}
           <main>
             {/* Executive Hero */}
@@ -162,7 +203,13 @@ export default function App() {
 
             {/* Practice Pillars & Solutions */}
             <ServicesPillars
-              onSelectServiceForInquiry={handleSelectServiceForInquiry}
+              onSelectServiceForInquiry={(title) => {
+                if (title.toLowerCase().includes('credit sponsored checkout')) {
+                  handleNavigateCreditCheckout();
+                } else {
+                  handleSelectServiceForInquiry(title);
+                }
+              }}
             />
 
             {/* Statutory Profile & Mission */}

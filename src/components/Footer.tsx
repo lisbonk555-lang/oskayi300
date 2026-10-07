@@ -99,6 +99,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
               </span>
             </button>
 
+            {/* FREE GLOBAL DEVELOPMENT Fast Access Badge */}
+            <button
+              onClick={() => onNavigateSection('free-global-development')}
+              className="w-full p-2.5 rounded-xl bg-[#0A1931] hover:bg-[#132746] border border-[#D4AF37]/50 text-[#D4AF37] hover:text-white text-xs font-mono font-bold flex items-center justify-between transition-all group"
+            >
+              <span className="flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-[#D4AF37] group-hover:rotate-45 transition-transform" />
+                <span>FREE GLOBAL DEVELOPMENT ($1.5B+)</span>
+              </span>
+              <span className="text-[10px] bg-[#D4AF37] text-[#0A1931] px-1.5 py-0.5 rounded font-black">
+                FREE
+              </span>
+            </button>
+
             {/* SELLER PROTECT Fast Access Badge */}
             <button
               onClick={() => onNavigateSection('seller-protect')}

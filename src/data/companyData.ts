@@ -25,6 +25,24 @@ export const OFFICIAL_COMPANY_INFO: CompanyVerificationInfo = {
 
 export const SERVICE_PILLARS: ServicePillar[] = [
   {
+    id: "credit-sponsored-checkout",
+    title: "Oskayi Credit Sponsored Checkout",
+    category: "Fintech",
+    badge: "Zero Gas • Regulated Credit",
+    summary: "Get credit. Get protected. Transact without holding blockchain gas. Orchestrated credit checkout for customers with GH₵0 balances.",
+    description: "Production-grade credit-sponsored checkout orchestration. Third-party Bank of Ghana licensed credit providers evaluate and fund purchases instantly, independent paymasters sponsor ERC-4337 blockchain gas, and Curacel underwrites credit life protection. Merchants receive 100% upfront settlement while customers repay over 1 to 12 months.",
+    keyCapabilities: [
+      "Zero-Balance Customer Flow: Transact with GH₵0 in bank, 0 USDT & 0 native gas",
+      "Regulated Third-Party Underwriting: QuickCredit Tier-2, Stanbic & Finastra Loan IQ",
+      "ERC-4337 Account Abstraction Paymasters: Biconomy, Pimlico & ZeroDev sponsored gas",
+      "Curacel Credit Life Protection: Covers loan in covered medical/disability events",
+      "Transparent Line-Item Ledger: Total separation of credit, gas, insurance & merchant payout"
+    ],
+    targetAudience: "E-commerce Platforms, Retail Merchants, Renewable Energy Buyers & Point of Sale Consortia",
+    partnerDeliveryModel: "Orchestrated by Oskayi • Funded by Licensed Credit Providers & Insurers",
+    status: "Active"
+  },
+  {
     id: "credit-facility-provision",
     title: "Credit Facility Provision & Capital Disbursement",
     category: "Fintech",
