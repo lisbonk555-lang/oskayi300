@@ -11,13 +11,14 @@ import { ComplianceModal } from './components/ComplianceModal';
 import { InquiryForm } from './components/InquiryForm';
 import { ContactAndLocation } from './components/ContactAndLocation';
 import { Footer } from './components/Footer';
+import { GlobalTreasuryFintechSection } from './components/GlobalTreasuryFintechSection';
+import { CrossBorderSmeTreasurySection } from './components/CrossBorderSmeTreasurySection';
 import { NexusCloudPage } from './pages/NexusCloudPage';
-import { SellerProtectPage } from './pages/SellerProtectPage';
 import { CreditCheckoutPage } from './pages/CreditCheckoutPage';
 import { FreeGlobalDevelopmentPage } from './pages/FreeGlobalDevelopmentPage';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'seller-protect' | 'credit-checkout' | 'free-global-development'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development'>('main');
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
   const [selectedServiceForInquiry, setSelectedServiceForInquiry] = useState<string>('Fintech Solutions for Banks');
@@ -39,10 +40,6 @@ export default function App() {
       } else if (path === '/nexus-cloud' || hash === '#nexus-cloud') {
         setCurrentView('nexus-cloud');
         setActiveSection('nexus-cloud');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } else if (path === '/seller-protect' || hash === '#seller-protect') {
-        setCurrentView('seller-protect');
-        setActiveSection('seller-protect');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         setCurrentView('main');
@@ -75,13 +72,6 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleNavigateSellerProtect = () => {
-    setCurrentView('seller-protect');
-    setActiveSection('seller-protect');
-    window.history.pushState({}, '', '/seller-protect');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const handleNavigateHome = () => {
     setCurrentView('main');
     setActiveSection('hero');
@@ -102,11 +92,6 @@ export default function App() {
 
     if (sectionId === 'nexus-cloud') {
       handleNavigateNexusCloud();
-      return;
-    }
-
-    if (sectionId === 'seller-protect') {
-      handleNavigateSellerProtect();
       return;
     }
 
@@ -174,11 +159,6 @@ export default function App() {
           onOpenVerification={() => setIsVerificationModalOpen(true)}
           onInitiateInquiry={handleSelectServiceForInquiry}
         />
-      ) : currentView === 'seller-protect' ? (
-        <SellerProtectPage
-          onNavigateHome={handleNavigateHome}
-          onOpenVerification={() => setIsVerificationModalOpen(true)}
-        />
       ) : (
         <>
           {/* Main Content Sections */}
@@ -215,6 +195,16 @@ export default function App() {
             {/* Statutory Profile & Mission */}
             <CompanyOverview
               onOpenVerification={() => setIsVerificationModalOpen(true)}
+            />
+
+            {/* Global Treasury & Cash Management Orchestration Service + Core Fintech Engines */}
+            <GlobalTreasuryFintechSection
+              onSelectServiceForInquiry={handleSelectServiceForInquiry}
+            />
+
+            {/* Cross-Border SME Treasury Orchestration Service */}
+            <CrossBorderSmeTreasurySection
+              onSelectServiceForInquiry={handleSelectServiceForInquiry}
             />
 
             {/* Our Integrated Global Capabilities */}

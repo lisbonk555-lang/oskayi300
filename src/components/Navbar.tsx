@@ -29,8 +29,9 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navItems = [
     { id: 'credit-checkout', label: 'CREDIT CHECKOUT', isSpecial: true, isNew: true },
     { id: 'nexus-cloud', label: 'NEXUS CLOUD', isSpecial: true },
-    { id: 'seller-protect', label: 'SELLER PROTECT', isSpecial: true, isNew: true },
     { id: 'free-global-development', label: 'Free Global Development', isGlobalDev: true },
+    { id: 'treasury-orchestration', label: 'Global Treasury' },
+    { id: 'sme-treasury', label: 'SME Treasury' },
     { id: 'ceo-message', label: 'President & CEO Vision' },
     { id: 'showcase-slides', label: '10 Showcase Slides' },
     { id: 'services', label: 'Solutions & Services' },
@@ -168,24 +169,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
                   <span>{item.label}</span>
-                </button>
-              );
-            }
-
-            if (item.id === 'seller-protect') {
-              return (
-                <button
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
-                    isActive
-                      ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20'
-                      : 'bg-indigo-900/60 text-amber-300 border border-amber-400/40 hover:bg-amber-400/20'
-                  }`}
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-                  <span>{item.label}</span>
-                  <span className="px-1.5 py-0.2 text-[9px] bg-amber-400 text-slate-950 rounded font-black">NEW</span>
                 </button>
               );
             }
