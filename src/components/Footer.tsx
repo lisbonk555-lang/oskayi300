@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Phone, Mail, MapPin, Award, Globe, Cpu, Sparkles, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Phone, Mail, MapPin, Award, Globe, Cpu, Sparkles, ArrowRight, Zap } from 'lucide-react';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
 import { GTBankLogo, StandardCharteredLogo } from './BankerLogos';
 import { FinastraLogo } from './FinastraLogo';
@@ -99,6 +99,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
               </span>
             </button>
 
+            {/* FLEET ORCHESTRATION Fast Access Badge */}
+            <button
+              onClick={() => onNavigateSection('fleet')}
+              className="w-full p-2.5 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-400/10 hover:from-amber-500/30 hover:to-amber-400/20 border border-amber-400/40 text-amber-300 hover:text-white text-xs font-mono font-bold flex items-center justify-between transition-all group"
+            >
+              <span className="flex items-center gap-1.5">
+                <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform" />
+                <span className="text-white">10 ENGINES FLEET & ONBOARDING</span>
+              </span>
+              <span className="text-[10px] bg-amber-400 text-slate-950 px-1.5 py-0.5 rounded font-black">
+                PORTAL
+              </span>
+            </button>
+
             {/* FREE GLOBAL DEVELOPMENT Fast Access Badge */}
             <button
               onClick={() => onNavigateSection('free-global-development')}
@@ -114,40 +128,46 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
             </button>
           </div>
 
-          {/* Col 2: Practice Areas */}
+          {/* Col 2: Institutional Products & Research */}
           <div className="space-y-3">
             <h4 className="font-serif font-bold text-sm text-white uppercase tracking-wider">
-              Practice Pillars
+              Products & Intelligence
             </h4>
             <ul className="space-y-2 text-xs font-sans">
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
-                  Liquidity & Loans for Banks & Financial Institutions
+                <button onClick={() => onNavigateSection('products')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <span>AfriTreasury OS — Capital Markets BOT</span>
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
-                  Sovereign & Corporate Project Financing
+                <button onClick={() => onNavigateSection('fleet')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span>10-Engine Financial Orchestration Fleet</span>
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
-                  Exclusive Insurance (Individuals, Auto, Home, Travel)
+                <button onClick={() => onNavigateSection('news-articles')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span>News & Strategic Updates (Hourly Feed)</span>
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
-                  Fleet of Fintech & Web3 App Development
+                <button onClick={() => onNavigateSection('free-global-development')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-300" />
+                  <span>Free Global Project Development ($1.5B+)</span>
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
-                  Cross-Industry Digital Growth Solutions
+                <button onClick={() => onNavigateSection('treasury-orchestration')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
+                  <span>Global Treasury & Cash Orchestration</span>
                 </button>
               </li>
               <li>
-                <button onClick={() => onNavigateSection('services')} className="hover:text-amber-300 transition-colors text-left">
-                  ICT Consultancy (ISIC 8299)
+                <button onClick={() => onNavigateSection('sme-treasury')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-400" />
+                  <span>Cross-Border SME Treasury & Paystack Rails</span>
                 </button>
               </li>
             </ul>

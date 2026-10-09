@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Phone, Mail, Menu, X, ChevronRight, Award, Zap, Globe, FileCode, ChevronDown } from 'lucide-react';
+import { ShieldCheck, Phone, Mail, Menu, X, ChevronRight, Award, Zap, Globe, FileCode, ChevronDown, Bot } from 'lucide-react';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
 
 interface NavbarProps {
@@ -27,15 +27,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   const navItems = [
+    { id: 'fleet', label: '10 ENGINES FLEET', isSpecial: true, isFleet: true, isNew: true },
+    { id: 'products', label: 'PRODUCTS', isSpecial: true },
     { id: 'credit-checkout', label: 'CREDIT CHECKOUT', isSpecial: true, isNew: true },
     { id: 'nexus-cloud', label: 'NEXUS CLOUD', isSpecial: true },
     { id: 'free-global-development', label: 'Free Global Development', isGlobalDev: true },
     { id: 'treasury-orchestration', label: 'Global Treasury' },
     { id: 'sme-treasury', label: 'SME Treasury' },
+    { id: 'news-articles', label: 'News & Articles' },
     { id: 'ceo-message', label: 'President & CEO Vision' },
-    { id: 'showcase-slides', label: '10 Showcase Slides' },
-    { id: 'services', label: 'Solutions & Services' },
-    { id: 'capabilities', label: 'Global Capabilities' },
     { id: 'why-oskayi', label: 'Why Oskayi' },
     { id: 'overview', label: 'About Oskayi' },
     { id: 'contact', label: 'Contact Us' }
@@ -138,6 +138,42 @@ export const Navbar: React.FC<NavbarProps> = ({
         <nav className="hidden lg:flex items-center gap-3.5 text-[11px] font-bold uppercase tracking-wider">
           {navItems.map((item) => {
             const isActive = activeSection === item.id;
+            if (item.id === 'fleet') {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 font-black shadow-lg shadow-amber-400/30 ring-2 ring-amber-300'
+                      : 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/25'
+                  }`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>{item.label}</span>
+                  <span className="px-1.5 py-0.2 text-[9px] bg-emerald-400 text-slate-950 rounded font-black">PORTAL</span>
+                </button>
+              );
+            }
+
+            if (item.id === 'products') {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3.5 py-1 rounded-full text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20'
+                      : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 hover:bg-indigo-500/30'
+                  }`}
+                >
+                  <Bot className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{item.label}</span>
+                  <span className="px-1.5 py-0.2 text-[9px] bg-amber-400 text-slate-950 rounded font-black">BOT</span>
+                </button>
+              );
+            }
+
             if (item.id === 'credit-checkout') {
               return (
                 <button
@@ -267,6 +303,50 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="lg:hidden bg-indigo-950 border-b border-indigo-800 px-4 pt-3 pb-6 space-y-3">
           <div className="space-y-1">
             {navItems.map((item) => {
+              if (item.id === 'fleet') {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`block w-full text-left px-3 py-2.5 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors flex items-center justify-between ${
+                      activeSection === item.id 
+                        ? 'bg-amber-400 text-slate-950 shadow-md' 
+                        : 'text-amber-300 bg-amber-400/10 border border-amber-400/30 hover:bg-amber-400/20'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Zap className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                      <span>{item.label}</span>
+                    </span>
+                    <span className="px-1.5 py-0.2 text-[9px] bg-emerald-400 text-slate-950 font-black rounded">
+                      10 ENGINES
+                    </span>
+                  </button>
+                );
+              }
+
+              if (item.id === 'products') {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`block w-full text-left px-3 py-2.5 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors flex items-center justify-between ${
+                      activeSection === item.id 
+                        ? 'bg-amber-400 text-slate-950 shadow-md' 
+                        : 'text-indigo-300 bg-indigo-900/40 border border-indigo-700/50 hover:bg-indigo-900/60'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Bot className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{item.label}</span>
+                    </span>
+                    <span className="px-1.5 py-0.2 text-[9px] bg-amber-400 text-slate-950 font-black rounded">
+                      BOT TERMINAL
+                    </span>
+                  </button>
+                );
+              }
+
               if (item.id === 'free-global-development') {
                 return (
                   <button

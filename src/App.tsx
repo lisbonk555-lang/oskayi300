@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { ShowcaseCarousel } from './components/ShowcaseCarousel';
-import { ServicesPillars } from './components/ServicesPillars';
 import { CeoMessage } from './components/CeoMessage';
 import { CompanyOverview } from './components/CompanyOverview';
-import { IntegratedGlobalCapabilities } from './components/IntegratedGlobalCapabilities';
+import { ProductsSection } from './components/ProductsSection';
+import { NewsAndArticlesSection } from './components/NewsAndArticlesSection';
 import { WhyInstitutionsChoose } from './components/WhyInstitutionsChoose';
 import { ComplianceModal } from './components/ComplianceModal';
 import { InquiryForm } from './components/InquiryForm';
@@ -16,9 +15,10 @@ import { CrossBorderSmeTreasurySection } from './components/CrossBorderSmeTreasu
 import { NexusCloudPage } from './pages/NexusCloudPage';
 import { CreditCheckoutPage } from './pages/CreditCheckoutPage';
 import { FreeGlobalDevelopmentPage } from './pages/FreeGlobalDevelopmentPage';
+import { FleetOrchestrationPortalPage } from './pages/FleetOrchestrationPortalPage';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development' | 'fleet-orchestration'>('main');
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
   const [selectedServiceForInquiry, setSelectedServiceForInquiry] = useState<string>('Fintech Solutions for Banks');
@@ -29,7 +29,11 @@ export default function App() {
     const handleUrlChange = () => {
       const path = window.location.pathname;
       const hash = window.location.hash;
-      if (path === '/free-global-development' || hash === '#free-global-development') {
+      if (path === '/fleet' || hash === '#fleet' || path === '/fleet-orchestration' || hash === '#fleet-orchestration') {
+        setCurrentView('fleet-orchestration');
+        setActiveSection('fleet-orchestration');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (path === '/free-global-development' || hash === '#free-global-development') {
         setCurrentView('free-global-development');
         setActiveSection('free-global-development');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -72,6 +76,13 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateFleetOrchestration = () => {
+    setCurrentView('fleet-orchestration');
+    setActiveSection('fleet-orchestration');
+    window.history.pushState({}, '', '/fleet');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavigateHome = () => {
     setCurrentView('main');
     setActiveSection('hero');
@@ -80,6 +91,11 @@ export default function App() {
   };
 
   const handleNavigateSection = (sectionId: string) => {
+    if (sectionId === 'fleet' || sectionId === 'fleet-orchestration') {
+      handleNavigateFleetOrchestration();
+      return;
+    }
+
     if (sectionId === 'free-global-development') {
       handleNavigateFreeGlobalDev();
       return;
@@ -146,7 +162,12 @@ export default function App() {
       />
 
       {/* View routing */}
-      {currentView === 'free-global-development' ? (
+      {currentView === 'fleet-orchestration' ? (
+        <FleetOrchestrationPortalPage
+          onNavigateHome={handleNavigateHome}
+          onOpenVerification={() => setIsVerificationModalOpen(true)}
+        />
+      ) : currentView === 'free-global-development' ? (
         <FreeGlobalDevelopmentPage
           onNavigateHome={handleNavigateHome}
           onOpenVerification={() => setIsVerificationModalOpen(true)}
@@ -176,20 +197,12 @@ export default function App() {
               onNavigateContact={() => handleNavigateSection('contact')}
             />
 
-            {/* 10 Strategic Showcase Slides */}
-            <ShowcaseCarousel
-              onSelectServiceForInquiry={handleSelectServiceForInquiry}
-            />
-
-            {/* Practice Pillars & Solutions */}
-            <ServicesPillars
-              onSelectServiceForInquiry={(title) => {
-                if (title.toLowerCase().includes('credit sponsored checkout')) {
-                  handleNavigateCreditCheckout();
-                } else {
-                  handleSelectServiceForInquiry(title);
-                }
-              }}
+            {/* Institutional Software Products & Autonomous Intelligence BOTs */}
+            <ProductsSection
+              onNavigateSection={handleNavigateSection}
+              onNavigateNexusCloud={handleNavigateNexusCloud}
+              onNavigateCreditCheckout={handleNavigateCreditCheckout}
+              onNavigateFleet={handleNavigateFleetOrchestration}
             />
 
             {/* Statutory Profile & Mission */}
@@ -207,8 +220,8 @@ export default function App() {
               onSelectServiceForInquiry={handleSelectServiceForInquiry}
             />
 
-            {/* Our Integrated Global Capabilities */}
-            <IntegratedGlobalCapabilities
+            {/* Automated News & Articles: Empowering African & Global Growth */}
+            <NewsAndArticlesSection
               onSelectServiceForInquiry={handleSelectServiceForInquiry}
             />
 

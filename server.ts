@@ -33,6 +33,10 @@ interface DatabaseSchema {
   creditInsurancePolicies: any[];
   creditInsuranceClaims: any[];
   projectApplications?: any[];
+  fleetApplications?: any[];
+  fleetTenants?: any[];
+  fleetUsers?: any[];
+  fleetLedgerEntries?: any[];
 }
 
 const INITIAL_INSURANCE_PRODUCTS = [
@@ -328,6 +332,269 @@ const INITIAL_PRODUCTS_SEED = [
   }
 ];
 
+const INITIAL_FLEET_TENANTS = [
+  {
+    id: "tenant-savanna-001",
+    name: "Savanna Trade Logistics & E-Commerce Ltd",
+    registrationNumber: "GH-ROC-CS-77192",
+    taxId: "TIN-GH-9021884",
+    country: "Ghana",
+    businessType: "Cross-Border Trade & Marketplace",
+    userType: "sme_owner",
+    status: "ACTIVE",
+    baseCurrency: "USD",
+    monthlyVolumeUsd: 185000,
+    enabledModules: [
+      "sme-treasury",
+      "digital-treasury",
+      "marketplace-payouts",
+      "marketplace-lending",
+      "distributed-payroll"
+    ],
+    connectors: {
+      paystack: { connected: true, status: "LIVE", keySnippet: "pk_live_...94a1", lastSync: "2026-10-07T03:30:00Z" },
+      mono: { connected: true, status: "LIVE", tokenSnippet: "mono_sec_...44bb", lastSync: "2026-10-07T03:25:00Z" },
+      okra: { connected: true, status: "LIVE", tokenSnippet: "okra_live_...11fe", lastSync: "2026-10-07T03:20:00Z" },
+      stitch: { connected: true, status: "LIVE", tokenSnippet: "stitch_cl_...88cd", lastSync: "2026-10-07T03:15:00Z" },
+      shopify: { connected: true, status: "LIVE", storeUrl: "savanna-market.myshopify.com", lastSync: "2026-10-07T03:10:00Z" },
+      woocommerce: { connected: true, status: "LIVE", storeUrl: "store.savannatrade.com", lastSync: "2026-10-07T03:05:00Z" },
+      coingecko: { connected: true, status: "LIVE", lastSync: "2026-10-07T03:40:00Z" },
+      exchangerate: { connected: true, status: "LIVE", lastSync: "2026-10-07T03:40:00Z" }
+    },
+    moduleConfigs: {
+      "sme-treasury": { baseCurrency: "USD", autoSweepThresholdUsd: 50000, payrollSchedule: "Monthly 25th", autoSweepTargetCurrency: "USD" },
+      "digital-treasury": { primaryRail: "Paystack Mobile Money & Bank Direct", sweepTimeUtc: "23:00", autoNetting: true },
+      "marketplace-payouts": { payoutFrequency: "DAILY_BATCH", feeCutPct: 2.0, payoutRail: "Paystack Bulk Transfer API" },
+      "marketplace-lending": { preferredFinancingUsd: 35000, maxAprPct: 15.0, repaymentSplitPct: 15 },
+      "distributed-payroll": { payoutCycle: "BI_WEEKLY", primaryCorridors: ["Ghana", "Nigeria", "Kenya", "South Africa"] }
+    },
+    createdAt: "2026-09-15T10:00:00Z",
+    updatedAt: "2026-10-07T02:00:00Z"
+  }
+];
+
+const INITIAL_FLEET_USERS = [
+  {
+    id: "user-kwame-01",
+    email: "kwame@savannatrade.com",
+    name: "Kwame Asante",
+    role: "owner_admin",
+    tenantId: "tenant-savanna-001",
+    userType: "sme_owner",
+    phone: "+233 24 188 9901",
+    twoFactorEnabled: true,
+    lastLogin: "2026-10-07T03:15:00Z"
+  },
+  {
+    id: "user-amara-02",
+    email: "amara@savannatrade.com",
+    name: "Amara Diallo",
+    role: "finance_manager",
+    tenantId: "tenant-savanna-001",
+    userType: "sme_owner",
+    phone: "+233 50 992 4810",
+    twoFactorEnabled: false,
+    lastLogin: "2026-10-06T18:45:00Z"
+  },
+  {
+    id: "user-kofi-03",
+    email: "kofi@savannatrade.com",
+    name: "Kofi Mensah",
+    role: "viewer_analyst",
+    tenantId: "tenant-savanna-001",
+    userType: "sme_owner",
+    phone: "+233 27 334 1120",
+    twoFactorEnabled: false,
+    lastLogin: "2026-10-05T11:00:00Z"
+  },
+  {
+    id: "user-admin-01",
+    email: "admin@oskayiconsult.com",
+    name: "Chief Risk & Operations Officer",
+    role: "owner_admin",
+    tenantId: "global-oskayi-hq",
+    userType: "treasury_admin",
+    phone: "+233 55 929 1199",
+    twoFactorEnabled: true,
+    lastLogin: "2026-10-07T03:50:00Z"
+  }
+];
+
+const INITIAL_FLEET_APPLICATIONS = [
+  {
+    id: "app-fleet-atlas-002",
+    businessName: "Atlas Pan-African Health & Logistics SARL",
+    applicantName: "Dr. Fatima El-Mansouri",
+    email: "fatima@atlashealthcorp.org",
+    phone: "+233 24 555 0192",
+    country: "Ghana",
+    businessType: "Insurer / Benefits Provider",
+    userType: "insurer_admin",
+    estimatedMonthlyVolume: "$250,000 - $1,000,000",
+    status: "pending_review",
+    submittedAt: "2026-10-06T14:20:00Z",
+    selectedModules: [
+      "insurance-distribution",
+      "benefits-insurance",
+      "digital-treasury"
+    ],
+    profile: {
+      legalName: "Atlas Pan-African Health & Logistics SARL",
+      registrationNumber: "GH-ROC-CS-88392",
+      taxId: "C0028941039",
+      address: "Plot 14 Ring Road Central, Ridge, Accra",
+      website: "https://atlashealthcorp.org",
+      industry: "Healthcare, Underwriting & Employee Benefits"
+    },
+    useCaseData: {
+      targetCustomerSegment: "Diaspora and corporate employees",
+      expectedMonthlyPolicies: "4,500 active policies",
+      claimsThresholdUsd: 500,
+      payrollIntegrationMode: "Automated direct deduction"
+    },
+    connectors: [
+      { id: "paystack", status: "VERIFIED_TEST", keySnippet: "pk_test_...84b2", note: "Tested via lightweight charges ping (200 OK)" },
+      { id: "mono", status: "VERIFIED_TEST", tokenSnippet: "mono_sec_...91ac", note: "Direct bank authorization verified" }
+    ],
+    kycDocs: [
+      { type: "DIRECTOR_ID", fileName: "fatima_passport_verified.pdf", size: "2.4 MB", verified: true, uploadedAt: "2026-10-06T14:15:00Z" },
+      { type: "BUSINESS_REG", fileName: "atlas_incorporation_cert.pdf", size: "4.1 MB", verified: true, uploadedAt: "2026-10-06T14:18:00Z" },
+      { type: "PROOF_OF_ADDRESS", fileName: "ridge_office_lease_bankstatement.pdf", size: "3.2 MB", verified: true, uploadedAt: "2026-10-06T14:19:00Z" }
+    ],
+    moduleConfigs: {
+      "insurance-distribution": { autoAdjudicateLimit: 500, payoutRail: "Paystack Mobile Money & Bank Direct" },
+      "benefits-insurance": { payrollIntegration: "Active Netting", deductionCycle: "Monthly 25th" },
+      "digital-treasury": { baseCurrency: "USD", reportingFrequency: "Daily consolidated" }
+    },
+    consentGiven: true,
+    reviewNotes: []
+  },
+  {
+    id: "app-fleet-zambezi-003",
+    businessName: "Zambezi Distributed Capital & Remit",
+    applicantName: "Tendai Moyo",
+    email: "tendai@zambezicap.co",
+    phone: "+27 82 441 9920",
+    country: "South Africa",
+    businessType: "Investment Client / Advisor",
+    userType: "investment_advisor",
+    estimatedMonthlyVolume: "$1,000,000 - $5,000,000",
+    status: "more_info_needed",
+    submittedAt: "2026-10-05T09:30:00Z",
+    selectedModules: [
+      "micro-investment",
+      "capital-markets",
+      "clearing-settlement"
+    ],
+    profile: {
+      legalName: "Zambezi Distributed Capital Pty Ltd",
+      registrationNumber: "SA-CIPC-2023/889211",
+      taxId: "SA-SARS-991283",
+      address: "100 Sandton Drive, Johannesburg, South Africa",
+      website: "https://zambezicap.co",
+      industry: "Wealth Management & Micro-Investments"
+    },
+    useCaseData: {
+      targetCustomerSegment: "Retail and wealth management clients",
+      riskTolerance: "Moderate Balanced",
+      defaultSavingsFrequency: "Weekly roundup & monthly lump sum"
+    },
+    connectors: [
+      { id: "stitch", status: "VERIFIED_TEST", tokenSnippet: "stitch_cl_...33af", note: "OAuth account test verified" },
+      { id: "coingecko", status: "VERIFIED_TEST", note: "Market data pricing live" }
+    ],
+    kycDocs: [
+      { type: "DIRECTOR_ID", fileName: "tendai_sa_id_card.pdf", size: "1.8 MB", verified: true, uploadedAt: "2026-10-05T09:20:00Z" }
+    ],
+    moduleConfigs: {
+      "micro-investment": { defaultSavingsFrequency: "WEEKLY", riskTier: "MODERATE", targetAssetClasses: "Treasury Bills, Pan-African ETFs" }
+    },
+    consentGiven: true,
+    reviewNotes: ["Requested FSCA category license document copy for full advisory authorization."]
+  }
+];
+
+const INITIAL_FLEET_LEDGER = [
+  {
+    id: "tx-fl-001",
+    tenantId: "tenant-savanna-001",
+    timestamp: "2026-10-07T03:15:00Z",
+    connector: "Paystack",
+    type: "INFLOW",
+    description: "Shopify Merchant Settlement (Accra Hub MoMo & Cards)",
+    currency: "GHS",
+    amount: 142500.00,
+    normalizedUsd: 9105.43,
+    reference: "PAYSTACK-CHG-99214",
+    status: "SETTLED"
+  },
+  {
+    id: "tx-fl-002",
+    tenantId: "tenant-savanna-001",
+    timestamp: "2026-10-07T02:40:00Z",
+    connector: "Mono",
+    type: "INFLOW",
+    description: "Direct Bank Collection (GTBank Corporate Virtual NUBAN)",
+    currency: "NGN",
+    amount: 8900000.00,
+    normalizedUsd: 5562.50,
+    reference: "MONO-DIR-77189",
+    status: "SETTLED"
+  },
+  {
+    id: "tx-fl-003",
+    tenantId: "tenant-savanna-001",
+    timestamp: "2026-10-06T23:00:00Z",
+    connector: "Paystack",
+    type: "AUTO_SWEEP",
+    description: "Automated Currency Netting Sweep to Base Operating USD",
+    currency: "USD",
+    amount: 12500.00,
+    normalizedUsd: 12500.00,
+    reference: "SWEEP-AUT-88129",
+    status: "COMPLETED"
+  },
+  {
+    id: "tx-fl-004",
+    tenantId: "tenant-savanna-001",
+    timestamp: "2026-10-06T19:30:00Z",
+    connector: "Stitch",
+    type: "INFLOW",
+    description: "Instant EFT Payout Received (Standard Bank SA)",
+    currency: "ZAR",
+    amount: 485000.00,
+    normalizedUsd: 26648.35,
+    reference: "STITCH-EFT-3391",
+    status: "SETTLED"
+  },
+  {
+    id: "tx-fl-005",
+    tenantId: "tenant-savanna-001",
+    timestamp: "2026-10-06T15:00:00Z",
+    connector: "Paystack",
+    type: "OUTFLOW",
+    description: "Bi-Weekly Distributed Engineering & Logistics Payroll Disbursal",
+    currency: "USD",
+    amount: 18400.00,
+    normalizedUsd: 18400.00,
+    reference: "PAYROLL-DISB-4412",
+    status: "SETTLED"
+  },
+  {
+    id: "tx-fl-006",
+    tenantId: "tenant-savanna-001",
+    timestamp: "2026-10-05T12:00:00Z",
+    connector: "Shopify",
+    type: "INFLOW",
+    description: "WooCommerce & Shopify Orders Daily Gross Clearing",
+    currency: "USD",
+    amount: 23000.00,
+    normalizedUsd: 23000.00,
+    reference: "SHOP-GMV-1182",
+    status: "PENDING_ESCROW"
+  }
+];
+
 // Initialize and load database from disk or defaults
 class PersistentDB {
   public data: DatabaseSchema;
@@ -357,7 +624,11 @@ class PersistentDB {
           creditOrders: parsed.creditOrders || [],
           creditInsurancePolicies: parsed.creditInsurancePolicies || [],
           creditInsuranceClaims: parsed.creditInsuranceClaims || [],
-          projectApplications: parsed.projectApplications || []
+          projectApplications: parsed.projectApplications || [],
+          fleetApplications: parsed.fleetApplications || INITIAL_FLEET_APPLICATIONS,
+          fleetTenants: parsed.fleetTenants || INITIAL_FLEET_TENANTS,
+          fleetUsers: parsed.fleetUsers || INITIAL_FLEET_USERS,
+          fleetLedgerEntries: parsed.fleetLedgerEntries || INITIAL_FLEET_LEDGER
         };
       }
     } catch (e) {
@@ -378,6 +649,11 @@ class PersistentDB {
       creditOrders: [],
       creditInsurancePolicies: [],
       creditInsuranceClaims: [],
+      projectApplications: [],
+      fleetApplications: INITIAL_FLEET_APPLICATIONS,
+      fleetTenants: INITIAL_FLEET_TENANTS,
+      fleetUsers: INITIAL_FLEET_USERS,
+      fleetLedgerEntries: INITIAL_FLEET_LEDGER,
       auditLogs: [
         {
           id: "log-init-01",
@@ -3385,6 +3661,656 @@ async function startServer() {
       repaymentMechanism: "Automated Paystack Daily Split-Settlement Deduction (15% of daily card/MoMo sales)",
       lenderName: "African SME Credit Consortium / Partner Micro-Financier",
       timestamp: new Date().toISOString()
+    });
+  });
+
+  // ==============================================================================
+  // GLOBAL FINANCIAL ORCHESTRATION FLEET (10 MODULES + ONBOARDING + ADMIN WORKFLOW)
+  // ==============================================================================
+
+  const FLEET_MODULES_METADATA = [
+    {
+      id: "sme-treasury",
+      name: "Cross-Border SME Treasury Orchestrator",
+      shortDesc: "Aggregates multi-currency bank accounts, marketplaces, and payment rails with Paystack for African flows, auto-sweeps, and working-capital packs.",
+      category: "Treasury & Liquidity",
+      coreRails: ["Paystack", "Mono", "Okra", "Stitch", "Shopify", "WooCommerce", "Exchangerate.host"],
+      targetUserTypes: ["sme_owner", "treasury_admin"],
+      keyFeatures: [
+        "Normalized multi-currency unified ledger per SME",
+        "Automated FX auto-sweeps to base currency",
+        "Scheduled supplier, payroll, and statutory tax batches",
+        "Instant standardized cash-flow packs for partner lenders"
+      ]
+    },
+    {
+      id: "marketplace-payouts",
+      name: "Global Marketplace Treasury & Payout Orchestrator",
+      shortDesc: "Automates multi-seller split settlement, escrow release, and mass contractor payouts across African and global corridors.",
+      category: "Marketplaces & Payouts",
+      coreRails: ["Paystack Bulk Transfers", "Shopify Admin API", "WooCommerce", "Mono Virtual NUBAN"],
+      targetUserTypes: ["marketplace_operator", "treasury_admin"],
+      keyFeatures: [
+        "Subaccount split settlement with automated take-rate deduction",
+        "Multi-rail escrow holding and programmatic milestone dispatch",
+        "Bulk mobile money & bank direct disbursements in 35+ markets",
+        "Automated tax withholding and 1099/W-8BEN compliance ledgers"
+      ]
+    },
+    {
+      id: "insurance-distribution",
+      name: "Global Insurance Distribution & Claims Payment Orchestrator",
+      shortDesc: "Embeds micro-insurance products at checkout and automates instant claims adjudication and direct mobile money payouts.",
+      category: "InsurTech & Protection",
+      coreRails: ["Paystack Charges & Transfers", "Curacel Grow Underwriting", "Mono Identity KYC"],
+      targetUserTypes: ["insurer_admin", "sme_owner"],
+      keyFeatures: [
+        "Point-of-sale policy underwriting & micro-premium collection",
+        "Automated parameterized claim evaluation & damage assessment",
+        "Sub-10 second claim payout direct to claimant mobile wallet",
+        "Reinsurance treaty ledger and actuarial loss-ratio tracking"
+      ]
+    },
+    {
+      id: "micro-investment",
+      name: "Global Investment & Savings Product Orchestrator (Micro-Investment Router)",
+      shortDesc: "Routes spare-change roundups and automated DCA contributions into local Treasury Bills, mutual funds, and digital assets.",
+      category: "WealthTech & Savings",
+      coreRails: ["Paystack Subscriptions", "Mono Direct Debit", "CoinGecko", "Exchangerate.host"],
+      targetUserTypes: ["investment_advisor", "sme_owner"],
+      keyFeatures: [
+        "Automated spare-change transaction roundup algorithms",
+        "Dynamic asset routing across sovereign T-Bills and global equities",
+        "Risk-weighted rebalancing engine based on client risk tolerance",
+        "Real-time NAV tracking and audited custodian ledger sync"
+      ]
+    },
+    {
+      id: "digital-treasury",
+      name: "Global Treasury & Cash Management Orchestrator for Digital Businesses",
+      shortDesc: "Integrates multiple PSPs, bank APIs, and treasury tools into a unified balance ledger with intelligent rail routing.",
+      category: "Corporate Cash Management",
+      coreRails: ["Paystack", "Stripe", "Ecobank RTGS", "Mono", "QuickBooks/Xero API"],
+      targetUserTypes: ["treasury_admin", "sme_owner"],
+      keyFeatures: [
+        "Real-time liquidity visibility across operating accounts",
+        "Least-cost and fastest-speed intelligent payment routing engine",
+        "Excess liquidity sweep rules into yield-bearing operational accounts",
+        "30-day AI predictive cash-flow forecasting & burn analytics"
+      ]
+    },
+    {
+      id: "distributed-payroll",
+      name: "Global Remittance & Payroll Orchestrator for Distributed Workforces",
+      shortDesc: "Powers seamless cross-border contractor payouts, local currency netting, and automated statutory tax remittances.",
+      category: "Payroll & Remittances",
+      coreRails: ["Paystack Bulk Transfers", "Stitch Instant Pay", "Mono Direct", "Exchangerate.host"],
+      targetUserTypes: ["payroll_admin", "sme_owner"],
+      keyFeatures: [
+        "Bulk disbursements to local bank accounts & Mobile Money in one click",
+        "Real-time FX corridor lock-in with zero hidden spreads",
+        "Automated local tax deduction (GRA, FIRS, KRA, SARS)",
+        "Contractor digital payslips and automated proof-of-transfer receipts"
+      ]
+    },
+    {
+      id: "marketplace-lending",
+      name: "Global Marketplace Lending & Revenue-Based Financing Orchestrator",
+      shortDesc: "Underwrites e-commerce merchants using live sales telemetry and orchestrates working-capital advances with split repayment.",
+      category: "Alternative Lending",
+      coreRails: ["Shopify Orders API", "WooCommerce", "Paystack Split Settlement", "Partner Lenders"],
+      targetUserTypes: ["sme_owner", "marketplace_operator"],
+      keyFeatures: [
+        "Automated cash-flow underwriting using real-time GMV and return rates",
+        "Instant credit line generation ($5,000 to $250,000)",
+        "Daily percentage-of-sales split repayment via Paystack",
+        "Multi-lender syndication auction for optimal borrower APR"
+      ]
+    },
+    {
+      id: "clearing-settlement",
+      name: "Global Clearing & Settlement Orchestrator for Digital Asset & Fiat Flows",
+      shortDesc: "Provides atomic delivery-versus-payment (DvP) settlement bridging traditional African banking rails and digital asset liquidity pools.",
+      category: "Clearing & Settlements",
+      coreRails: ["CoinGecko Oracles", "Exchangerate.host", "Paystack Virtual Accounts", "Stitch"],
+      targetUserTypes: ["treasury_admin", "investment_advisor"],
+      keyFeatures: [
+        "Real-time oracle price verification for fiat-crypto pairs",
+        "Atomic multi-currency clearing and netting windows",
+        "Automated collateral buffer management and liquidity rebalancing",
+        "Immutable cryptographically signed transaction audit receipts"
+      ]
+    },
+    {
+      id: "benefits-insurance",
+      name: "Global Benefits & Payroll-Linked Insurance Orchestrator",
+      shortDesc: "Embeds worker group life, accident, and telemedicine coverage directly into payroll cycles with automated deduction netting.",
+      category: "Employee Benefits & InsurTech",
+      coreRails: ["Paystack Dedicated Accounts", "Curacel Underwriting", "Mono Payroll API"],
+      targetUserTypes: ["payroll_admin", "insurer_admin"],
+      keyFeatures: [
+        "Automated payroll-cycle micro-deduction netting",
+        "Instant employee enrollment via mobile number & national ID",
+        "Digital health card generation and provider network verification",
+        "Automated policy lapse prevention and grace-period management"
+      ]
+    },
+    {
+      id: "capital-markets",
+      name: "Global Capital-Market Data & Execution Orchestrator for Retail & Advisors",
+      shortDesc: "Equips financial advisors and platforms with institutional market data feeds, fractional execution, and omnibus custody reporting.",
+      category: "Capital Markets & Advisory",
+      coreRails: ["Exchangerate.host", "CoinGecko", "Stitch Open Banking", "Paystack Transfers"],
+      targetUserTypes: ["investment_advisor", "treasury_admin"],
+      keyFeatures: [
+        "Real-time market feeds for African equities, Eurobonds, and digital assets",
+        "Omnibus account reconciliation and multi-client portfolio views",
+        "Automated mandate compliance checks and rebalancing triggers",
+        "White-label client portal and tax-lot accounting reports"
+      ]
+    }
+  ];
+
+  // 1. Module Catalog
+  app.get("/api/fleet/modules", (req, res) => {
+    res.json({
+      success: true,
+      totalModules: FLEET_MODULES_METADATA.length,
+      modules: FLEET_MODULES_METADATA
+    });
+  });
+
+  // 2. Connector Health & Test Probe
+  app.get("/api/fleet/connectors/status", (req, res) => {
+    const connectors = [
+      { id: "paystack", name: "Paystack Africa Rails", category: "PSP & Bank Transfers", status: "HEALTHY", latencyMs: 142, uptimePct: "99.98%" },
+      { id: "mono", name: "Mono Direct Banking", category: "Open Banking Nigeria/Ghana", status: "HEALTHY", latencyMs: 210, uptimePct: "99.91%" },
+      { id: "okra", name: "Okra Open Finance", category: "Open Banking Nigeria", status: "HEALTHY", latencyMs: 235, uptimePct: "99.85%" },
+      { id: "stitch", name: "Stitch Money", category: "Open Banking South Africa", status: "HEALTHY", latencyMs: 198, uptimePct: "99.94%" },
+      { id: "shopify", name: "Shopify Store Admin", category: "E-Commerce Marketplace", status: "HEALTHY", latencyMs: 310, uptimePct: "99.99%" },
+      { id: "woocommerce", name: "WooCommerce REST API", category: "E-Commerce Marketplace", status: "HEALTHY", latencyMs: 280, uptimePct: "99.89%" },
+      { id: "coingecko", name: "CoinGecko Price Oracles", category: "Market Data Feeds", status: "HEALTHY", latencyMs: 95, uptimePct: "99.95%" },
+      { id: "exchangerate", name: "Exchangerate.host Live FX", category: "Forex Feeds", status: "HEALTHY", latencyMs: 88, uptimePct: "99.97%" }
+    ];
+    res.json({ success: true, timestamp: new Date().toISOString(), connectors });
+  });
+
+  // Test individual connector
+  app.post("/api/fleet/connectors/test", async (req, res) => {
+    const { connectorId, credentials = {} } = req.body || {};
+    
+    // Simulate or perform connector probe
+    let testResult: any = {
+      connectorId,
+      success: true,
+      status: "CONNECTED_VERIFIED",
+      latencyMs: Math.floor(Math.random() * 150) + 70,
+      timestamp: new Date().toISOString(),
+      details: {}
+    };
+
+    if (connectorId === "paystack") {
+      testResult.details = {
+        authMode: credentials.secretKey ? "Secret Key Verification" : "Public Sandbox / Mock Mode",
+        integrationTier: "Tier 1 Full African Rail",
+        supportedCurrencies: ["GHS", "NGN", "KES", "ZAR", "USD"],
+        featuresVerified: ["Dedicated Virtual Accounts", "Split Settlement", "Bulk Transfer API"]
+      };
+    } else if (connectorId === "mono") {
+      testResult.details = {
+        authMode: "Mono Direct Auth Token",
+        connectedBankCount: 16,
+        featuresVerified: ["Real-time Balances", "Transaction Streaming", "Identity KYC"]
+      };
+    } else if (connectorId === "shopify") {
+      testResult.details = {
+        storeUrl: credentials.storeUrl || "sample-merchant.myshopify.com",
+        featuresVerified: ["Orders Webhook", "Customer Sync", "GMV Reporting"],
+        ordersSampled: 12
+      };
+    } else if (connectorId === "coingecko" || connectorId === "exchangerate") {
+      testResult.details = {
+        feedStatus: "LIVE_STREAMING",
+        latestBtcUsd: 64500,
+        latestGhsUsd: 15.65,
+        latestNgnUsd: 1600.00
+      };
+    } else {
+      testResult.details = {
+        mode: "Open Protocol Handshake",
+        responseCode: "200 OK",
+        capabilitiesVerified: ["Accounts", "Balances", "Transfers"]
+      };
+    }
+
+    res.json({ success: true, testResult });
+  });
+
+  // 3. Applications List (Admin view with filtering)
+  app.get("/api/fleet/applications", (req, res) => {
+    const { status, country, businessType, module: moduleFilter, search } = req.query as any;
+    let applications = db.data.fleetApplications || [];
+
+    if (status && status !== "ALL") {
+      applications = applications.filter((app: any) => app.status === status);
+    }
+    if (country && country !== "ALL") {
+      applications = applications.filter((app: any) => app.country?.toLowerCase() === country.toLowerCase());
+    }
+    if (businessType && businessType !== "ALL") {
+      applications = applications.filter((app: any) => app.businessType?.toLowerCase() === businessType.toLowerCase());
+    }
+    if (moduleFilter && moduleFilter !== "ALL") {
+      applications = applications.filter((app: any) => app.selectedModules?.includes(moduleFilter));
+    }
+    if (search) {
+      const q = search.toLowerCase();
+      applications = applications.filter((app: any) => 
+        app.businessName?.toLowerCase().includes(q) ||
+        app.applicantName?.toLowerCase().includes(q) ||
+        app.email?.toLowerCase().includes(q) ||
+        app.id?.toLowerCase().includes(q)
+      );
+    }
+
+    res.json({
+      success: true,
+      totalCount: applications.length,
+      applications
+    });
+  });
+
+  // Get single application
+  app.get("/api/fleet/applications/:id", (req, res) => {
+    const application = (db.data.fleetApplications || []).find((a: any) => a.id === req.params.id);
+    if (!application) {
+      return res.status(404).json({ success: false, error: "Application not found" });
+    }
+    res.json({ success: true, application });
+  });
+
+  // Create new onboarding application (Public Onboarding Wizard)
+  app.post("/api/fleet/applications", (req, res) => {
+    const data = req.body || {};
+    const appId = `APP-FLEET-${Date.now().toString(36).toUpperCase()}`;
+
+    const newApplication = {
+      id: appId,
+      businessName: data.businessName || data.profile?.legalName || "Unnamed Business",
+      applicantName: data.applicantName || data.name || "Corporate Director",
+      email: data.email,
+      phone: data.phone || "",
+      country: data.country || "Ghana",
+      businessType: data.businessType || "SME / Business Owner",
+      userType: data.userType || "sme_owner",
+      estimatedMonthlyVolume: data.estimatedMonthlyVolume || "$50,000 - $250,000",
+      status: "pending_review",
+      submittedAt: new Date().toISOString(),
+      selectedModules: data.selectedModules || ["sme-treasury"],
+      profile: {
+        legalName: data.profile?.legalName || data.businessName || "Registered Entity",
+        registrationNumber: data.profile?.registrationNumber || `GH-REG-${Date.now()}`,
+        taxId: data.profile?.taxId || `TIN-${Math.floor(Math.random() * 9000000 + 1000000)}`,
+        address: data.profile?.address || "Accra Financial Centre, Ghana",
+        website: data.profile?.website || "https://example.com",
+        industry: data.profile?.industry || "Commerce & Technology"
+      },
+      useCaseData: data.useCaseData || {},
+      connectors: data.connectors || [
+        { id: "paystack", status: "VERIFIED_TEST", note: "Connected during onboarding" }
+      ],
+      kycDocs: data.kycDocs || [
+        { type: "DIRECTOR_ID", fileName: "id_document_verified.pdf", size: "2.1 MB", verified: true, uploadedAt: new Date().toISOString() },
+        { type: "BUSINESS_REG", fileName: "incorporation_cert.pdf", size: "3.5 MB", verified: true, uploadedAt: new Date().toISOString() }
+      ],
+      moduleConfigs: data.moduleConfigs || {},
+      consentGiven: Boolean(data.consentGiven ?? true),
+      reviewNotes: []
+    };
+
+    if (!db.data.fleetApplications) {
+      db.data.fleetApplications = [];
+    }
+    db.data.fleetApplications.unshift(newApplication);
+    db.save();
+
+    db.logAudit("APPLICANT", "SUBMIT_FLEET_ONBOARDING", "FLEET_APPLICATION", appId, {
+      businessName: newApplication.businessName,
+      selectedModules: newApplication.selectedModules
+    });
+
+    res.status(201).json({
+      success: true,
+      message: "Application submitted successfully and placed in priority review queue.",
+      application: newApplication
+    });
+  });
+
+  // Admin decision on application (Approve / Request Info / Reject)
+  app.put("/api/fleet/applications/:id/status", (req, res) => {
+    const { id } = req.params;
+    const { status, adminNotes, approvedModules } = req.body || {};
+
+    const applicationIndex = (db.data.fleetApplications || []).findIndex((a: any) => a.id === id);
+    if (applicationIndex === -1) {
+      return res.status(404).json({ success: false, error: "Application not found" });
+    }
+
+    const application = db.data.fleetApplications[applicationIndex];
+    application.status = status;
+    application.reviewedAt = new Date().toISOString();
+
+    if (adminNotes) {
+      if (!application.reviewNotes) application.reviewNotes = [];
+      application.reviewNotes.push({
+        note: adminNotes,
+        timestamp: new Date().toISOString(),
+        author: "Admin Risk Officer"
+      });
+    }
+
+    let tenantCreated: any = null;
+    let welcomeEmailDispatch: any = null;
+
+    if (status === "approved") {
+      // 1. Create Tenant / Organization
+      const tenantId = `tenant-${Date.now().toString(36)}`;
+      const enabledModules = approvedModules || application.selectedModules || ["sme-treasury"];
+
+      tenantCreated = {
+        id: tenantId,
+        name: application.businessName,
+        registrationNumber: application.profile?.registrationNumber || "",
+        taxId: application.profile?.taxId || "",
+        country: application.country,
+        businessType: application.businessType,
+        userType: application.userType,
+        status: "ACTIVE",
+        baseCurrency: application.moduleConfigs?.["sme-treasury"]?.baseCurrency || "USD",
+        monthlyVolumeUsd: 150000,
+        enabledModules,
+        connectors: {
+          paystack: { connected: true, status: "LIVE", keySnippet: "pk_live_...active", lastSync: new Date().toISOString() },
+          mono: { connected: true, status: "LIVE", lastSync: new Date().toISOString() },
+          stitch: { connected: true, status: "LIVE", lastSync: new Date().toISOString() },
+          coingecko: { connected: true, status: "LIVE", lastSync: new Date().toISOString() },
+          exchangerate: { connected: true, status: "LIVE", lastSync: new Date().toISOString() }
+        },
+        moduleConfigs: application.moduleConfigs || {},
+        applicationId: id,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+
+      if (!db.data.fleetTenants) db.data.fleetTenants = [];
+      db.data.fleetTenants.unshift(tenantCreated);
+
+      // 2. Provision initial Owner user for this tenant
+      const newUserId = `user-${Date.now().toString(36)}`;
+      const newUser = {
+        id: newUserId,
+        email: application.email,
+        name: application.applicantName,
+        role: "owner_admin",
+        tenantId,
+        userType: application.userType,
+        phone: application.phone,
+        twoFactorEnabled: false,
+        lastLogin: new Date().toISOString()
+      };
+
+      if (!db.data.fleetUsers) db.data.fleetUsers = [];
+      db.data.fleetUsers.unshift(newUser);
+
+      // Link tenant ID to application
+      application.tenantId = tenantId;
+
+      // 3. Create Welcome Email Dispatch
+      welcomeEmailDispatch = {
+        recipientEmail: application.email,
+        subject: `Welcome to Oskayi Global Financial Orchestration Fleet — ${application.businessName}`,
+        loginLink: `/fleet/dashboard?tenant=${tenantId}&user=${newUserId}`,
+        enabledModules,
+        sentAt: new Date().toISOString(),
+        checklist: [
+          "Connect your first live operating account via Mono or Paystack",
+          "Set up your automated treasury auto-sweep threshold",
+          "Invite your Finance Manager and Operations team",
+          "Review your unified multi-currency ledger"
+        ]
+      };
+      application.welcomeEmailDispatch = welcomeEmailDispatch;
+    }
+
+    db.save();
+
+    db.logAudit("ADMIN", "UPDATE_APPLICATION_STATUS", "FLEET_APPLICATION", id, {
+      newStatus: status,
+      tenantId: application.tenantId,
+      adminNotes
+    });
+
+    res.json({
+      success: true,
+      message: `Application status updated to ${status}.`,
+      application,
+      tenant: tenantCreated,
+      welcomeEmail: welcomeEmailDispatch
+    });
+  });
+
+  // 4. Tenant Profile & Workspace API
+  app.get("/api/fleet/tenants/:id", (req, res) => {
+    const { id } = req.params;
+    const tenant = (db.data.fleetTenants || []).find((t: any) => t.id === id);
+    if (!tenant) {
+      return res.status(404).json({ success: false, error: "Tenant not found" });
+    }
+
+    const members = (db.data.fleetUsers || []).filter((u: any) => u.tenantId === id);
+    
+    // Calculate live ledger stats
+    const ledgerEntries = (db.data.fleetLedgerEntries || []).filter((entry: any) => entry.tenantId === id || id === "tenant-savanna-001");
+    const totalInflowUsd = ledgerEntries
+      .filter((e: any) => e.type === "INFLOW")
+      .reduce((acc: number, cur: any) => acc + (cur.normalizedUsd || 0), 0);
+    const totalOutflowUsd = ledgerEntries
+      .filter((e: any) => e.type === "OUTFLOW" || e.type === "AUTO_SWEEP")
+      .reduce((acc: number, cur: any) => acc + (cur.normalizedUsd || 0), 0);
+
+    res.json({
+      success: true,
+      tenant,
+      members,
+      ledgerSummary: {
+        totalInflowUsd: Math.round(totalInflowUsd * 100) / 100,
+        totalOutflowUsd: Math.round(totalOutflowUsd * 100) / 100,
+        netBalanceUsd: Math.round((totalInflowUsd - totalOutflowUsd + 168920.45) * 100) / 100,
+        transactionCount: ledgerEntries.length
+      }
+    });
+  });
+
+  // Invite or Add Team Member to Tenant
+  app.post("/api/fleet/tenants/:id/members", (req, res) => {
+    const { id } = req.params;
+    const { name, email, role = "finance_manager", userType = "sme_owner" } = req.body || {};
+
+    if (!email || !name) {
+      return res.status(400).json({ success: false, error: "Name and email are required" });
+    }
+
+    const newMember = {
+      id: `user-${Date.now().toString(36)}`,
+      name,
+      email,
+      role, // 'owner_admin' | 'finance_manager' | 'viewer_analyst'
+      tenantId: id,
+      userType,
+      twoFactorEnabled: false,
+      lastLogin: null,
+      invitedAt: new Date().toISOString()
+    };
+
+    if (!db.data.fleetUsers) db.data.fleetUsers = [];
+    db.data.fleetUsers.push(newMember);
+    db.save();
+
+    db.logAudit("TENANT_ADMIN", "INVITE_TEAM_MEMBER", "TENANT_MEMBER", newMember.id, {
+      tenantId: id,
+      email,
+      role
+    });
+
+    res.status(201).json({
+      success: true,
+      message: `Team member ${name} (${role}) invited successfully.`,
+      member: newMember
+    });
+  });
+
+  // 5. Unified Multi-Currency Ledger
+  app.get("/api/fleet/tenants/:id/ledger", (req, res) => {
+    const { id } = req.params;
+    const { currency, type } = req.query as any;
+
+    let entries = (db.data.fleetLedgerEntries || []).filter((e: any) => e.tenantId === id || id === "tenant-savanna-001");
+    if (currency && currency !== "ALL") {
+      entries = entries.filter((e: any) => e.currency === currency);
+    }
+    if (type && type !== "ALL") {
+      entries = entries.filter((e: any) => e.type === type);
+    }
+
+    res.json({
+      success: true,
+      timestamp: new Date().toISOString(),
+      tenantId: id,
+      totalEntries: entries.length,
+      entries
+    });
+  });
+
+  // 6. Interactive Quick Actions Execution per Module
+  app.post("/api/fleet/tenants/:id/actions/:actionType", (req, res) => {
+    const { id, actionType } = req.params;
+    const payload = req.body || {};
+    const ref = `EXEC-${actionType.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
+
+    let result: any = {
+      success: true,
+      reference: ref,
+      actionType,
+      tenantId: id,
+      executedAt: new Date().toISOString()
+    };
+
+    if (actionType === "auto_sweep") {
+      const amount = Number(payload.amount) || 12500;
+      const newEntry = {
+        id: `tx-${Date.now()}`,
+        tenantId: id,
+        timestamp: new Date().toISOString(),
+        connector: "Paystack",
+        type: "AUTO_SWEEP",
+        description: `Automated Currency Netting Sweep (${payload.sourceCurrency || 'GHS'} to ${payload.targetCurrency || 'USD'})`,
+        currency: payload.targetCurrency || "USD",
+        amount,
+        normalizedUsd: amount,
+        reference: ref,
+        status: "COMPLETED"
+      };
+      if (!db.data.fleetLedgerEntries) db.data.fleetLedgerEntries = [];
+      db.data.fleetLedgerEntries.unshift(newEntry);
+      db.save();
+
+      result.details = {
+        sweptAmount: amount,
+        sourceRails: ["Paystack Regional Wallet", "Mono Bank Virtual Account"],
+        fxNettingRate: "15.65 GHS/USD",
+        status: "SETTLED_INSTANT"
+      };
+    } else if (actionType === "trigger_payout") {
+      const amount = Number(payload.amount) || 45000;
+      const count = Number(payload.recipientCount) || 18;
+      result.details = {
+        disbursedAmountGhs: amount,
+        recipientCount: count,
+        rail: "Paystack Bulk Transfer API & Dedicated Virtual NUBAN",
+        status: "DISPATCHED_INSTANT",
+        batchId: ref
+      };
+    } else if (actionType === "request_working_capital") {
+      result.details = {
+        requestedAmountUsd: Number(payload.amount) || 35000,
+        decision: "APPROVED_INSTANT",
+        offeredAprPct: 13.5,
+        repaymentMechanism: "Paystack daily 15% split-deduction from gross merchant inflows",
+        lenderConsortium: "Oskayi Partner Micro-Financier Pool"
+      };
+    } else {
+      result.details = {
+        message: "Module rule successfully executed across active connectors.",
+        status: "EXECUTED"
+      };
+    }
+
+    res.json(result);
+  });
+
+  // 7. Auth endpoints for fleet tenant login / switch
+  app.post("/api/fleet/auth/login", (req, res) => {
+    const { email, password, twoFactorCode } = req.body || {};
+    const user = (db.data.fleetUsers || []).find((u: any) => u.email?.toLowerCase() === email?.toLowerCase());
+
+    if (!user) {
+      return res.status(401).json({ success: false, error: "Invalid email credentials or organization user not found" });
+    }
+
+    if (user.twoFactorEnabled && !twoFactorCode) {
+      return res.json({
+        success: true,
+        requires2FA: true,
+        message: "2-Factor Authentication required. Enter the 6-digit verification code sent to your phone/authenticator.",
+        tempUserId: user.id
+      });
+    }
+
+    const tenant = (db.data.fleetTenants || []).find((t: any) => t.id === user.tenantId) || {
+      id: user.tenantId,
+      name: "Corporate Tenant",
+      status: "ACTIVE",
+      enabledModules: ["sme-treasury", "digital-treasury"]
+    };
+
+    res.json({
+      success: true,
+      token: `fleet-tok-${Date.now()}-${Math.random().toString(36).substring(7)}`,
+      user,
+      tenant
+    });
+  });
+
+  // ==============================================================================
+  // REAL-TIME NEWS & HOURLY UPDATES API (INFRASTRUCTURE FINANCING & MODERN FINTECH)
+  // ==============================================================================
+  app.get("/api/news", (req, res) => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const nextHourlyRefreshSeconds = 3600 - (minutes * 60 + seconds);
+
+    res.json({
+      success: true,
+      currentHourNumber: currentHour,
+      hourlyCadence: "10 new updates per hour",
+      nextHourlyRefreshSeconds,
+      timestamp: now.toISOString(),
+      coverageTopics: [
+        "Empowering African & Global Growth through Infrastructure Financing",
+        "Modern Fintech Solutions & Autonomous Treasury Systems (AfriTreasury OS)"
+      ]
     });
   });
 
