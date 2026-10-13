@@ -4,6 +4,7 @@ import { Hero } from './components/Hero';
 import { CeoMessage } from './components/CeoMessage';
 import { CompanyOverview } from './components/CompanyOverview';
 import { ProductsSection } from './components/ProductsSection';
+import { MultiTrillionFintechSection } from './components/MultiTrillionFintechSection';
 import { NewsAndArticlesSection } from './components/NewsAndArticlesSection';
 import { WhyInstitutionsChoose } from './components/WhyInstitutionsChoose';
 import { ComplianceModal } from './components/ComplianceModal';
@@ -16,9 +17,11 @@ import { NexusCloudPage } from './pages/NexusCloudPage';
 import { CreditCheckoutPage } from './pages/CreditCheckoutPage';
 import { FreeGlobalDevelopmentPage } from './pages/FreeGlobalDevelopmentPage';
 import { FleetOrchestrationPortalPage } from './pages/FleetOrchestrationPortalPage';
+import { EngineDetailPage } from './pages/EngineDetailPage';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development' | 'fleet-orchestration'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development' | 'fleet-orchestration' | 'engine-detail'>('main');
+  const [selectedEngineNumber, setSelectedEngineNumber] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
   const [selectedServiceForInquiry, setSelectedServiceForInquiry] = useState<string>('Fintech Solutions for Banks');
@@ -29,6 +32,19 @@ export default function App() {
     const handleUrlChange = () => {
       const path = window.location.pathname;
       const hash = window.location.hash;
+
+      const engineMatch = path.match(/^\/engine\/(\d+)/) || hash.match(/^#engine-?(\d+)/);
+      if (engineMatch) {
+        const num = parseInt(engineMatch[1], 10);
+        if (num >= 1 && num <= 10) {
+          setSelectedEngineNumber(num);
+          setCurrentView('engine-detail');
+          setActiveSection('multi-trillion-engines');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          return;
+        }
+      }
+
       if (path === '/fleet' || hash === '#fleet' || path === '/fleet-orchestration' || hash === '#fleet-orchestration') {
         setCurrentView('fleet-orchestration');
         setActiveSection('fleet-orchestration');
@@ -83,6 +99,15 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateEngine = (engineNum: number) => {
+    const validNum = Math.max(1, Math.min(10, engineNum));
+    setSelectedEngineNumber(validNum);
+    setCurrentView('engine-detail');
+    setActiveSection('multi-trillion-engines');
+    window.history.pushState({}, '', `/engine/${validNum}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavigateHome = () => {
     setCurrentView('main');
     setActiveSection('hero');
@@ -91,6 +116,14 @@ export default function App() {
   };
 
   const handleNavigateSection = (sectionId: string) => {
+    if (sectionId.startsWith('engine-')) {
+      const num = parseInt(sectionId.replace('engine-', ''), 10);
+      if (num >= 1 && num <= 10) {
+        handleNavigateEngine(num);
+        return;
+      }
+    }
+
     if (sectionId === 'fleet' || sectionId === 'fleet-orchestration') {
       handleNavigateFleetOrchestration();
       return;
@@ -162,7 +195,14 @@ export default function App() {
       />
 
       {/* View routing */}
-      {currentView === 'fleet-orchestration' ? (
+      {currentView === 'engine-detail' ? (
+        <EngineDetailPage
+          engineNumber={selectedEngineNumber}
+          onNavigateHome={handleNavigateHome}
+          onNavigateEngine={handleNavigateEngine}
+          onSelectServiceForInquiry={handleSelectServiceForInquiry}
+        />
+      ) : currentView === 'fleet-orchestration' ? (
         <FleetOrchestrationPortalPage
           onNavigateHome={handleNavigateHome}
           onOpenVerification={() => setIsVerificationModalOpen(true)}
@@ -197,12 +237,19 @@ export default function App() {
               onNavigateContact={() => handleNavigateSection('contact')}
             />
 
-            {/* Institutional Software Products & Autonomous Intelligence BOTs */}
+            {/* Featured Software Products & Autonomous Intelligence BOTs */}
             <ProductsSection
               onNavigateSection={handleNavigateSection}
               onNavigateNexusCloud={handleNavigateNexusCloud}
               onNavigateCreditCheckout={handleNavigateCreditCheckout}
               onNavigateFleet={handleNavigateFleetOrchestration}
+              onNavigateEngine={handleNavigateEngine}
+            />
+
+            {/* Autonomous Sovereign & Institutional Market Engines */}
+            <MultiTrillionFintechSection
+              onSelectServiceForInquiry={handleSelectServiceForInquiry}
+              onNavigateEngine={handleNavigateEngine}
             />
 
             {/* Statutory Profile & Mission */}

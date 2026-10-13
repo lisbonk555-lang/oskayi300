@@ -1,6 +1,21 @@
 import React from 'react';
-import { ShieldCheck, ChevronRight, Calculator, Globe, Building2, Layers, Award, Sparkles, Cpu, ArrowRight } from 'lucide-react';
+import { 
+  ShieldCheck, 
+  ChevronRight, 
+  Globe, 
+  Building2, 
+  Layers, 
+  Award, 
+  Sparkles, 
+  Cpu, 
+  ArrowRight,
+  Play,
+  Activity,
+  Tv,
+  Clock
+} from 'lucide-react';
 import { OFFICIAL_COMPANY_INFO } from '../data/companyData';
+import { generateHourlyNewsArticles } from '../data/newsData';
 import { GTBankLogo, StandardCharteredLogo } from './BankerLogos';
 
 interface HeroProps {
@@ -10,6 +25,7 @@ interface HeroProps {
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSection, onNavigateNexusCloud }) => {
+  const [hourlyArticles] = React.useState(() => generateHourlyNewsArticles(0).articles);
   const fleetSolutions = [
     {
       title: "Credit Facility Provision ($100 to Billions)",
@@ -48,7 +64,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
   return (
     <section id="hero" className="relative bg-slate-950 text-white pt-12 pb-20 px-4 sm:px-8 border-b border-indigo-900/60 overflow-hidden">
       
-      {/* Radiant Colorful Background Mesh Glows */}
+      {/* Radiant Background Mesh Glows */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-indigo-600/25 via-purple-600/15 to-transparent rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-amber-500/20 via-amber-400/10 to-transparent rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/2 left-1/3 w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -68,7 +84,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
             </div>
 
-            {/* Reframed Hero Headline */}
+            {/* Headline */}
             <h1 className="font-sans text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
               Empowering African & Global Growth Through <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-500">
@@ -76,7 +92,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
               </span>
             </h1>
 
-            {/* NEXUS CLOUD OS of Global Finance Sub-Badge */}
+            {/* NEXUS CLOUD Sub-Badge */}
             <div className="p-3 rounded-2xl bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 border border-purple-500/50 shadow-xl flex items-center gap-3">
               <div className="w-8 h-8 rounded-xl bg-purple-500/20 border border-purple-400/40 flex items-center justify-center shrink-0">
                 <Cpu className="w-4 h-4 text-purple-400 animate-spin" style={{ animationDuration: '10s' }} />
@@ -94,10 +110,62 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
               </div>
             </div>
 
-            {/* Sub-sentence under headline */}
-            <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-sans max-w-2xl">
+            {/* Statutory Advisory Statement Required by Brief */}
+            <p className="text-slate-300 text-base sm:text-lg leading-relaxed font-sans max-w-2xl font-medium">
               Oskayi Consult is a Ghanaian advisory and financial technology firm. Through our network of licensed international partners, we provide loan liquidity, project financing, custom fintech software, exclusive insurance, and Web3 solutions for governments, banks, businesses, and individuals.
             </p>
+
+            {/* ============================================================== */}
+            {/* CONTINUOUS LEFT-SLIDING TICKER OF NEWS & STRATEGIC UPDATES */}
+            {/* Directly appearing under the Oskayi Consult statement as requested */}
+            {/* ============================================================== */}
+            <div className="pt-1 pb-1 space-y-2">
+              <div className="flex items-center justify-between text-xs font-mono">
+                <span className="text-amber-300 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <Activity className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+                  <span>News & Strategic Updates (Sliding Left Continually)</span>
+                </span>
+                <button
+                  onClick={() => onNavigateSection('news-articles')}
+                  className="text-[11px] text-amber-300 hover:text-white flex items-center gap-1 font-bold transition-colors"
+                >
+                  <span>All 10 Updates</span>
+                  <ChevronRight className="w-3 h-3" />
+                </button>
+              </div>
+
+              {/* Continuous Sliding Ticker Bar */}
+              <div className="w-full overflow-hidden rounded-2xl bg-slate-900/90 border border-indigo-900/80 p-2 relative group">
+                <div className="animate-slide-left-continuous flex gap-3">
+                  {[...hourlyArticles, ...hourlyArticles].map((item, idx) => (
+                    <div
+                      key={idx}
+                      onClick={() => onNavigateSection('news-articles')}
+                      className="cursor-pointer shrink-0 w-[300px] sm:w-[340px] p-2.5 rounded-xl bg-slate-950/90 hover:bg-slate-950 border border-slate-800 hover:border-amber-400/50 flex items-center gap-3 transition-all"
+                    >
+                      <div className="relative w-16 h-12 rounded-lg overflow-hidden shrink-0 bg-slate-900">
+                        <img src={item.imageUrl} alt="" className="w-full h-full object-cover" />
+                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                          <Play className="w-3.5 h-3.5 text-white fill-current" />
+                        </div>
+                      </div>
+                      <div className="overflow-hidden space-y-0.5">
+                        <div className="flex items-center gap-1.5 text-[9px] font-mono text-amber-300 font-bold uppercase">
+                          <span className="truncate max-w-[120px]">{item.category}</span>
+                          <span className="text-slate-500">•</span>
+                          <span className="text-emerald-400">Live</span>
+                          <span className="text-slate-500">•</span>
+                          <span className="text-slate-400 text-[8px]">{item.publishedAt.split(' ')[0]}</span>
+                        </div>
+                        <h4 className="text-xs font-bold text-white truncate hover:text-amber-300">
+                          {item.title}
+                        </h4>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             {/* Quick CTAs */}
             <div className="pt-2 flex flex-col sm:flex-row items-center gap-3 flex-wrap">
@@ -110,33 +178,34 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
                     onNavigateSection('nexus-cloud');
                   }
                 }}
-                className="w-full sm:w-auto px-6 py-4 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-indigo-950 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-xl shadow-amber-400/25 transition-all flex items-center justify-center gap-2 group"
+                className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-amber-400 via-amber-300 to-amber-400 hover:from-amber-300 hover:to-amber-200 text-indigo-950 font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-xl shadow-amber-400/25 transition-all flex items-center justify-center gap-2 group"
               >
                 <Cpu className="w-4 h-4 text-indigo-950" />
                 <span>NEXUS CLOUD → /nexus-cloud</span>
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
 
-              {/* SELLER PROTECT Product CTA */}
+              {/* PRODUCTS Button */}
               <button
-                onClick={() => onNavigateSection('seller-protect')}
-                className="w-full sm:w-auto px-5 py-4 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-400/40 hover:border-amber-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
-              >
-                <ShieldCheck className="w-4 h-4 text-amber-400" />
-                <span>SELLER PROTECT (Buy • Pay • Protect)</span>
-              </button>
-
-              <button
-                onClick={() => onNavigateSection('showcase-slides')}
-                className="w-full sm:w-auto px-5 py-4 bg-indigo-900/70 hover:bg-indigo-800 text-white border border-indigo-700/80 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
+                onClick={() => onNavigateSection('products')}
+                className="w-full sm:w-auto px-5 py-3.5 bg-slate-900 hover:bg-slate-800 text-amber-300 border border-amber-400/40 hover:border-amber-400 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
               >
                 <Sparkles className="w-4 h-4 text-amber-400" />
-                <span>10 Showcase Slides</span>
+                <span>FEATURED PRODUCTS & BOT</span>
+              </button>
+
+              {/* News & Articles CTA */}
+              <button
+                onClick={() => onNavigateSection('news-articles')}
+                className="w-full sm:w-auto px-5 py-3.5 bg-indigo-900/70 hover:bg-indigo-800 text-white border border-indigo-700/80 font-bold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-center gap-2"
+              >
+                <Activity className="w-4 h-4 text-emerald-400" />
+                <span>NEWS & STRATEGIC UPDATES</span>
               </button>
             </div>
 
             {/* Corporate Reg Quick Specs */}
-            <div className="pt-4 grid grid-cols-2 sm:grid-cols-3 gap-3 text-left text-xs font-mono">
+            <div className="pt-3 grid grid-cols-2 sm:grid-cols-3 gap-3 text-left text-xs font-mono">
               <div className="bg-slate-900/90 p-3 rounded-xl border border-indigo-900/80 space-y-0.5">
                 <span className="text-[10px] text-slate-400 uppercase font-bold">ROC Reg No.</span>
                 <div className="font-bold text-amber-300">{OFFICIAL_COMPANY_INFO.registrationNumber}</div>
@@ -235,7 +304,9 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
 
         </div>
 
-        {/* EXPLICIT SECTION: OUR FLEET OF SOLUTIONS INCLUDES */}
+        {/* ============================================================== */}
+        {/* INSTITUTIONAL CAPABILITIES FLEET */}
+        {/* ============================================================== */}
         <div className="space-y-8 pt-8 border-t border-indigo-900/60">
           
           <div className="text-center space-y-2 max-w-3xl mx-auto">
@@ -243,7 +314,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
               Institutional Capabilities
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              Our Fleet of Solutions Includes
+              Our Core Financial Engineering & Advisory Fleet
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm">
               Tailored institutional financial engineering and custom software architectures designed for governments, banks, enterprises, and individual clients.
@@ -278,10 +349,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenVerification, onNavigateSectio
                   </div>
 
                   <button
-                    onClick={() => onNavigateSection('services')}
+                    onClick={() => onNavigateSection('products')}
                     className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs font-bold text-amber-300 group-hover:text-amber-200 transition-colors"
                   >
-                    <span>View Framework</span>
+                    <span>Explore Products</span>
                     <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </button>
                 </div>

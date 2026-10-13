@@ -1006,7 +1006,7 @@ WEBHOOK_SECRET_HMAC=your_hmac_secret
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] text-xs font-mono font-bold tracking-wider uppercase">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Autonomous Paystack Multi-Trillion Fintech Suite</span>
+            <span>Autonomous Paystack Institutional Fintech Suite</span>
           </div>
           
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">

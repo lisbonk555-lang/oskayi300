@@ -1,52 +1,59 @@
 import React, { useState } from 'react';
 import { 
-  Cpu, 
-  Terminal, 
   Bot, 
-  Layers, 
-  ShieldCheck, 
-  Zap, 
-  TrendingUp, 
-  Anchor, 
-  ArrowRight, 
   ExternalLink, 
+  ShieldCheck, 
+  Terminal, 
+  Sparkles, 
+  Zap, 
+  ChevronRight, 
+  CheckCircle2, 
+  Cpu, 
+  Lock, 
   X, 
   Maximize2, 
-  Minimize2, 
-  Sparkles, 
+  Minimize2,
+  TrendingUp,
   Activity,
-  CheckCircle2,
-  Server,
-  Lock,
-  Globe2
+  Globe,
+  Layers,
+  ArrowRight,
+  Radio,
+  Building2,
+  Coins,
+  ShieldAlert,
+  RefreshCw,
+  MapPin,
+  Scale
 } from 'lucide-react';
+import { MULTI_TRILLION_ENGINES, EngineItem } from '../data/enginesData';
 
 interface ProductsSectionProps {
-  onNavigateSection?: (sectionId: string) => void;
+  onNavigateSection: (sectionId: string) => void;
   onNavigateNexusCloud?: () => void;
   onNavigateCreditCheckout?: () => void;
   onNavigateFleet?: () => void;
+  onNavigateEngine?: (engineNumber: number) => void;
 }
 
 export const ProductsSection: React.FC<ProductsSectionProps> = ({
   onNavigateSection,
   onNavigateNexusCloud,
   onNavigateCreditCheckout,
-  onNavigateFleet
+  onNavigateFleet,
+  onNavigateEngine
 }) => {
-  const [terminalModalOpen, setTerminalModalOpen] = useState<boolean>(false);
-  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+  const [terminalModalOpen, setTerminalModalOpen] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
-  // Bot target URL kept hidden from user interface labels
-  const AFRI_TREASURY_BOT_TARGET = 'https://afritreasury-os-africa-capital-markets-treasury-b.ai.studio/';
+  // Hidden target URL for AfriTreasury OS BOT
+  const AFRI_TREASURY_BOT_TARGET = "https://afritreasury-os-africa-capital-markets-treasury-b.ai.studio/";
 
   const handleLaunchAfriTreasury = () => {
-    // Open in-app terminal modal (hides the raw URL completely from view)
     setTerminalModalOpen(true);
   };
 
   const handleDirectSessionLaunch = () => {
-    // Discreet launch without showing raw link on screen
     window.open(AFRI_TREASURY_BOT_TARGET, '_blank', 'noopener,noreferrer');
   };
 
@@ -57,24 +64,21 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-16">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-300 text-xs font-semibold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Institutional Software & Autonomous Capital Systems</span>
+            <span>Featured Products & Autonomous Intelligence Systems</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-            Institutional Products & <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-200 to-amber-500">
-              Autonomous Intelligence BOTs
-            </span>
+            Featured Products
           </h2>
 
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            Proprietary capital markets engines, automated legal treasury intelligence, and multi-rail financial operating systems engineered for African and global institutional scale.
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
+            Autonomous software engines, legal intelligence bots, and cross-border orchestration systems designed for sovereign institutions, commercial banks, and enterprises.
           </p>
         </div>
 
@@ -123,78 +127,93 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({
                   <TrendingUp className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-xs font-bold text-white block">FX & Sovereign Yield Arbitrage</span>
-                    <span className="text-[11px] text-slate-400">Captures 20%+ T-Bill yield spreads across Ghana, Nigeria, Kenya & SA</span>
+                    <span className="text-[11px] text-slate-400">Algorithmic basis point spread capture across Eurobonds and local debt</span>
                   </div>
                 </div>
 
                 <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-start gap-2.5">
-                  <Zap className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
+                  <Zap className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
                   <div>
                     <span className="text-xs font-bold text-white block">EIP-4337 Smart Treasury</span>
-                    <span className="text-[11px] text-slate-400">Gas-abstracted smart vault custody with multi-sig security</span>
+                    <span className="text-[11px] text-slate-400">Zero-gas account abstraction paymaster and automated liquidity sweeping</span>
                   </div>
                 </div>
 
                 <div className="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-start gap-2.5">
-                  <Anchor className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
+                  <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs font-bold text-white block">Port & Cargo Risk Monitoring</span>
-                    <span className="text-[11px] text-slate-400">Real-time dwell times and logistics telemetry for Tema, Lekki & Durban</span>
+                    <span className="text-xs font-bold text-white block">Port Risk Monitoring</span>
+                    <span className="text-[11px] text-slate-400">Satellite AIS vessel positioning, demurrage alerts, and parametric escrows</span>
                   </div>
                 </div>
               </div>
 
-              {/* Launch Trigger */}
-              <div className="pt-2 flex flex-wrap items-center gap-4">
+              {/* Actions & Buttons */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
                 <button
                   onClick={handleLaunchAfriTreasury}
-                  className="px-7 py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black rounded-xl shadow-xl shadow-amber-400/25 transition-all flex items-center gap-2.5 text-xs uppercase tracking-wider group/btn"
+                  className="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-indigo-950 font-bold text-xs uppercase tracking-wider rounded-xl shadow-xl shadow-amber-400/20 transition-all flex items-center justify-center gap-2"
                 >
-                  <Bot className="w-4 h-4" />
-                  <span>Launch AfriTreasury OS Terminal</span>
-                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  <Bot className="w-4 h-4 text-indigo-950" />
+                  <span>Launch AfriTreasury OS BOT</span>
+                  <ChevronRight className="w-4 h-4" />
                 </button>
 
                 <button
                   onClick={handleDirectSessionLaunch}
-                  className="px-5 py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 transition-colors flex items-center gap-2 text-xs"
+                  className="w-full sm:w-auto px-5 py-3.5 bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-700/80 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                  title="Launch BOT in New Window"
                 >
-                  <span>Open Dedicated Workspace</span>
                   <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Open Dedicated Session</span>
                 </button>
               </div>
 
             </div>
 
-            {/* Right Telemetry Mock Terminal (5 Cols) */}
+            {/* Right Visual Console Preview (5 Cols) */}
             <div className="lg:col-span-5">
-              <div className="rounded-2xl bg-slate-950/95 border border-slate-800 p-5 font-mono text-xs shadow-2xl space-y-3">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-[11px] text-slate-400">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                    <span className="ml-2 font-bold text-slate-300">AFRITREASURY-KERNEL-V1</span>
+              <div 
+                onClick={handleLaunchAfriTreasury}
+                className="cursor-pointer rounded-2xl bg-slate-950 border border-indigo-900/80 p-5 space-y-4 shadow-xl hover:border-amber-400/60 transition-all group/card relative overflow-hidden"
+              >
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                    <span className="text-xs font-mono text-slate-400 ml-2">afritreasury-os.bot</span>
                   </div>
-                  <span className="text-emerald-400 font-bold">ONLINE</span>
+                  <span className="text-[10px] font-mono text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/30">
+                    SECURED
+                  </span>
                 </div>
 
-                <div className="space-y-1.5 text-[11px]">
-                  <div className="text-slate-400 flex justify-between">
-                    <span>STATUS:</span>
-                    <span className="text-white">AUTONOMOUS_OPERATING</span>
+                {/* Simulated Terminal Readout */}
+                <div className="space-y-2 text-xs font-mono">
+                  <div className="text-emerald-400 flex items-center gap-1.5">
+                    <span className="text-slate-500">&gt;</span>
+                    <span>AFRI_TREASURY_OS.INITIALIZE()</span>
                   </div>
+                  <div className="text-slate-300 pl-3">
+                    ✔ 54 African Sovereign Yield Curves Synchronized
+                  </div>
+                  <div className="text-slate-300 pl-3">
+                    ✔ Paystack Core African Rails Active (GHS/NGN/KES/ZAR)
+                  </div>
+                  <div className="text-slate-300 pl-3">
+                    ✔ ERC-4337 Sponsored Paymaster Online (Gas = GH₵0)
+                  </div>
+                  <div className="text-amber-300 pl-3">
+                    ⚡ Yield Arbitrage Scan: +385 bps spread captured
+                  </div>
+                </div>
+
+                {/* Telemetry Bar */}
+                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/80 text-[11px] font-mono space-y-1.5">
                   <div className="text-slate-400 flex justify-between">
                     <span>SOVEREIGN ARBITRAGE:</span>
-                    <span className="text-amber-300">GHS 91-DAY @ 25.8% | NGN @ 19.4%</span>
-                  </div>
-                  <div className="text-slate-400 flex justify-between">
-                    <span>FX SPOT FEED:</span>
-                    <span className="text-white">USD/GHS 15.65 | USD/NGN 1,600</span>
-                  </div>
-                  <div className="text-slate-400 flex justify-between">
-                    <span>EIP-4337 PAYMASTER:</span>
-                    <span className="text-emerald-400">ACTIVE (0 GAS COST TO USER)</span>
+                    <span className="text-emerald-400">+14.2% NET YIELD</span>
                   </div>
                   <div className="text-slate-400 flex justify-between">
                     <span>MARITIME PORT FEED:</span>
@@ -208,7 +227,9 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({
 
                 <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-500 flex items-center justify-between">
                   <span>Sub-second API telemetry</span>
-                  <span className="text-amber-400 font-bold">Click to Launch</span>
+                  <span className="text-amber-400 font-bold group-hover/card:translate-x-1 transition-transform flex items-center gap-1">
+                    Click to Launch <ChevronRight className="w-3 h-3" />
+                  </span>
                 </div>
               </div>
             </div>
@@ -284,6 +305,82 @@ export const ProductsSection: React.FC<ProductsSectionProps> = ({
             </button>
           </div>
 
+        </div>
+
+        {/* ============================================================== */}
+        {/* ALL 10 AUTONOMOUS SOVEREIGN & INSTITUTIONAL MARKET ENGINES */}
+        {/* Each with a direct link to open its dedicated page */}
+        {/* ============================================================== */}
+        <div className="pt-8 space-y-6 border-t border-slate-900">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase text-amber-400 font-bold">
+                <Radio className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                <span>Featured Sovereign Fleet • 10 Dedicated Standalone Engines</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+                Autonomous Sovereign & Institutional Market Engines
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-400 max-w-2xl mt-1">
+                Fully automated institutional architectures powered by free, public, live endpoints. Each engine features its own dedicated interactive page with real-time Fetch → Monitor → Update loops.
+              </p>
+            </div>
+
+            <button
+              onClick={() => {
+                if (onNavigateEngine) {
+                  onNavigateEngine(1);
+                } else {
+                  onNavigateSection('multi-trillion-engines');
+                }
+              }}
+              className="px-4 py-2.5 rounded-xl bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 border border-amber-400/30 text-xs font-mono font-bold flex items-center gap-2 transition-colors shrink-0"
+            >
+              <span>Explore Engine 01 Page</span>
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* 10 Engines Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            {MULTI_TRILLION_ENGINES.map((eng) => (
+              <div
+                key={eng.id}
+                onClick={() => onNavigateEngine ? onNavigateEngine(eng.number) : onNavigateSection('multi-trillion-engines')}
+                className="cursor-pointer p-5 rounded-2xl bg-slate-900/90 border border-slate-800 hover:border-amber-400/60 transition-all flex flex-col justify-between group space-y-3"
+              >
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${eng.badgeBg} ${eng.badgeColor}`}>
+                      {eng.tag}
+                    </span>
+                    <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Live
+                    </span>
+                  </div>
+
+                  <h4 className="text-xs font-bold text-white group-hover:text-amber-300 transition-colors line-clamp-2 leading-snug">
+                    {eng.title}
+                  </h4>
+
+                  <p className="text-[11px] text-slate-400 line-clamp-2 leading-relaxed">
+                    {eng.summary}
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-slate-800/80 space-y-2">
+                  <div className="text-[10px] font-mono text-amber-300/90 font-medium">
+                    Scale: {eng.marketSize.split('(')[0].trim()}
+                  </div>
+                  <div className="text-[11px] font-bold text-amber-400 group-hover:text-white flex items-center justify-between">
+                    <span>Open Engine Page</span>
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
       </div>

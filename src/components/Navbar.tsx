@@ -28,7 +28,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navItems = [
     { id: 'fleet', label: '10 ENGINES FLEET', isSpecial: true, isFleet: true, isNew: true },
-    { id: 'products', label: 'PRODUCTS', isSpecial: true },
+    { id: 'products', label: 'FEATURED PRODUCTS', isSpecial: true },
+    { id: 'multi-trillion-engines', label: 'INSTITUTIONAL MARKET ENGINES', isSpecial: true, isNew: true },
     { id: 'credit-checkout', label: 'CREDIT CHECKOUT', isSpecial: true, isNew: true },
     { id: 'nexus-cloud', label: 'NEXUS CLOUD', isSpecial: true },
     { id: 'free-global-development', label: 'Free Global Development', isGlobalDev: true },

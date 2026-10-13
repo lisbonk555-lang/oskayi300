@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+@keyframes marquee-slide-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-slide-left-continuous {
+  display: flex;
+  width: max-content;
+  animation: marquee-slide-left 50s linear infinite;
+}
+
+.animate-slide-left-continuous:hover {
+  animation-play-state: paused;
+}
