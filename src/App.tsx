@@ -19,9 +19,11 @@ import { FreeGlobalDevelopmentPage } from './pages/FreeGlobalDevelopmentPage';
 import { FleetOrchestrationPortalPage } from './pages/FleetOrchestrationPortalPage';
 import { EngineDetailPage } from './pages/EngineDetailPage';
 import { IgpdPage } from './pages/IgpdPage';
+import { MasjidGatePage } from './pages/MasjidGatePage';
+import { MasjidMainPage } from './pages/MasjidMainPage';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development' | 'fleet-orchestration' | 'engine-detail' | 'igpd'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development' | 'fleet-orchestration' | 'engine-detail' | 'igpd' | 'masjid-gate' | 'masjid-main'>('main');
   const [selectedEngineNumber, setSelectedEngineNumber] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
@@ -33,6 +35,20 @@ export default function App() {
     const handleUrlChange = () => {
       const path = window.location.pathname;
       const hash = window.location.hash;
+
+      if (path === '/igpd/masjid/main' || hash === '#igpd/masjid/main' || hash === '#masjid-main') {
+        setCurrentView('masjid-main');
+        setActiveSection('masjid-main');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
+
+      if (path === '/igpd/masjid' || hash === '#igpd/masjid' || hash === '#masjid-gate' || hash === '#masjid') {
+        setCurrentView('masjid-gate');
+        setActiveSection('masjid-gate');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
 
       if (path === '/igpd' || hash === '#igpd') {
         setCurrentView('igpd');
@@ -114,6 +130,20 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateMasjidGate = () => {
+    setCurrentView('masjid-gate');
+    setActiveSection('masjid-gate');
+    window.history.pushState({}, '', '/igpd/masjid');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigateMasjidMain = () => {
+    setCurrentView('masjid-main');
+    setActiveSection('masjid-main');
+    window.history.pushState({}, '', '/igpd/masjid/main');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavigateEngine = (engineNum: number) => {
     const validNum = Math.max(1, Math.min(10, engineNum));
     setSelectedEngineNumber(validNum);
@@ -131,6 +161,16 @@ export default function App() {
   };
 
   const handleNavigateSection = (sectionId: string) => {
+    if (sectionId === 'masjid' || sectionId === 'masjid-gate' || sectionId === 'igpd-masjid') {
+      handleNavigateMasjidGate();
+      return;
+    }
+
+    if (sectionId === 'masjid-main' || sectionId === 'igpd-masjid-main') {
+      handleNavigateMasjidMain();
+      return;
+    }
+
     if (sectionId === 'igpd') {
       handleNavigateIgpd();
       return;
@@ -215,10 +255,23 @@ export default function App() {
       />
 
       {/* View routing */}
-      {currentView === 'igpd' ? (
+      {currentView === 'masjid-gate' ? (
+        <MasjidGatePage
+          onEnter={handleNavigateMasjidMain}
+          onNavigateHome={handleNavigateHome}
+          onNavigateIgpd={handleNavigateIgpd}
+        />
+      ) : currentView === 'masjid-main' ? (
+        <MasjidMainPage
+          onNavigateGate={handleNavigateMasjidGate}
+          onNavigateHome={handleNavigateHome}
+          onNavigateIgpd={handleNavigateIgpd}
+        />
+      ) : currentView === 'igpd' ? (
         <IgpdPage
           onNavigateHome={handleNavigateHome}
           onNavigateSection={handleNavigateSection}
+          onNavigateMasjid={handleNavigateMasjidGate}
         />
       ) : currentView === 'engine-detail' ? (
         <EngineDetailPage

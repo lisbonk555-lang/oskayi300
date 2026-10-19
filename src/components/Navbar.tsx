@@ -30,6 +30,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     { id: 'fleet', label: '10 ENGINES FLEET', isSpecial: true, isFleet: true, isNew: true },
     { id: 'products', label: 'FEATURED PRODUCTS', isSpecial: true },
     { id: 'igpd', label: 'IGPD', isSpecial: true, isIgpd: true },
+    { id: 'masjid', label: 'MASJID AL-NOOR', isSpecial: true, isMasjid: true },
     { id: 'multi-trillion-engines', label: 'INSTITUTIONAL MARKET ENGINES', isSpecial: true, isNew: true },
     { id: 'credit-checkout', label: 'CREDIT CHECKOUT', isSpecial: true, isNew: true },
     { id: 'nexus-cloud', label: 'NEXUS CLOUD', isSpecial: true },
@@ -190,6 +191,24 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" />
                   <span>{item.label}</span>
                   <span className="px-1.5 py-0.2 text-[9px] bg-[#D4AF37] text-[#0A1931] rounded font-black">PEACE & DEV</span>
+                </button>
+              );
+            }
+
+            if (item.id === 'masjid') {
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+                    isActive
+                      ? 'bg-gradient-to-r from-[#D4AF37] via-[#FFF3B0] to-[#D4AF37] text-[#0A1931] shadow-lg shadow-[#D4AF37]/30 ring-2 ring-[#D4AF37]'
+                      : 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-900/60'
+                  }`}
+                >
+                  <span>🕌</span>
+                  <span>{item.label}</span>
+                  <span className="px-1.5 py-0.2 text-[9px] bg-emerald-400 text-slate-950 rounded font-black">24/7 LIVE</span>
                 </button>
               );
             }
@@ -384,6 +403,28 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </span>
                     <span className="px-1.5 py-0.2 text-[9px] bg-[#D4AF37] text-[#0A1931] font-black rounded">
                       DECLARATION
+                    </span>
+                  </button>
+                );
+              }
+
+              if (item.id === 'masjid') {
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`block w-full text-left px-3 py-2.5 text-xs uppercase tracking-wider font-bold rounded-lg transition-colors flex items-center justify-between ${
+                      activeSection === item.id 
+                        ? 'bg-[#0A1931] text-[#D4AF37] border border-[#D4AF37]/60 shadow-md' 
+                        : 'text-emerald-300 bg-emerald-950/40 border border-emerald-500/30 hover:bg-[#132746]'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>🕌</span>
+                      <span>MASJID AL-NOOR AL-ALAMI</span>
+                    </span>
+                    <span className="px-1.5 py-0.2 text-[9px] bg-emerald-400 text-slate-950 font-black rounded">
+                      24/7 VIRTUAL
                     </span>
                   </button>
                 );

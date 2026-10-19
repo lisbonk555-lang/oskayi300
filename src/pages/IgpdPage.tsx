@@ -23,9 +23,10 @@ import {
 interface IgpdPageProps {
   onNavigateHome: () => void;
   onNavigateSection?: (sectionId: string) => void;
+  onNavigateMasjid?: () => void;
 }
 
-export const IgpdPage: React.FC<IgpdPageProps> = ({ onNavigateHome, onNavigateSection }) => {
+export const IgpdPage: React.FC<IgpdPageProps> = ({ onNavigateHome, onNavigateSection, onNavigateMasjid }) => {
   const [copied, setCopied] = useState(false);
   const [posterModalOpen, setPosterModalOpen] = useState(false);
 
@@ -146,14 +147,25 @@ export const IgpdPage: React.FC<IgpdPageProps> = ({ onNavigateHome, onNavigateSe
       <div className="max-w-5xl mx-auto px-4 sm:px-8 py-8 sm:py-12 relative z-10">
 
         {/* Top Navigation Bar */}
-        <div className="flex items-center justify-between gap-4 mb-8 pb-4 border-b border-[#D4AF37]/30">
-          <button
-            onClick={onNavigateHome}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#071326] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A1931] border border-[#D4AF37]/50 text-xs font-mono font-bold transition-all shadow-md group"
-          >
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            <span>Return to Oskayi Home</span>
-          </button>
+        <div className="flex items-center justify-between gap-4 mb-8 pb-4 border-b border-[#D4AF37]/30 flex-wrap">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onNavigateHome}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#071326] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#0A1931] border border-[#D4AF37]/50 text-xs font-mono font-bold transition-all shadow-md group"
+            >
+              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+              <span>Return to Oskayi Home</span>
+            </button>
+
+            {onNavigateMasjid && (
+              <button
+                onClick={onNavigateMasjid}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#D4AF37] to-[#8C6D1F] hover:from-[#FFF3B0] text-[#0A1931] text-xs font-mono font-black transition-all shadow-lg"
+              >
+                <span>🕌 Enter Masjid Al-Noor (24/7 Virtual Mosque)</span>
+              </button>
+            )}
+          </div>
 
           <div className="flex items-center gap-3">
             <button

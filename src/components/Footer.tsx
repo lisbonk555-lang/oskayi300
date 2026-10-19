@@ -155,6 +155,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
                 </button>
               </li>
               <li>
+                <button onClick={() => onNavigateSection('masjid')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-emerald-400 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>MASJID AL-NOOR AL-ALAMI — 24/7 Virtual Mosque</span>
+                </button>
+              </li>
+              <li>
                 <button onClick={() => onNavigateSection('products')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                   <span>AfriTreasury OS — Capital Markets BOT</span>
