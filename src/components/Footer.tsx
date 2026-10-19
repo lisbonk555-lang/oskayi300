@@ -126,6 +126,20 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
                 FREE
               </span>
             </button>
+
+            {/* IGPD Global Declaration Fast Access Badge */}
+            <button
+              onClick={() => onNavigateSection('igpd')}
+              className="w-full p-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37]/20 via-[#D4AF37]/10 to-[#0A1931] hover:from-[#D4AF37]/30 border border-[#D4AF37]/60 text-[#D4AF37] hover:text-white text-xs font-mono font-bold flex items-center justify-between transition-all group"
+            >
+              <span className="flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                <span className="text-white">IGPD — Peace & Development</span>
+              </span>
+              <span className="text-[10px] bg-[#D4AF37] text-[#0A1931] px-1.5 py-0.5 rounded font-black">
+                DECLARATION
+              </span>
+            </button>
           </div>
 
           {/* Col 2: Institutional Products & Research */}
@@ -134,6 +148,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenVerification, onNavigateSe
               Products & Intelligence
             </h4>
             <ul className="space-y-2 text-xs font-sans">
+              <li>
+                <button onClick={() => onNavigateSection('igpd')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-[#D4AF37] font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse" />
+                  <span>IGPD — Islam for Global Peace and Development</span>
+                </button>
+              </li>
               <li>
                 <button onClick={() => onNavigateSection('products')} className="hover:text-amber-300 transition-colors text-left flex items-center gap-1.5 text-slate-300">
                   <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />

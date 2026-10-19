@@ -18,9 +18,10 @@ import { CreditCheckoutPage } from './pages/CreditCheckoutPage';
 import { FreeGlobalDevelopmentPage } from './pages/FreeGlobalDevelopmentPage';
 import { FleetOrchestrationPortalPage } from './pages/FleetOrchestrationPortalPage';
 import { EngineDetailPage } from './pages/EngineDetailPage';
+import { IgpdPage } from './pages/IgpdPage';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development' | 'fleet-orchestration' | 'engine-detail'>('main');
+  const [currentView, setCurrentView] = useState<'main' | 'nexus-cloud' | 'credit-checkout' | 'free-global-development' | 'fleet-orchestration' | 'engine-detail' | 'igpd'>('main');
   const [selectedEngineNumber, setSelectedEngineNumber] = useState<number>(1);
   const [activeSection, setActiveSection] = useState<string>('hero');
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState<boolean>(false);
@@ -32,6 +33,13 @@ export default function App() {
     const handleUrlChange = () => {
       const path = window.location.pathname;
       const hash = window.location.hash;
+
+      if (path === '/igpd' || hash === '#igpd') {
+        setCurrentView('igpd');
+        setActiveSection('igpd');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return;
+      }
 
       const engineMatch = path.match(/^\/engine\/(\d+)/) || hash.match(/^#engine-?(\d+)/);
       if (engineMatch) {
@@ -99,6 +107,13 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleNavigateIgpd = () => {
+    setCurrentView('igpd');
+    setActiveSection('igpd');
+    window.history.pushState({}, '', '/igpd');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const handleNavigateEngine = (engineNum: number) => {
     const validNum = Math.max(1, Math.min(10, engineNum));
     setSelectedEngineNumber(validNum);
@@ -116,6 +131,11 @@ export default function App() {
   };
 
   const handleNavigateSection = (sectionId: string) => {
+    if (sectionId === 'igpd') {
+      handleNavigateIgpd();
+      return;
+    }
+
     if (sectionId.startsWith('engine-')) {
       const num = parseInt(sectionId.replace('engine-', ''), 10);
       if (num >= 1 && num <= 10) {
@@ -195,7 +215,12 @@ export default function App() {
       />
 
       {/* View routing */}
-      {currentView === 'engine-detail' ? (
+      {currentView === 'igpd' ? (
+        <IgpdPage
+          onNavigateHome={handleNavigateHome}
+          onNavigateSection={handleNavigateSection}
+        />
+      ) : currentView === 'engine-detail' ? (
         <EngineDetailPage
           engineNumber={selectedEngineNumber}
           onNavigateHome={handleNavigateHome}
