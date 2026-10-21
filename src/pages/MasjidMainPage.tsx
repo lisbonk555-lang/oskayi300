@@ -28,6 +28,7 @@ import { MasjidMapFinder } from '../components/masjid/MasjidMapFinder';
 import { MadrasahAlNoor } from '../components/masjid/MadrasahAlNoor';
 import { AlMizanNewsEngine } from '../components/masjid/AlMizanNewsEngine';
 import { DiwanAlAlamiCommunity } from '../components/masjid/DiwanAlAlamiCommunity';
+import { MasjidMembershipSection } from '../components/masjid/MasjidMembershipSection';
 
 interface MasjidMainPageProps {
   onNavigateGate: () => void;
@@ -161,6 +162,9 @@ export const MasjidMainPage: React.FC<MasjidMainPageProps> = ({
             </button>
             <button onClick={() => scrollToSection('diwan')} className="px-2.5 py-1 text-slate-300 hover:text-[#D4AF37]">
               Diwan
+            </button>
+            <button onClick={() => scrollToSection('membership')} className="px-2.5 py-1 text-[#FFF3B0] hover:text-[#D4AF37] font-black">
+              Membership
             </button>
           </nav>
 
@@ -308,6 +312,9 @@ export const MasjidMainPage: React.FC<MasjidMainPageProps> = ({
 
         {/* SECTION 6: DIWAN AL-ALAMI */}
         <DiwanAlAlamiCommunity />
+
+        {/* SECTION 06.5: MEMBERSHIP & PAYSTACK TIERS (Niyyah 0 GHS, Noor 50 GHS, Al-Bari 150 GHS) */}
+        <MasjidMembershipSection />
 
         {/* SECTION 7: ZAKAT & HUMANITARIAN SANCTUARY */}
         <section id="zakat" className="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-[#0F274D] via-[#0A1931] to-[#0F274D] border-2 border-[#D4AF37] shadow-2xl text-center space-y-6">
