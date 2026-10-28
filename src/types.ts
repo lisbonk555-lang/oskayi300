@@ -9,16 +9,25 @@ export interface CompanyVerificationInfo {
   registrationDate: string;
   startDate: string;
   founderAndCEO: string;
+  ownerDob?: string;
+  ownerNationality?: string;
   digitalAddress: string;
   postalDigitalAddress: string;
   physicalAddress: string;
   postalAddress: string;
+  district?: string;
+  region?: string;
   isicCode: string;
   isicDescription: string;
   principalActivity: string;
+  objectsOfCompany?: string;
   contactPhone: string;
+  mobileNo?: string;
   primaryEmail: string;
   secondaryEmail: string;
+  envisagedEmployees?: number;
+  envisagedRevenue?: string;
+  officialWebsites?: string[];
 }
 
 export interface ServicePillar {

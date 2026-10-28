@@ -11,16 +11,25 @@ export const OFFICIAL_COMPANY_INFO: CompanyVerificationInfo = {
   registrationDate: "01-Oct-2025",
   startDate: "29-Sep-2025",
   founderAndCEO: "Listowel Sarsah Adentwi-Edzii",
+  ownerDob: "16-Apr-1993",
+  ownerNationality: "Ghanaian",
   digitalAddress: "GA-183-8165",
   postalDigitalAddress: "GA-103-01G5",
-  physicalAddress: "House Number 352, McCarthy Hill, Unknown Street near Presby Church, Accra, Greater Accra, Ghana",
+  physicalAddress: "House Number 352, McCarthy Hill, Unknown Street near the Presby Church, Accra, Ga South, Greater Accra, Ghana",
   postalAddress: "P.O. Box 119989, Accra North, Ghana",
+  district: "Ga South",
+  region: "GREATER ACCRA",
   isicCode: "8299",
   isicDescription: "Other business support service activities n.e.c.",
-  principalActivity: "Information and Communication Technology Services, Project Development, Management, and Financial Consultancy Services.",
+  principalActivity: "Information and Communication Technology Services, Project Development, Management and Financial Consultancy Services.",
+  objectsOfCompany: "Services - INFORMATION AND COMMUNICATION TECHNOLOGY SERVICES, PROJECT DEVELOPMENT, MANAGEMENT AND FINANCIAL CONSULTANCY SERVICES.",
   contactPhone: "+233 24 490 5505",
-  primaryEmail: "integrationpartners@oskayi.com",
-  secondaryEmail: "oskayi@giideatg.com"
+  mobileNo: "0244905505",
+  primaryEmail: "info@oskayi.com",
+  secondaryEmail: "oskayi@giideatg.com",
+  envisagedEmployees: 4,
+  envisagedRevenue: "GHC 1,000.00",
+  officialWebsites: ["www.oskayi.com", "www.giideatg.com"]
 };
 
 export const SERVICE_PILLARS: ServicePillar[] = [

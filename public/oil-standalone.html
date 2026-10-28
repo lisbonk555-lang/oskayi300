@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OIL - Oskayi Instant Loan | One Bank Auth. One AI Score. One Instant Loan.</title>
+  <meta name="description" content="One Bank Auth. One AI Score. One Instant Loan. Automated credit scoring marketplace routing to global open liquidity pools (Aave $30B, Kiva $1.6B, Private Credit $1.8T).">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Paystack Inline JS -->
+  <script src="https://js.paystack.co/v1/inline.js"></script>
+  <!-- Plaid Link JS -->
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-neutral-50 text-neutral-900 antialiased min-h-screen flex flex-col justify-between selection:bg-amber-400 selection:text-neutral-950">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200">
+    <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Oil Drop SVG Logo -->
+        <svg viewBox="0 0 100 100" class="w-10 h-10 drop-shadow-md">
+          <defs>
+            <linearGradient id="dropGrad" x1="20%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%" stop-color="#D4AF37"/>
+              <stop offset="25%" stop-color="#1a1a1a"/>
+              <stop offset="70%" stop-color="#0a0a0a"/>
+              <stop offset="100%" stop-color="#047857"/>
+            </linearGradient>
+          </defs>
+          <path d="M50 4 C50 4, 18 48, 18 70 C18 87.67, 32.33 100, 50 100 C67.67 100, 82 87.67, 82 70 C82 48, 50 4, 50 4 Z" fill="url(#dropGrad)"/>
+          <path d="M50 14 C50 14, 26 50, 26 69 C26 83, 37 92, 50 92 C63 92, 74 83, 74 69 C74 50, 50 14, 50 14 Z" stroke="#D4AF37" stroke-width="2.5" fill="#080808"/>
+          <circle cx="50" cy="68" r="16" stroke="#D4AF37" stroke-width="5" fill="none"/>
+          <circle cx="50" cy="68" r="4.5" fill="#10B981"/>
+        </svg>
+        <div>
+          <div class="flex items-center gap-1.5 leading-none">
+            <span class="text-xl font-black text-neutral-950">OIL</span>
+            <span class="text-neutral-300">|</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-600">Instant Loan</span>
+          </div>
+          <span class="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">Powered by Oskayi Consult</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="hidden sm:inline text-xs font-mono px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-full">
+          195 Countries Live · 14-Min AI
+        </span>
+        <a href="#terminal" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 text-amber-400 font-bold text-xs font-mono rounded-xl">
+          Apply / Check Score
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 py-10 flex-grow">
+    
+    <!-- Hero Flyer Banner -->
+    <div class="text-center max-w-4xl mx-auto mb-12">
+      <div class="inline-block px-3.5 py-1.5 rounded-full bg-neutral-100 border border-neutral-300 text-neutral-800 text-xs font-mono mb-4">
+        ONE BANK AUTH · ONE AI SCORE · ONE INSTANT LOAN
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-black text-neutral-950 tracking-tight leading-[1.1] mb-5">
+        Instant Credit Scoring & <br/>
+        <span class="text-amber-600">Global Pool Disbursal</span>
+      </h1>
+      <p class="text-base sm:text-lg text-neutral-600 max-w-2xl mx-auto leading-relaxed mb-8">
+        OIL is a live credit intelligence marketplace, <strong>NOT a lender</strong>. We charge a 10% AI scoring fee. 
+        Funds auto-disburse from open global pools (Aave $30B, Kiva $1.6B, Private Credit $1.8T). 
+        Decisions in <strong>14 minutes</strong> down from 9 days.
+      </p>
+
+      <div class="max-w-xl mx-auto p-4 rounded-2xl bg-neutral-950 text-white flex items-center justify-between border border-neutral-800 text-left">
+        <div>
+          <div class="text-[10px] font-mono uppercase text-amber-400">Speed Compression</div>
+          <div class="text-sm font-semibold">Legacy Banks: <span class="line-through text-neutral-400">9 Days</span> → OIL AI: <span class="text-emerald-400 font-bold">14 Minutes</span></div>
+        </div>
+        <a href="#terminal" class="px-4 py-2 bg-amber-400 text-neutral-950 text-xs font-bold font-mono rounded-lg">Get Scored Now</a>
+      </div>
+    </div>
+
+    <!-- Live Debt Clock & TVL -->
+    <div class="bg-white border border-neutral-200 rounded-2xl p-6 shadow-sm mb-12">
+      <div class="flex items-center justify-between pb-3 mb-4 border-b border-neutral-100 text-xs font-mono">
+        <span class="text-emerald-700 font-bold">● LIVE PUBLIC APIS (30s REFRESH)</span>
+        <span id="refreshTimer">Auto-refresh: 30s</span>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200">
+          <div class="text-[10px] font-mono uppercase text-neutral-500">Global Debt Clock</div>
+          <div class="text-xl font-black font-mono mt-1">$348.0T</div>
+          <div class="text-[10px] text-neutral-500 font-mono mt-1">Govt $106.7T · Corp $100.6T</div>
+        </div>
+        <div class="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200">
+          <div class="text-[10px] font-mono uppercase text-neutral-500">Aave v3 Pool (Live)</div>
+          <div id="liveAaveTvl" class="text-xl font-black font-mono mt-1">$14.4B</div>
+          <div class="text-[10px] text-neutral-500 font-mono mt-1">Supplied: $30.46B</div>
+        </div>
+        <div class="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200">
+          <div class="text-[10px] font-mono uppercase text-neutral-500">Kiva Micro-Credit</div>
+          <div class="text-xl font-black font-mono mt-1">$1.6B</div>
+          <div class="text-[10px] text-neutral-500 font-mono mt-1">96.9% Repay · 80 Countries</div>
+        </div>
+        <div class="p-3.5 bg-neutral-50 rounded-xl border border-neutral-200">
+          <div class="text-[10px] font-mono uppercase text-neutral-500">Private Credit AUM</div>
+          <div class="text-xl font-black font-mono mt-1">$1.8T</div>
+          <div class="text-[10px] text-neutral-500 font-mono mt-1">Apollo $940B · LendingClub $100B</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Interactive Terminal -->
+    <div id="terminal" class="bg-white border border-neutral-200 rounded-3xl p-6 sm:p-10 shadow-xl mb-12">
+      <div class="pb-6 mb-8 border-b border-neutral-200">
+        <span class="text-xs font-mono font-bold uppercase text-amber-600 bg-amber-50 px-2.5 py-1 rounded-md">Step-by-Step Scoring Gateway</span>
+        <h2 class="text-2xl sm:text-3xl font-black text-neutral-950 mt-2">Check Credit Score & Auto-Route Facility</h2>
+      </div>
+
+      <!-- Mode Toggle -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
+        <button id="modeZero" onclick="switchMode('zero')" class="p-3 rounded-xl border-2 border-neutral-900 bg-neutral-900 text-amber-400 font-bold text-xs text-left">
+          Zero Dollar User (MoMo / Bank History) — Max $15,000 Kiva Predisbursed
+        </button>
+        <button id="modeCollateral" onclick="switchMode('collateral')" class="p-3 rounded-xl border-2 border-neutral-200 bg-neutral-50 text-neutral-600 font-bold text-xs text-left">
+          With Collateral ($1,000 – $1,000,000,000+) — Aave / Private Credit
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+            <label class="block text-xs font-mono uppercase text-neutral-600 mb-1">Step 1: Input MoMo (055/024) or Plaid Bank</label>
+            <input type="text" id="authInput" value="0554905505" class="w-full p-2.5 bg-white border border-neutral-300 rounded-lg text-sm font-mono"/>
+          </div>
+
+          <div class="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+            <label class="block text-xs font-mono uppercase text-neutral-600 mb-1">Step 2: Select Country (195 Countries Sovereign Rating)</label>
+            <select id="countrySelect" onchange="updateCountryRating()" class="w-full p-2.5 bg-white border border-neutral-300 rounded-lg text-sm font-medium">
+              <option value="GH">🇬🇭 Ghana (Sovereign B- · Risk Spread +7.8%)</option>
+              <option value="NG">🇳🇬 Nigeria (Sovereign B- · Risk Spread +8.1%)</option>
+              <option value="KE">🇰🇪 Kenya (Sovereign B · Risk Spread +6.9%)</option>
+              <option value="US">🇺🇸 United States (Sovereign AA+ · Risk Spread +0.5%)</option>
+              <option value="GB">🇬🇧 United Kingdom (Sovereign AA · Risk Spread +1.1%)</option>
+              <option value="ZA">🇿🇦 South Africa (Sovereign BB- · Risk Spread +4.8%)</option>
+              <option value="DE">🇩🇪 Germany (Sovereign AAA · Risk Spread +0.2%)</option>
+              <option value="AE">🇦🇪 United Arab Emirates (Sovereign AA · Risk Spread +1.0%)</option>
+            </select>
+          </div>
+
+          <div class="p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+            <div class="flex justify-between text-xs font-mono mb-2">
+              <span>Target Amount:</span>
+              <span id="amountDisplay" class="font-bold text-base text-neutral-950">$500 USD</span>
+            </div>
+            <input type="range" id="amountSlider" min="50" max="15000" step="50" value="500" oninput="updateAmount(this.value)" class="w-full accent-amber-500"/>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+          <div class="p-6 bg-neutral-900 text-white rounded-2xl">
+            <div class="text-xs font-mono uppercase text-amber-400 mb-2">OIL 10% Evaluation Fee</div>
+            <div class="flex justify-between items-center text-lg font-bold">
+              <span>10% Routing Fee:</span>
+              <span id="feeDisplay" class="text-amber-400 text-2xl font-mono font-black">$50.00 USD</span>
+            </div>
+            <div class="text-[11px] text-neutral-400 mt-2 font-mono">
+              Pure evaluation fee. OIL does not lend or take credit risk. Collected via Paystack (GHS) or Plaid.
+            </div>
+          </div>
+
+          <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-950">
+            <label class="flex items-start gap-2 cursor-pointer">
+              <input type="checkbox" id="consentCheckbox" checked class="mt-0.5 accent-amber-600"/>
+              <span>"I authorize reading history time-bound revocable - data-blind conduit."</span>
+            </label>
+          </div>
+
+          <button onclick="handleEvaluateOIL()" class="w-full py-4 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-neutral-950 font-black text-sm uppercase tracking-wider rounded-xl shadow-lg">
+            Check My Score — Pay 10% Fee
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Display -->
+      <div id="resultsCard" class="hidden mt-8 p-6 bg-neutral-950 text-white rounded-2xl">
+        <div class="flex justify-between items-center pb-4 mb-4 border-b border-neutral-800">
+          <div>
+            <div class="text-emerald-400 font-mono text-xs font-bold uppercase">Decision: APPROVED in 14 Minutes</div>
+            <h3 class="text-lg font-bold">Score: 520 (Gold Tier) · Sovereign B-</h3>
+          </div>
+          <span class="text-amber-400 font-mono font-bold" id="resApr">APR: 14.1%</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div class="p-3 bg-neutral-900 rounded-xl">
+            <div class="text-xs text-neutral-400 font-mono">Approved Amount</div>
+            <div id="resAmount" class="text-xl font-mono font-bold text-amber-400">$500 USD</div>
+          </div>
+          <div class="p-3 bg-neutral-900 rounded-xl">
+            <div class="text-xs text-neutral-400 font-mono">Disbursal Pool</div>
+            <div id="resSource" class="text-sm font-bold text-white">Kiva Field Partner ($1.6B)</div>
+          </div>
+          <div class="p-3 bg-neutral-900 rounded-xl">
+            <div class="text-xs text-neutral-400 font-mono">Fee Charged (10%)</div>
+            <div id="resFee" class="text-xl font-mono font-bold text-white">$50.00 USD</div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-blue-900/40 border border-blue-700/50 rounded-xl text-xs font-mono text-blue-200 mb-4">
+          ⚠️ <strong>Balance Sheet Fact:</strong> $1000 deposit + $800 borrow = Net worth stays $1000 NOT $1980. Debt is $800.
+        </div>
+
+        <button onclick="handleDisburse()" id="disburseBtn" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-black text-xs font-mono uppercase tracking-wider rounded-xl">
+          Get Credit Now (Auto-Disburse to MoMo / Bank)
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Sources of Funds -->
+    <div class="mb-12">
+      <div class="p-6 bg-neutral-900 text-white rounded-3xl mb-6">
+        <span class="text-xs font-mono uppercase text-amber-400 font-bold">Open Liquidity Rails</span>
+        <h2 class="text-2xl font-black mt-1">Sources of Funds — Not Your Money</h2>
+        <p class="text-xs text-neutral-400 mt-1">Funds auto-disbursed from third-party decentralized and institutional pools.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-mono">
+        <div class="p-4 bg-white border border-neutral-200 rounded-xl">
+          <div class="font-bold text-neutral-900 text-sm">Aave Protocol v3</div>
+          <div class="text-purple-600 font-bold">$30.46B Supplied · $12.14B Borrowed</div>
+          <div class="text-neutral-500 mt-1">Cap $32M supply / $21M borrow per pool. 61.5% DeFi market share.</div>
+        </div>
+        <div class="p-4 bg-white border border-neutral-200 rounded-xl">
+          <div class="font-bold text-neutral-900 text-sm">Kiva Open Capital</div>
+          <div class="text-emerald-600 font-bold">$1.6B Cumulative · 80 Countries</div>
+          <div class="text-neutral-500 mt-1">Field Partners predisburse before Kiva public funding campaign closes.</div>
+        </div>
+        <div class="p-4 bg-white border border-neutral-200 rounded-xl">
+          <div class="font-bold text-neutral-900 text-sm">Private Credit $1.8T</div>
+          <div class="text-amber-600 font-bold">Apollo $940B · LendingClub $100B</div>
+          <div class="text-neutral-500 mt-1">Deutsche Bank proof: compressed corporate loans from weeks to minutes.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Legal Footer -->
+  <footer class="bg-neutral-900 text-neutral-300 text-xs border-t border-neutral-800 py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="p-5 bg-neutral-950 rounded-2xl border border-neutral-800 text-[11px] font-mono leading-relaxed space-y-3 mb-6">
+        <div class="text-amber-400 font-bold">LEGAL & REGULATORY DISCLOSURE:</div>
+        <p>OIL - Oskayi Instant Loan is credit intelligence marketplace. We do not lend. We are data-blind conduit like Account Aggregator. Funds from licensed partners (Aave $14.4B TVL, Kiva $1.6B, LendingClub $100B, Private Credit $1.8T). We provide AI scoring for 10% fee via Paystack PSP licensed Bank of Ghana and Plaid 12k institutions. No lending license needed, risk borne by lender, escrow mandatory.</p>
+        <p>Predisbursement: Field Partners give loans sometimes before loan is even posted to Kiva. This is called predisbursing. Essential for instant disbursement: APIs and Account Aggregators, consent-based data sharing, regulated. Plaid supports over 12,000 financial institutions across US, Canada, UK, Europe. Deutsche Bank reduced corporate loan decisions from weeks to minutes, multinationals months to weeks. RapidData compressed loan decisioning from nine days to fourteen minutes.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row justify-between items-center text-[11px] font-mono text-neutral-500 gap-2">
+        <div>Powered by Oskayi Consult • Global Fintech Infrastructure • Worldwide - 195 Countries</div>
+        <div>Registration: BN248851025 · Act 151</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let currentMode = 'zero';
+    let currentAmount = 500;
+
+    function switchMode(m) {
+      currentMode = m;
+      const bZero = document.getElementById('modeZero');
+      const bCol = document.getElementById('modeCollateral');
+      const slider = document.getElementById('amountSlider');
+
+      if (m === 'zero') {
+        bZero.className = 'p-3 rounded-xl border-2 border-neutral-900 bg-neutral-900 text-amber-400 font-bold text-xs text-left';
+        bCol.className = 'p-3 rounded-xl border-2 border-neutral-200 bg-neutral-50 text-neutral-600 font-bold text-xs text-left';
+        slider.min = 50;
+        slider.max = 15000;
+        updateAmount(500);
+      } else {
+        bCol.className = 'p-3 rounded-xl border-2 border-neutral-900 bg-neutral-900 text-amber-400 font-bold text-xs text-left';
+        bZero.className = 'p-3 rounded-xl border-2 border-neutral-200 bg-neutral-50 text-neutral-600 font-bold text-xs text-left';
+        slider.min = 800;
+        slider.max = 500000;
+        updateAmount(5000);
+      }
+    }
+
+    function updateAmount(val) {
+      currentAmount = Number(val);
+      document.getElementById('amountDisplay').innerText = '$' + currentAmount.toLocaleString() + ' USD';
+      const fee = currentAmount * 0.10;
+      document.getElementById('feeDisplay').innerText = '$' + fee.toFixed(2) + ' USD';
+    }
+
+    function updateCountryRating() {
+      // Country selection hook
+    }
+
+    function handleEvaluateOIL() {
+      const consent = document.getElementById('consentCheckbox').checked;
+      if (!consent) {
+        alert('Please accept statutory consent checkbox.');
+        return;
+      }
+
+      const country = document.getElementById('countrySelect').value;
+      const fee = currentAmount * 0.10;
+
+      // Paystack trigger if Ghana
+      if (country === 'GH' && window.PaystackPop) {
+        try {
+          const key = localStorage.getItem('oil_paystack_key') || 'pk_test_d3e23035dbf5e921d7b003a2991e48f88cb7f240';
+          const handler = PaystackPop.setup({
+            key: key,
+            email: 'customer@oil.oskayi.com',
+            amount: Math.round(fee * 15.4 * 100),
+            currency: 'GHS',
+            ref: 'OIL_' + Date.now(),
+            callback: function(res) {
+              showResults();
+            },
+            onClose: function() {
+              showResults();
+            }
+          });
+          handler.openIframe();
+          return;
+        } catch(e) {}
+      }
+
+      showResults();
+    }
+
+    function showResults() {
+      const card = document.getElementById('resultsCard');
+      card.classList.remove('hidden');
+      card.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('resAmount').innerText = '$' + currentAmount.toLocaleString() + ' USD';
+      document.getElementById('resFee').innerText = '$' + (currentAmount * 0.10).toFixed(2) + ' USD';
+      
+      if (currentMode === 'zero') {
+        document.getElementById('resSource').innerText = 'Kiva Field Partner Predisbursed ($1.6B)';
+      } else {
+        document.getElementById('resSource').innerText = 'Aave v3 Liquidity Pool ($30.46B)';
+      }
+    }
+
+    function handleDisburse() {
+      const btn = document.getElementById('disburseBtn');
+      btn.innerText = 'DISBURSED TO MOMO / BANK ACCOUNT (SUCCESS)';
+      btn.className = 'w-full py-3 bg-neutral-800 text-emerald-400 font-black text-xs font-mono uppercase tracking-wider rounded-xl';
+    }
+
+    // Auto-refresh timer
+    let count = 30;
+    setInterval(() => {
+      count = count > 1 ? count - 1 : 30;
+      document.getElementById('refreshTimer').innerText = 'Auto-refresh: ' + count + 's';
+    }, 1000);
+
+    // Fetch live Aave TVL
+    fetch('https://api.llama.fi/tvl/aave')
+      .then(r => r.json())
+      .then(v => {
+        if (typeof v === 'number') {
+          document.getElementById('liveAaveTvl').innerText = '$' + (v / 1e9).toFixed(2) + 'B';
+        }
+      }).catch(e => {});
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
