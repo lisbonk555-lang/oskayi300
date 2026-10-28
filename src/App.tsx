@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { OskaiNavbar } from './components/oskai/OskaiNavbar';
-import { OskaiHero } from './components/oskai/OskaiHero';
+import { OskayiProductsHub } from './components/home/OskayiProductsHub';
+import { OilPage } from './pages/OilPage';
+import { OilDecisionBrain } from './components/oil/OilDecisionBrain';
 import { OskaiLoanDiscovery } from './components/oskai/OskaiLoanDiscovery';
 import { OskaiLoanCompareModal } from './components/oskai/OskaiLoanCompareModal';
 import { OskaiApplicationWizard } from './components/oskai/OskaiApplicationWizard';
@@ -18,28 +20,53 @@ import {
 } from './server/oskaiLoanService';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('landing');
+  // Primary Route: 'home' (Oskayi Products Hub) or 'oil' (Oskayi Instant Loan Platform)
+  const [currentRoute, setCurrentRoute] = useState<'home' | 'oil'>('home');
+  
+  // Sub-tabs when on OIL route: 'marketplace' | 'brain' | 'discovery' | 'lenders' | 'assistant' | 'applications' | 'admin'
+  const [oilActiveTab, setOilActiveTab] = useState<string>('marketplace');
+
   const [products, setProducts] = useState<LoanProduct[]>([]);
   const [lenders, setLenders] = useState<Lender[]>([]);
   const [applicationsCount, setApplicationsCount] = useState<number>(0);
 
-  // Selected Discovery Filters
-  const [discoveryCategory, setDiscoveryCategory] = useState<string>('All');
-  const [discoveryAmount, setDiscoveryAmount] = useState<number>(5000);
-
-  // Application Modal state
+  // Application & Comparison Modals
   const [selectedProductForApply, setSelectedProductForApply] = useState<LoanProduct | null>(null);
   const [isApplicationModalOpen, setIsApplicationModalOpen] = useState(false);
-
-  // Comparison Modal state
   const [comparisonProducts, setComparisonProducts] = useState<LoanProduct[]>([]);
   const [isCompareModalOpen, setIsCompareModalOpen] = useState(false);
 
-  // Paystack Modal state
+  // Paystack Modal State
   const [activeInvoiceRef, setActiveInvoiceRef] = useState<string | null>(null);
   const [isPaystackOpen, setIsPaystackOpen] = useState(false);
 
-  // Load Lenders & Products
+  // URL Path Detection (/oil vs /)
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const path = window.location.pathname.toLowerCase();
+      const hash = window.location.hash.toLowerCase();
+      if (path.includes('/oil') || hash.includes('oil')) {
+        setCurrentRoute('oil');
+      } else {
+        setCurrentRoute('home');
+      }
+    };
+
+    handleLocationChange();
+    window.addEventListener('popstate', handleLocationChange);
+    return () => window.removeEventListener('popstate', handleLocationChange);
+  }, []);
+
+  const navigateToRoute = (route: 'home' | 'oil') => {
+    setCurrentRoute(route);
+    const targetPath = route === 'oil' ? '/oil' : '/';
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState(null, '', targetPath);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Load Lenders, Products, and Applications
   const loadPlatformData = async () => {
     try {
       const [prodRes, lendRes, appRes] = await Promise.all([
@@ -69,15 +96,7 @@ export default function App() {
     loadPlatformData();
   }, []);
 
-  // Handlers
-  const handleStartDiscovery = (category?: string, amount?: number) => {
-    if (category) setDiscoveryCategory(category);
-    if (amount) setDiscoveryAmount(amount);
-    setActiveTab('discovery');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleApplyForProduct = (product: LoanProduct) => {
+  const handleApplyForProduct = (product: LoanProduct, prefilled?: any) => {
     setSelectedProductForApply(product);
     setIsApplicationModalOpen(true);
   };
@@ -91,12 +110,11 @@ export default function App() {
     setIsApplicationModalOpen(false);
     setApplicationsCount(prev => prev + 1);
     
-    // If invoice created, prompt Paystack option
     if (app.serviceFeeInvoiceRef) {
       setActiveInvoiceRef(app.serviceFeeInvoiceRef);
       setIsPaystackOpen(true);
     }
-    setActiveTab('applications');
+    setOilActiveTab('applications');
   };
 
   const handleOpenPaystack = (invoiceRef: string) => {
@@ -106,129 +124,156 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col relative selection:bg-teal-500 selection:text-slate-950">
-      {/* Top Navbar */}
+      
+      {/* Universal Institutional Navbar */}
       <OskaiNavbar
-        activeTab={activeTab}
-        onSelectTab={setActiveTab}
+        currentRoute={currentRoute}
+        oilActiveTab={oilActiveTab}
+        onNavigateRoute={navigateToRoute}
+        onSelectOilTab={(tab) => {
+          setOilActiveTab(tab);
+          navigateToRoute('oil');
+        }}
         applicationsCount={applicationsCount}
       />
 
-      {/* Main Content Area */}
+      {/* Main View Area */}
       <main className="flex-grow w-full">
-        {/* Landing View */}
-        {activeTab === 'landing' && (
-          <div className="space-y-16">
-            <OskaiHero
-              onStartDiscovery={handleStartDiscovery}
-              onOpenAssistant={() => {
-                setActiveTab('assistant');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+        {/* ROUTE 1: OSKAYI PRODUCTS HUB (oskayi.com Homepage at "/") */}
+        {currentRoute === 'home' && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+            <OskayiProductsHub
+              onNavigateToOil={() => navigateToRoute('oil')}
+              onNavigateToSection={(secId) => {
+                const el = document.getElementById(secId);
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
             />
+          </div>
+        )}
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-              <div className="mb-6 flex items-center justify-between">
-                <div>
-                  <span className="text-teal-400 font-bold uppercase tracking-wider text-xs">
-                    Marketplace Preview
-                  </span>
-                  <h3 className="text-2xl font-bold font-serif text-white mt-1">
-                    Verified Credit Products in Ghana
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setActiveTab('discovery')}
-                  className="text-xs font-semibold text-teal-400 hover:text-teal-300 underline"
-                >
-                  View All Products &rarr;
-                </button>
+        {/* ROUTE 2: OIL - MASTER INSTANT LENDING DECISION BRAIN (at "/oil") */}
+        {currentRoute === 'oil' && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+            
+            {/* Sub-Tabs Selector Bar for OIL */}
+            <div className="flex items-center justify-between pb-4 border-b border-slate-800 overflow-x-auto gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                {[
+                  { id: 'marketplace', label: 'Oil Marketplace (Live Feed)' },
+                  { id: 'brain', label: 'Decision Brain (90s Scoring)' },
+                  { id: 'discovery', label: 'Loan Discovery Catalog' },
+                  { id: 'lenders', label: 'Lender Directory' },
+                  { id: 'assistant', label: 'AI Credit Advisor' },
+                  { id: 'applications', label: `My Applications (${applicationsCount})` },
+                  { id: 'admin', label: 'Compliance & APIs' }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setOilActiveTab(tab.id);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                      oilActiveTab === tab.id
+                        ? 'bg-teal-500 text-slate-950 shadow-md shadow-teal-500/20'
+                        : 'bg-slate-900 text-slate-300 hover:text-white hover:bg-slate-850'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
               </div>
 
-              <OskaiLoanDiscovery
-                initialCategory={discoveryCategory}
-                initialAmount={discoveryAmount}
-                onApplyForProduct={handleApplyForProduct}
-                onCompareProducts={handleCompareProducts}
+              <span className="text-[11px] text-emerald-400 font-mono hidden md:inline-flex items-center gap-1.5 shrink-0">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Aggregator Core • Live Decisioning
+              </span>
+            </div>
+
+            {/* Sub-Tab 0: Oil Marketplace with Live Kiva Feed & Paystack GHS 50 MoMo Score */}
+            {oilActiveTab === 'marketplace' && (
+              <OilPage />
+            )}
+
+            {/* Sub-Tab 1: Master Decision Brain */}
+            {oilActiveTab === 'brain' && (
+              <OilDecisionBrain
+                onApplyForMatchedProduct={handleApplyForProduct}
+                availableProducts={products}
               />
-            </div>
-          </div>
-        )}
+            )}
 
-        {/* Discovery Marketplace View */}
-        {activeTab === 'discovery' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-            <div>
-              <span className="text-teal-400 font-bold uppercase tracking-wider text-xs">
-                Marketplace Index
-              </span>
-              <h2 className="text-3xl font-bold font-serif text-white mt-1">
-                Loan Discovery & Comparison Engine
-              </h2>
-              <p className="text-slate-400 text-sm mt-1 max-w-2xl">
-                Compare verified loan terms, annual percentage rates (APR), required documentation, and processing speeds across licensed banks and microfinance networks.
-              </p>
-            </div>
+            {/* Sub-Tab 2: Loan Discovery Catalog */}
+            {oilActiveTab === 'discovery' && (
+              <div className="space-y-6">
+                <div>
+                  <span className="text-teal-400 font-bold uppercase tracking-wider text-xs">
+                    Marketplace Index
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-bold font-serif text-white mt-1">
+                    Verified Loan Products in Ghana
+                  </h2>
+                  <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
+                    Compare verified loan limits, annual percentage rates (APR), required documentation, and processing speeds across licensed banks and microfinance networks.
+                  </p>
+                </div>
 
-            <OskaiLoanDiscovery
-              initialCategory={discoveryCategory}
-              initialAmount={discoveryAmount}
-              onApplyForProduct={handleApplyForProduct}
-              onCompareProducts={handleCompareProducts}
-            />
-          </div>
-        )}
+                <OskaiLoanDiscovery
+                  onApplyForProduct={handleApplyForProduct}
+                  onCompareProducts={handleCompareProducts}
+                />
+              </div>
+            )}
 
-        {/* Lenders Directory View */}
-        {activeTab === 'lenders' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <OskaiLenderDirectory
-              lenders={lenders}
-              products={products}
-              onSelectProduct={handleApplyForProduct}
-            />
-          </div>
-        )}
+            {/* Sub-Tab 3: Lenders Directory */}
+            {oilActiveTab === 'lenders' && (
+              <OskaiLenderDirectory
+                lenders={lenders}
+                products={products}
+                onSelectProduct={handleApplyForProduct}
+              />
+            )}
 
-        {/* AI Financial Tools & Amortization Calculator */}
-        {activeTab === 'assistant' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-            <div>
-              <span className="text-teal-400 font-bold uppercase tracking-wider text-xs">
-                Financial Advisory Suite
-              </span>
-              <h2 className="text-3xl font-bold font-serif text-white mt-1">
-                AI Credit Advisor & Amortization Engine
-              </h2>
-              <p className="text-slate-400 text-sm mt-1 max-w-2xl">
-                Model exact monthly installments using reducing balance amortization, evaluate your Debt-to-Income (DTI) ratio, compare Flat vs. APR rates, and run anti-predatory scam checks.
-              </p>
-            </div>
+            {/* Sub-Tab 4: AI Assistant & Calculator */}
+            {oilActiveTab === 'assistant' && (
+              <div className="space-y-6">
+                <div>
+                  <span className="text-teal-400 font-bold uppercase tracking-wider text-xs">
+                    Financial Advisory Suite
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-bold font-serif text-white mt-1">
+                    AI Credit Advisor & Amortization Engine
+                  </h2>
+                  <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-2xl">
+                    Calculate monthly installments using reducing balance amortization, evaluate Debt-to-Income (DTI), compare Flat vs APR rates, and run anti-predatory scam checks.
+                  </p>
+                </div>
 
-            <OskaiAiAssistant />
-          </div>
-        )}
+                <OskaiAiAssistant />
+              </div>
+            )}
 
-        {/* Borrower Applications Tracking Console */}
-        {activeTab === 'applications' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <OskaiBorrowerDashboard
-              onOpenPaystackInvoice={handleOpenPaystack}
-              onExploreMoreLoans={() => {
-                setActiveTab('discovery');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            />
-          </div>
-        )}
+            {/* Sub-Tab 5: Borrower Applications Tracker */}
+            {oilActiveTab === 'applications' && (
+              <OskaiBorrowerDashboard
+                onOpenPaystackInvoice={handleOpenPaystack}
+                onExploreMoreLoans={() => {
+                  setOilActiveTab('discovery');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+              />
+            )}
 
-        {/* Compliance & Administration Console */}
-        {activeTab === 'admin' && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <OskaiAdminDashboard
-              onRefreshData={() => {
-                loadPlatformData();
-              }}
-            />
+            {/* Sub-Tab 6: Compliance & Administration Console */}
+            {oilActiveTab === 'admin' && (
+              <OskaiAdminDashboard
+                onRefreshData={() => {
+                  loadPlatformData();
+                }}
+              />
+            )}
+
           </div>
         )}
       </main>
@@ -257,19 +302,29 @@ export default function App() {
         invoiceReference={activeInvoiceRef}
         isOpen={isPaystackOpen}
         onClose={() => setIsPaystackOpen(false)}
-        onPaymentCompleted={(inv) => {
+        onPaymentCompleted={() => {
           setIsPaystackOpen(false);
           loadPlatformData();
         }}
       />
 
-      {/* Statutory Legal & Intermediary Footer */}
+      {/* Universal Statutory Compliance Footer */}
       <OskaiFooter onNavigateTab={(tab) => {
-        if (tab === 'marketplace') setActiveTab('discovery');
-        else if (tab === 'calculator') setActiveTab('assistant');
-        else setActiveTab(tab);
+        if (tab === 'marketplace') {
+          navigateToRoute('oil');
+          setOilActiveTab('discovery');
+        } else if (tab === 'calculator') {
+          navigateToRoute('oil');
+          setOilActiveTab('assistant');
+        } else if (tab === 'lenders' || tab === 'applications' || tab === 'admin') {
+          navigateToRoute('oil');
+          setOilActiveTab(tab);
+        } else {
+          navigateToRoute('home');
+        }
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }} />
+
     </div>
   );
 }
