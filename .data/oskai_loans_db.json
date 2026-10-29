@@ -456,6 +456,18 @@
   ],
   "auditLogs": [
     {
+      "id": "audit-1793243991346",
+      "timestamp": "2026-10-29T03:19:51.346Z",
+      "action": "DIRECT_AUTH_ESTABLISHED",
+      "actor": "0244905505@oskayi.com",
+      "targetReference": "DAT-SESS-MVSZ678Y-1002",
+      "details": {
+        "authType": "MOBILE_MONEY",
+        "provider": "MTN Mobile Money",
+        "maskedIdentifier": "024 •••• 5505"
+      }
+    },
+    {
       "id": "audit-1793153562412",
       "timestamp": "2026-10-28T02:12:42.412Z",
       "action": "CREDIT_DECISION_GENERATED",
@@ -476,6 +488,29 @@
       "targetReference": "OSKAI_CORE",
       "details": {
         "message": "Oskai Instant Loan platform initialized with verified Ghana lenders."
+      }
+    }
+  ],
+  "authSessions": [
+    {
+      "sessionId": "DAT-SESS-MVSZ678Y-1002",
+      "token": "DAT-OIDC-4e9c6ee444d093b2edbbec0ee6dc2dcc",
+      "authType": "MOBILE_MONEY",
+      "identifier": "0244905505",
+      "maskedIdentifier": "024 •••• 5505",
+      "provider": "MTN Mobile Money",
+      "userName": "Kwame Mensah",
+      "userEmail": "0244905505@oskayi.com",
+      "status": "AUTHENTICATED",
+      "verificationCode": "568122",
+      "verifiedAt": "2026-10-29T03:19:51.346Z",
+      "expiresAt": "2026-11-28T03:19:51.346Z",
+      "kycTier": "TIER-2_VERIFIED_CASHFLOW",
+      "verifiedLimitGhs": 25000,
+      "telemetrySummary": {
+        "monthlyAvgInflowGhs": 4800,
+        "transactionCount30d": 52,
+        "activeObligationsCount": 1
       }
     }
   ]

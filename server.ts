@@ -5617,6 +5617,64 @@ async function startServer() {
     res.json(schedule);
   });
 
+  // Direct Open Authentication Token (DAT) Protocol Endpoints
+  app.post("/api/auth/dat/initiate", (req, res) => {
+    try {
+      const result = oskaiService.initiateDirectAuth(req.body || {});
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message || "Failed to initialize DAT session" });
+    }
+  });
+
+  app.get("/api/auth/dat/session", (req, res) => {
+    const authHeader = req.headers.authorization;
+    const token = (authHeader && authHeader.startsWith("Bearer ")) 
+      ? authHeader.substring(7) 
+      : (req.query.token as string);
+
+    if (!token) {
+      return res.status(401).json({ success: false, error: "Direct Auth Token missing" });
+    }
+
+    const session = oskaiService.validateDirectAuthToken(token);
+    if (!session) {
+      return res.status(404).json({ success: false, error: "Invalid or expired DAT session" });
+    }
+
+    res.json({ success: true, session });
+  });
+
+  // Telemetry Parser for Real Statement or USSD SMS Logs
+  app.post("/api/telemetry/parse", (req, res) => {
+    try {
+      const { rawText = "" } = req.body || {};
+      const parsed = oskaiService.parseStatementTelemetry(String(rawText));
+      res.json({ success: true, telemetry: parsed });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message || "Failed to parse statement telemetry" });
+    }
+  });
+
+  // Multi-Currency Converter
+  app.get("/api/currency/convert", (req, res) => {
+    const amount = Number(req.query.amount) || 100;
+    const from = String(req.query.from || "GHS");
+    const to = String(req.query.to || "USD");
+    const converted = oskaiService.convertCurrency(amount, from, to);
+    res.json({ success: true, amount, from, to, converted });
+  });
+
+  // Full 5-Pillar Service & Regulatory Compliance Audit
+  app.get("/api/service-audit", (req, res) => {
+    try {
+      const audit = oskaiService.generateFullServiceAudit();
+      res.json({ success: true, audit });
+    } catch (err: any) {
+      res.status(500).json({ success: false, error: err.message || "Failed to generate service audit" });
+    }
+  });
+
   // 8. Kiva Verified Public APIs & Mock Lenders Dispatch (.json verified)
   app.get("/api/kiva/newest", async (req, res) => {
     try {

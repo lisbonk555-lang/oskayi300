@@ -47,7 +47,7 @@ export const OilDecisionBrain: React.FC<OilDecisionBrainProps> = ({
   const [requestedTenure, setRequestedTenure] = useState(12);
   
   // Link / Open Banking State
-  const [selectedProvider, setSelectedProvider] = useState<'MTN_MOMO' | 'TELECEL' | 'MONO_GCB' | 'OKRA_ECOBANK'>('MTN_MOMO');
+  const [selectedProvider, setSelectedProvider] = useState<'MTN_MOMO' | 'TELECEL' | 'DIRECT_GCB' | 'DIRECT_ECOBANK'>('MTN_MOMO');
   
   // Statement upload / USSD paste
   const [pastedUssdText, setPastedUssdText] = useState(
@@ -69,16 +69,16 @@ export const OilDecisionBrain: React.FC<OilDecisionBrainProps> = ({
   const handleRunBrainDecision = async (e: React.FormEvent) => {
     e.preventDefault();
     setScoringStep('analyzing');
-    setProgressMsg('Connecting to Open Banking API & MoMo telemetry parser...');
+    setProgressMsg('Connecting to Direct Open Banking API & MoMo telemetry parser...');
 
     try {
       // Step animation sequence
       setTimeout(() => {
-        setProgressMsg('Executing Tala Cash-Velocity & LenddoEFL Behavioral Matrix...');
+        setProgressMsg('Executing MoMo Cash-Velocity & Behavioral Character Matrix...');
       }, 700);
 
       setTimeout(() => {
-        setProgressMsg('Evaluating Bank of Ghana 45% DTI ceiling & Algoan disposable cash-flow...');
+        setProgressMsg('Evaluating Bank of Ghana 45% DTI ceiling & net disposable cash-flow...');
       }, 1500);
 
       const res = await fetch('/api/score', {
@@ -95,7 +95,7 @@ export const OilDecisionBrain: React.FC<OilDecisionBrainProps> = ({
           existingDebtPayments: Number(existingDebts),
           requestedAmount: Number(requestedAmount),
           requestedTenureMonths: Number(requestedTenure),
-          dataSourceType: intakeMode === 'link' ? 'LINKED_MONO_OKRA' : 'USSD_SMS_HISTORY',
+          dataSourceType: intakeMode === 'link' ? 'OPEN_BANKING_DAT' : 'USSD_SMS_HISTORY',
           momoNetwork: selectedProvider.includes('MTN') ? 'MTN MoMo' : 'Telecel Cash',
           hasSsnitContribution: hasSsnit,
           hasBusinessRegistration: hasBusinessReg,
@@ -201,7 +201,7 @@ export const OilDecisionBrain: React.FC<OilDecisionBrainProps> = ({
               }`}
             >
               <Smartphone className="w-4 h-4" />
-              Link Bank / MoMo (Mono & Okra)
+              Link Bank / MoMo (Direct Open Auth)
             </button>
             <button
               onClick={() => setIntakeMode('upload')}
@@ -415,16 +415,16 @@ export const OilDecisionBrain: React.FC<OilDecisionBrainProps> = ({
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-white flex items-center gap-1.5">
                   <Zap className="w-4 h-4 text-amber-400" />
-                  Select Open Banking / Mobile Money Connector
+                  Select Direct Open Banking / Mobile Money Connector
                 </span>
-                <span className="text-[11px] text-teal-400 font-mono">Mono & Okra Live Adapters</span>
+                <span className="text-[11px] text-teal-400 font-mono">Direct Open Protocol Rail</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {[
-                  { id: 'MTN_MOMO', label: 'MTN MoMo API', desc: 'MoMo statement & velocity' },
-                  { id: 'TELECEL', label: 'Telecel Cash', desc: 'Vodafone Cash API feed' },
-                  { id: 'MONO_GCB', label: 'GCB Bank (Mono)', desc: 'Bank statement 12 mo' },
-                  { id: 'OKRA_ECOBANK', label: 'Ecobank (Okra)', desc: 'Real-time balance & KYC' }
+                  { id: 'MTN_MOMO', label: 'MTN MoMo Rail', desc: 'MoMo cash velocity & limits' },
+                  { id: 'TELECEL', label: 'Telecel Cash', desc: 'National Interoperable feed' },
+                  { id: 'DIRECT_GCB', label: 'GCB Bank Direct', desc: 'Direct NUBAN/IBAN auth' },
+                  { id: 'DIRECT_ECOBANK', label: 'Ecobank Direct', desc: 'Direct corporate telemetry' }
                 ].map(opt => (
                   <button
                     key={opt.id}
