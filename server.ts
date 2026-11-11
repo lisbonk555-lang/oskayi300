@@ -4,6 +4,24 @@ import fs from "fs";
 import crypto from "crypto";
 import { createServer as createViteServer } from "vite";
 import { oskaiService } from "./src/server/oskaiLoanService";
+import { mediaMachineService } from "./src/server/mediaMachineService";
+import { oskayiSearchService } from "./src/server/oskayiSearchService";
+import { oskayiGridService } from "./src/server/oskayiGridService";
+import { oskayiChatService } from "./src/server/oskayiChatService";
+import { oskayiAirwaveService } from "./src/server/oskayiAirwaveService";
+import { oskayiSeaGuardService } from "./src/server/oskayiSeaGuardService";
+import { oskayiSatService } from "./src/server/oskayiSatService";
+import { oskayiPeaceService } from "./src/server/oskayiPeaceService";
+import { oskayiDebtClockService } from "./src/server/oskayiDebtClockService";
+import { oskayiWealthService } from "./src/server/oskayiWealthService";
+import { oskayiTradeService } from "./src/server/oskayiTradeService";
+import { oskayiSovereignService } from "./src/server/oskayiSovereignService";
+import { oskayiRestructureService } from "./src/server/oskayiRestructureService";
+import { oskayiIndexService } from "./src/server/oskayiIndexService";
+import { oskayiDebtCollectorService } from "./src/server/oskayiDebtCollectorService";
+import { oskayiCentralBankService } from "./src/server/oskayiCentralBankService";
+import { oskayiPayrollService } from "./src/server/oskayiPayrollService";
+import { virtualAfricaService } from "./src/server/virtualAfricaService";
 
 // ==============================================================================
 // PERSISTENT DATABASE ENGINE FOR OSKAYI SELLER PROTECT (VERSION 1)
@@ -5803,6 +5821,584 @@ async function startServer() {
       message: `Dossier sent to Partner 685 (Uganda MFI), Partner 58, Advans Ghana. They will disburse directly to your MoMo ${momoNumber || '024 XXX XXXX'}. You will receive SMS in 2 hours. Oskayi does not hold your loan.`,
       disbursementNotice: "LENDER -> BORROWER DIRECT DISBURSEMENT (Oskayi does not hold funds)"
     });
+  });
+
+  // ==============================================================================
+  // OSKAYI MEDIA MACHINE - FULLY AUTOMATED 24/7 AI AGENTS ENDPOINTS
+  // ==============================================================================
+  app.get("/api/media/status", (req, res) => {
+    res.json(mediaMachineService.getState());
+  });
+
+  app.get("/api/media/headlines", (req, res) => {
+    const category = typeof req.query.category === "string" ? req.query.category : undefined;
+    res.json(mediaMachineService.getHeadlines(category));
+  });
+
+  app.post("/api/media/hunter/run", async (req, res) => {
+    try {
+      const result = await mediaMachineService.runHunterAgent();
+      res.json({ success: true, ...result });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.get("/api/media/blogs", (req, res) => {
+    const subdomain = typeof req.query.subdomain === "string" ? req.query.subdomain : undefined;
+    res.json(mediaMachineService.getBlogs(subdomain));
+  });
+
+  app.get("/api/media/blogs/:id", (req, res) => {
+    const blog = mediaMachineService.getBlogById(req.params.id);
+    if (!blog) return res.status(404).json({ error: "Blog not found" });
+    res.json(blog);
+  });
+
+  app.post("/api/media/blogger/generate", (req, res) => {
+    const { headlineId, subdomain } = req.body || {};
+    try {
+      const blog = mediaMachineService.generateBlogFromHeadline(headlineId, subdomain);
+      res.json({ success: true, blog });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.get("/api/media/videos", (req, res) => {
+    const channelId = typeof req.query.channelId === "string" ? req.query.channelId : undefined;
+    res.json(mediaMachineService.getVideos(channelId));
+  });
+
+  app.post("/api/media/videos/generate", (req, res) => {
+    const { headlineId, channelId } = req.body || {};
+    try {
+      const video = mediaMachineService.generateVideoFromHeadline(headlineId, channelId);
+      res.json({ success: true, video });
+    } catch (e: any) {
+      res.status(500).json({ success: false, error: e.message });
+    }
+  });
+
+  app.get("/api/media/apps", (req, res) => {
+    const category = typeof req.query.category === "string" ? req.query.category : undefined;
+    res.json(mediaMachineService.getApps(category));
+  });
+
+  app.post("/api/media/scheduler/toggle", (req, res) => {
+    const isRunning = mediaMachineService.toggleAutomation();
+    res.json({ success: true, isRunning });
+  });
+
+  app.get("/api/media/export-csv", (req, res) => {
+    const state = mediaMachineService.getState();
+    const rows = [
+      ["Type", "Title", "Category_or_Channel", "Views", "Revenue", "Date"],
+      ...state.blogs.map(b => ["Blog", `"${b.title.replace(/"/g, '""')}"`, b.blog_subdomain, b.views, `$${b.revenue_usd}`, b.published_at]),
+      ...state.videos.map(v => ["Video", `"${v.title.replace(/"/g, '""')}"`, v.channel_name, v.views, `$${v.revenue_usd}`, v.published_at]),
+      ...state.apps.map(a => ["WebToolApp", `"${a.app_name.replace(/"/g, '""')}"`, a.category, a.users_count, `GH¢${a.revenue_ghs}`, a.deployed_at])
+    ];
+    const csvContent = rows.map(r => r.join(",")).join("\n");
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader("Content-Disposition", 'attachment; filename="oskayi-media-machine-report.csv"');
+    res.send(csvContent);
+  });
+
+  // ==============================================================================
+  // OSKAYI SEARCH ENDPOINTS (PERPLEXITY-STYLE AI SEARCH)
+  // ==============================================================================
+  app.post("/api/search", async (req, res) => {
+    try {
+      const { query, mode } = req.body || {};
+      if (!query || typeof query !== "string") {
+        return res.status(400).json({ error: "Search query is required." });
+      }
+      const result = await oskayiSearchService.executeSearch(query, mode || "ghana");
+      res.json(result);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Search failed." });
+    }
+  });
+
+  app.get("/api/search/history", (req, res) => {
+    res.json(oskayiSearchService.getSearchHistory());
+  });
+
+  // ==============================================================================
+  // OSKAYI GRID ENDPOINTS (GLOBAL ENERGY BALANCER & VPP DASHBOARD)
+  // ==============================================================================
+  app.get("/api/grid/telemetry", (req, res) => {
+    res.json(oskayiGridService.getGridTelemetry());
+  });
+
+  app.get("/api/grid/assets", (req, res) => {
+    res.json(oskayiGridService.getConnectedAssets());
+  });
+
+  app.get("/api/grid/logs", (req, res) => {
+    res.json(oskayiGridService.getBalanceLogs());
+  });
+
+  app.post("/api/grid/battery/connect", (req, res) => {
+    try {
+      const asset = oskayiGridService.connectNewAsset(req.body || {});
+      res.json({ success: true, asset });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/grid/battery/toggle-auto", (req, res) => {
+    const { assetId } = req.body || {};
+    const newState = oskayiGridService.toggleAssetAutonomous(assetId);
+    res.json({ success: true, autonomous_balancing_active: newState });
+  });
+
+  // ==============================================================================
+  // OSKAYI CHAT ENDPOINTS (CHATGPT-STYLE CONVERSATIONAL AI)
+  // ==============================================================================
+  app.get("/api/chat/threads", (req, res) => {
+    res.json(oskayiChatService.getThreads());
+  });
+
+  app.post("/api/chat/threads", (req, res) => {
+    const { title, model, language } = req.body || {};
+    const thread = oskayiChatService.createThread(title, model, language);
+    res.json(thread);
+  });
+
+  app.post("/api/chat/message", async (req, res) => {
+    try {
+      const { threadId, message, model, language, attachments } = req.body || {};
+      if (!message || typeof message !== "string") {
+        return res.status(400).json({ error: "Message content is required." });
+      }
+      const responseMsg = await oskayiChatService.sendMessage(
+        threadId, 
+        message, 
+        model || "oskayi-smart", 
+        language || "en", 
+        attachments || []
+      );
+      res.json(responseMsg);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message || "Chat failed." });
+    }
+  });
+
+  // ==============================================================================
+  // PAYSTACK CHECKOUT INTENTS (PRO SEARCH, PRO CHAT, GRID ARBITRAGE)
+  // ==============================================================================
+  app.post("/api/paystack/initialize", (req, res) => {
+    const { plan, amountGhs, email, phone } = req.body || {};
+    const ref = `OSKAYI-${(plan || "PRO").toUpperCase()}-${Date.now().toString(36).toUpperCase()}`;
+    res.json({
+      success: true,
+      reference: ref,
+      amountGhs: amountGhs || 20,
+      currency: "GHS",
+      channel: "Mobile Money (MTN, Telecel, AT) & Cards",
+      authorization_url: `https://checkout.paystack.com/${ref}`,
+      message: `Checkout initialized for ${plan || "Pro Access"} (GH¢ ${amountGhs || 20}). Merchant: OSKAYI CONSULT (BN248851025).`
+    });
+  });
+
+  // ==============================================================================
+  // OSKAYI AIRWAVE GLOBAL ENDPOINTS (MISSION-CRITICAL PUSH-TO-TALK)
+  // ==============================================================================
+  app.get("/api/airwave/channels", (req, res) => {
+    res.json(oskayiAirwaveService.getChannels());
+  });
+
+  app.get("/api/airwave/units", (req, res) => {
+    res.json(oskayiAirwaveService.getUnits());
+  });
+
+  app.get("/api/airwave/recordings", (req, res) => {
+    res.json(oskayiAirwaveService.getRecordings());
+  });
+
+  app.post("/api/airwave/ptt/transmit", (req, res) => {
+    try {
+      const record = oskayiAirwaveService.transmitPtt(req.body || {});
+      res.json({ success: true, record });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/airwave/emergency/sos", (req, res) => {
+    try {
+      const result = oskayiAirwaveService.triggerEmergencySos(req.body || {});
+      res.json({ success: true, ...result });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/airwave/emergency/reset", (req, res) => {
+    oskayiAirwaveService.resetSos();
+    res.json({ success: true, message: "Emergency SOS broadcast reset." });
+  });
+
+  app.post("/api/airwave/unit/status", (req, res) => {
+    const { unitId, status, channelId } = req.body || {};
+    const updated = oskayiAirwaveService.updateUnitStatus(unitId, status, channelId);
+    res.json({ success: !!updated, unit: updated });
+  });
+
+  // ==============================================================================
+  // OSKAYI SEA GUARD GLOBAL ENDPOINTS (MARITIME AIS & DARK SHIP DETECTION)
+  // ==============================================================================
+  app.get("/api/seaguard/vessels", (req, res) => {
+    res.json(oskayiSeaGuardService.getVessels());
+  });
+
+  app.get("/api/seaguard/anomalies", (req, res) => {
+    res.json(oskayiSeaGuardService.getAnomalies());
+  });
+
+  app.get("/api/seaguard/satellite-layers", (req, res) => {
+    res.json(oskayiSeaGuardService.getSatelliteLayers());
+  });
+
+  app.post("/api/seaguard/alert/dispatch", (req, res) => {
+    try {
+      const { anomalyId, recipientEmail } = req.body || {};
+      const result = oskayiSeaGuardService.dispatchPortAlert(anomalyId, recipientEmail);
+      res.json(result);
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.get("/api/seaguard/dossier/:mmsi", (req, res) => {
+    res.json(oskayiSeaGuardService.generateDossier(req.params.mmsi));
+  });
+
+  // ==============================================================================
+  // OSKAYI SAT GLOBAL ENDPOINTS (SATELLITE IMAGERY & GEOSPATIAL INTELLIGENCE)
+  // ==============================================================================
+  app.get("/api/sat/featured", (req, res) => {
+    res.json(oskayiSatService.getFeaturedLocations());
+  });
+
+  app.post("/api/sat/search", (req, res) => {
+    const { query } = req.body || {};
+    res.json(oskayiSatService.searchLocation(query || ""));
+  });
+
+  app.post("/api/sat/analyze", (req, res) => {
+    try {
+      const analysis = oskayiSatService.runAiAnalysis(req.body || {});
+      res.json(analysis);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  app.post("/api/sat/order/commercial", (req, res) => {
+    try {
+      const order = oskayiSatService.createCommercialOrder(req.body || {});
+      res.json({ success: true, order });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.get("/api/sat/orders", (req, res) => {
+    res.json(oskayiSatService.getOrders());
+  });
+
+  // ==============================================================================
+  // OSKAYI PEACE GLOBAL ENDPOINTS (CONFLICT EARLY WARNING & OSINT FUSION)
+  // ==============================================================================
+  app.get("/api/peace/theaters", (req, res) => {
+    res.json(oskayiPeaceService.getTheaters());
+  });
+
+  app.get("/api/peace/signals", (req, res) => {
+    const theaterId = typeof req.query.theaterId === "string" ? req.query.theaterId : undefined;
+    res.json(oskayiPeaceService.getSignals(theaterId));
+  });
+
+  app.get("/api/peace/briefing", (req, res) => {
+    res.json(oskayiPeaceService.getWeeklyBriefing());
+  });
+
+  app.post("/api/peace/alert/subscribe", (req, res) => {
+    const { email, orgName } = req.body || {};
+    res.json(oskayiPeaceService.subscribeAlert(email || "contact@un.org", orgName || "Global NGO"));
+  });
+
+  // ==============================================================================
+  // OSKAYI DEBT CLOCK GLOBAL ENDPOINTS
+  // ==============================================================================
+  app.get("/api/debtclock/live", (req, res) => {
+    res.json(oskayiDebtClockService.getLiveGlobalDebt());
+  });
+
+  app.get("/api/debtclock/countries", (req, res) => {
+    res.json(oskayiDebtClockService.getCountries());
+  });
+
+  app.get("/api/debtclock/country/:code", (req, res) => {
+    const country = oskayiDebtClockService.getCountry(req.params.code);
+    if (!country) return res.status(404).json({ error: "Country not found." });
+    res.json(country);
+  });
+
+  app.get("/api/debtclock/compare", (req, res) => {
+    const codeA = typeof req.query.a === "string" ? req.query.a : "USA";
+    const codeB = typeof req.query.b === "string" ? req.query.b : "CHN";
+    res.json(oskayiDebtClockService.compareCountries(codeA, codeB));
+  });
+
+  app.get("/api/debtclock/embed-code", (req, res) => {
+    const code = typeof req.query.country === "string" ? req.query.country : undefined;
+    res.json({ widgetHtml: oskayiDebtClockService.generateEmbedWidgetCode(code) });
+  });
+
+  // ==============================================================================
+  // OSKAYI WEALTH ROBO-ADVISOR ENDPOINTS
+  // ==============================================================================
+  app.post("/api/wealth/portfolio", (req, res) => {
+    try {
+      const recommendation = oskayiWealthService.generatePortfolio(req.body || {});
+      res.json(recommendation);
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+    }
+  });
+
+  // ==============================================================================
+  // OSKAYI TRADE GLOBAL FINANCE ENDPOINTS
+  // ==============================================================================
+  app.get("/api/trade/metrics", (req, res) => {
+    res.json(oskayiTradeService.getDashboardMetrics());
+  });
+
+  app.get("/api/trade/lcs", (req, res) => {
+    res.json(oskayiTradeService.getLettersOfCredit());
+  });
+
+  app.get("/api/trade/guarantees", (req, res) => {
+    res.json(oskayiTradeService.getGuarantees());
+  });
+
+  app.get("/api/trade/invoices", (req, res) => {
+    res.json(oskayiTradeService.getInvoices());
+  });
+
+  app.post("/api/trade/apply-lc", (req, res) => {
+    try {
+      const lc = oskayiTradeService.applyForLc(req.body || {});
+      res.json({ success: true, lc });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/trade/invoice-advance", (req, res) => {
+    try {
+      const advance = oskayiTradeService.requestInvoiceAdvance(req.body || {});
+      res.json({ success: true, advance });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/trade/check-docs", (req, res) => {
+    const { invoiceData, lcData } = req.body || {};
+    res.json(oskayiTradeService.checkDocumentDiscrepancy(invoiceData, lcData));
+  });
+
+  // ==============================================================================
+  // OSKAYI SOVEREIGN AI ADVISOR ENDPOINTS
+  // ==============================================================================
+  app.get("/api/sovereign/benchmarks", (req, res) => {
+    res.json(oskayiSovereignService.getLiveBenchmarks());
+  });
+
+  app.get("/api/sovereign/dsa/:countryCode", (req, res) => {
+    res.json(oskayiSovereignService.getDsaProfile(req.params.countryCode));
+  });
+
+  app.post("/api/sovereign/evaluate", async (req, res) => {
+    try {
+      const { query, countryCode } = req.body || {};
+      if (!query) return res.status(400).json({ error: "Ministerial query required." });
+      const evaluation = await oskayiSovereignService.evaluateSovereignQuery(query, countryCode || "GHA");
+      res.json(evaluation);
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // ==============================================================================
+  // OSKAYI DEBT RESTRUCTURE ENDPOINTS
+  // ==============================================================================
+  app.get("/api/restructure/claims", (req, res) => {
+    res.json(oskayiRestructureService.getClaims());
+  });
+
+  app.get("/api/restructure/proposals", (req, res) => {
+    res.json(oskayiRestructureService.getProposals());
+  });
+
+  app.post("/api/restructure/calculate", (req, res) => {
+    res.json(oskayiRestructureService.calculateRestructuringRelief(req.body || {}));
+  });
+
+  app.post("/api/restructure/proposal", (req, res) => {
+    try {
+      const prop = oskayiRestructureService.createProposal(req.body || {});
+      res.json({ success: true, proposal: prop });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  // ==========================================
+  // OSKAYI INDEX - GLOBAL FUND BUILDER API
+  // ==========================================
+  app.get("/api/index/list", (req, res) => {
+    res.json(oskayiIndexService.getIndices());
+  });
+
+  app.get("/api/index/stock-universe", (req, res) => {
+    const q = (req.query.q as string) || "";
+    res.json(oskayiIndexService.getStockUniverse(q));
+  });
+
+  app.post("/api/index/create", (req, res) => {
+    try {
+      const newIdx = oskayiIndexService.createCustomIndex(req.body || {});
+      res.json({ success: true, index: newIdx });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/index/paper-trade", (req, res) => {
+    try {
+      const { indexId, amountUsd } = req.body || {};
+      const order = oskayiIndexService.executePaperTrade(indexId, Number(amountUsd) || 1000);
+      res.json({ success: true, order });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  // ==========================================
+  // OSKAYI DEBT COLLECTOR AI - LEGAL RECOVERY API
+  // ==========================================
+  app.get("/api/debt-collector/cases", (req, res) => {
+    res.json(oskayiDebtCollectorService.getCases());
+  });
+
+  app.get("/api/debt-collector/marketplace", (req, res) => {
+    res.json(oskayiDebtCollectorService.getMarketplace());
+  });
+
+  app.get("/api/debt-collector/metrics", (req, res) => {
+    res.json(oskayiDebtCollectorService.getRecoveryMetrics());
+  });
+
+  app.post("/api/debt-collector/submit-claim", (req, res) => {
+    try {
+      const newCase = oskayiDebtCollectorService.submitDebtClaim(req.body || {});
+      res.json({ success: true, case: newCase });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  // ==========================================
+  // OSKAYI CENTRAL BANK TRACKER API
+  // ==========================================
+  app.get("/api/central-bank/rates", (req, res) => {
+    const pro = req.query.pro === "true";
+    res.json(oskayiCentralBankService.getAllCentralBanks(pro));
+  });
+
+  app.get("/api/central-bank/summary", (req, res) => {
+    res.json(oskayiCentralBankService.getGlobalSummary());
+  });
+
+  // ==========================================
+  // OSKAYI PAYROLL GLOBAL & TREASURY API
+  // ==========================================
+  app.get("/api/payroll/overview", (req, res) => {
+    res.json(oskayiPayrollService.getOverview());
+  });
+
+  app.get("/api/payroll/employees", (req, res) => {
+    res.json(oskayiPayrollService.getEmployees());
+  });
+
+  app.get("/api/payroll/treasury", (req, res) => {
+    res.json(oskayiPayrollService.getTreasury());
+  });
+
+  app.post("/api/payroll/audit-compliance", (req, res) => {
+    try {
+      const result = oskayiPayrollService.runComplianceAudit(req.body || {});
+      res.json({ success: true, audit: result });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/payroll/execute-batch", (req, res) => {
+    res.json(oskayiPayrollService.executePayrollBatch());
+  });
+
+  // ==========================================
+  // VIRTUAL AFRICA - THE COMPLETE VIRTUAL CONTINENT API
+  // ==========================================
+  app.get("/api/virtual-africa/stats", (req, res) => {
+    res.json(virtualAfricaService.getContinentStats());
+  });
+
+  app.get("/api/virtual-africa/ministries", (req, res) => {
+    res.json(virtualAfricaService.getMinistries());
+  });
+
+  app.get("/api/virtual-africa/land-plots", (req, res) => {
+    res.json(virtualAfricaService.getLandPlots());
+  });
+
+  app.get("/api/virtual-africa/cyber-police", (req, res) => {
+    res.json(virtualAfricaService.getCyberAlerts());
+  });
+
+  app.post("/api/virtual-africa/register-citizen", (req, res) => {
+    try {
+      const citizen = virtualAfricaService.registerCitizen(req.body || {});
+      res.json({ success: true, citizen });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/virtual-africa/purchase-land", (req, res) => {
+    try {
+      const plot = virtualAfricaService.purchaseLandPlot(req.body || {});
+      res.json({ success: true, plot });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
+  });
+
+  app.post("/api/virtual-africa/buy-rd", (req, res) => {
+    try {
+      const { usdAmount } = req.body || {};
+      const result = virtualAfricaService.buyRoyalDollars(Number(usdAmount) || 100);
+      res.json({ success: true, result });
+    } catch (err: any) {
+      res.status(400).json({ success: false, error: err.message });
+    }
   });
 
   // Vite middleware for development
