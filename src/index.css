@@ -1,20 +1,21 @@
 @import "tailwindcss";
 
-@keyframes marquee-slide-left {
-  0% {
-    transform: translateX(0%);
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   }
-  100% {
-    transform: translateX(-50%);
+
+  .font-serif-luxury {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+
+  .font-mono-data {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    font-variant-numeric: tabular-nums;
   }
 }
 
-.animate-slide-left-continuous {
-  display: flex;
-  width: max-content;
-  animation: marquee-slide-left 50s linear infinite;
-}
-
-.animate-slide-left-continuous:hover {
-  animation-play-state: paused;
+/* Custom Range Slider Styling */
+input[type="range"] {
+  accent-color: #C59B27;
 }

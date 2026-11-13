@@ -1,6 +1,10 @@
 {
   "name": "Oskayi Consult",
-  "description": "Official enterprise portal for Oskayi Consult (Reg: BN248851025, TIN: P0000590118). Debt Clock, Sovereign AI, Trade Finance, Robo Wealth & Debt Restructure.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "description": "Official Oskayi Consult digital suite: Oskayi House Generated, Oskayi House Cost Killer, Oskayi Before & After Renovation, Smart City Planner, and AI Influencer Clone.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
